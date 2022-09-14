@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Conexen",
+    "slug": "conexen",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.conexen.con",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.conexen.con",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    }
+  }
+}
