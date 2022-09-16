@@ -28,12 +28,12 @@ export default function Navigation() {
 const RootStack = createNativeStackNavigator();
 
 function RootNavigator() {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const { isAuthenticated, session, isLoading } = useAuth();
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {isLoading && <RootStack.Screen name="Loading" component={LoadingScreen} />}
-      {!isAuthenticated ? (
+      {!isAuthenticated || !session ? (
         <RootStack.Screen name="Auth" component={AuthNavigator} />
       ) : (
         <>

@@ -4,7 +4,11 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  roles: number;
+  roles: string[];
+}
+
+export interface Session {
+  user: User;
   token: string;
 }
 
@@ -13,7 +17,8 @@ export const AuthContext = createContext(
     isAuthenticated: boolean;
     isLoading: boolean;
     user?: User;
+    session?: Session;
+    login: (session: Session) => void;
     signOut: () => void;
-    login: (user: User) => void;
   },
 );

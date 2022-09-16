@@ -1,61 +1,37 @@
-/*eslint @typescript-eslint/no-unsafe-assignment:*/
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Button, Input } from '../../components';
+import { REGEX_EMAIL } from '../../constants/regex';
 import { useAuth } from '../../context/auth/authProvider';
 import { COLORS } from '../../theme';
-
 import AuthLayout from './AuthLayout';
-import { View } from 'react-native';
+import loginService from '../../services/login';
 
-const FAKE_LOGIN = [
-  {
-    uid: '1',
-    name: 'John Doe',
-    rol: 'client',
-    accessToken: 'accessToken',
-    logOutToken: 'logOutToken',
-  },
-  {
-    uid: '2',
-    name: 'Jane Doe',
-    rol: 'staff',
-    accessToken: 'accessToken',
-    logOutToken: 'logOutToken',
-  },
-  {
-    uid: '3',
-    name: 'John Doe',
-    rol: 'owner',
-    accessToken: 'accessToken',
-    logOutToken: 'logOutToken',
-  },
-];
-
-// regex email
-const REGEX_EMAIL =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-const Login = ({ navigation }: any) => {
+const Login = () => {
   // states
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('Error al iniciar sesión');
-  const [isVisible, setIsVisible] = useState(false);
+  //const [isVisible, setIsVisible] = useState(false);
 
   // context
   const { login } = useAuth();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsLoading(true);
-    setError('');
+    try {
+      const session = await loginService.login({ email, password: pass });
+      login(session);
+    } catch (error) {
+      setError(error?.message);
+    }
+    setIsLoading(false);
   };
 
   const handleForgotPass = () => {
     //navigation.navigate('ForgotPass');
   };
-  console.log(email, pass);
 
   return (
     <AuthLayout>

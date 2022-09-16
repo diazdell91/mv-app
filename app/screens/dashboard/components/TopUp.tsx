@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
@@ -6,39 +6,44 @@ import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   id: string;
-  ammount: number;
-  phone: string;
-  status: string;
+  amount: number;
+  phoneNumber: string;
+  processingState: string;
   dateTime: string;
 };
 
 const TopUp = (props: Props) => {
   const {
     id = '002',
-    ammount = '500',
-    phone = '583834553',
-    status = 'COMPLETADA',
-    dateTime,
+    amount = 1000,
+    phoneNumber = '583834553',
+    processingState = 'COMPLETADA',
   } = props;
+  console.log('Props', props);
 
   const navigation = useNavigation<any>();
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={{
+        ...styles.container,
+        borderLeftColor: processingState === 'COMPLETED' ? COLORS.green : COLORS.red2,
+      }}
+    >
       <View style={{ flex: 1, marginHorizontal: SIZES.m }}>
         <Text size={22} fontFamily="Poppins-Bold" color={COLORS.gray}>
-          {phone}
+          {phoneNumber}
         </Text>
-        <Text size={18} color={COLORS.gray}>{`$${ammount.toString()}`}</Text>
+        <Text size={18} color={COLORS.gray}>{`$${amount.toString()}`}</Text>
       </View>
       <Pressable
         onPress={() => {
-          navigation.navigate('TopUpDetails', { id });
+          navigation.navigate('TopUpDetails', { props });
         }}
         style={{ justifyContent: 'center', alignItems: 'center' }}
       >
         <Icon name="dots-vertical" size={32} color={COLORS.black} />
       </Pressable>
-    </View>
+    </Pressable>
   );
 };
 
@@ -62,7 +67,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
-    borderLeftColor: COLORS.gray,
     borderLeftWidth: 22,
   },
 });

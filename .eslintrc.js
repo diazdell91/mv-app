@@ -37,6 +37,8 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
     'react/display-name': 'off',
     'react/prop-types': 'off',
     'prettier/prettier': 'error',

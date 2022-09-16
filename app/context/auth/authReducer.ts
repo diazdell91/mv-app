@@ -1,14 +1,14 @@
-import { User } from './authContext';
+import { Session } from './authContext';
 
 interface Action {
   type: 'RESTORE_TOKEN' | 'SIGN_IN' | 'SIGN_OUT';
-  payload?: User;
+  payload?: Session;
 }
 
 interface authState {
   isLoading: boolean;
   isAuthenticated: boolean;
-  user?: User;
+  session?: Session;
 }
 
 function authReducer(state: authState, action: Action) {
@@ -18,21 +18,21 @@ function authReducer(state: authState, action: Action) {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: action.payload,
+        session: action.payload,
       };
     case 'SIGN_IN':
       return {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: action.payload,
+        session: action.payload,
       };
     case 'SIGN_OUT':
       return {
         ...state,
         isAuthenticated: false,
         isLoading: false,
-        user: undefined,
+        session: undefined,
       };
     default:
       return {

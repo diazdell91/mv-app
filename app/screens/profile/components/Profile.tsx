@@ -1,17 +1,19 @@
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Text } from '../../../components';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { Text } from '../../../components';
 import { COLORS } from '../../../theme';
 
 interface Props {
   name: string;
-  profile: string;
 }
 
-const Profile = ({ name, profile = 'https://randomuser.me/api/portraits/men/71.jpg' }: Props) => {
+const Profile = ({ name }: Props) => {
   return (
     <View style={styles.container}>
-      <Avatar profile={profile} size={74} />
-      <Text h5 size={24} color={COLORS.primary}>
+      <View style={styles.profile}>
+        <Icon name="account-supervisor-circle-outline" size={72} color={COLORS.gray} />
+      </View>
+      <Text h5 size={24} fontFamily="Poppins-Medium">
         {name}
       </Text>
     </View>
@@ -26,5 +28,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
+  },
+  profile: {
+    margin: 8,
+    width: 72,
+    height: 72,
+    borderRadius: 72,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.gradient,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 2,
   },
 });

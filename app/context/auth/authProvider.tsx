@@ -1,13 +1,16 @@
 /*eslint @typescript-eslint/no-unsafe-assignment:*/
 import { useContext, useEffect, useReducer } from 'react';
 import reducer from './authReducer';
-import { AuthContext, User } from './authContext';
-import tokenService from '../tokenServices';
+import { AuthContext, Session } from './authContext';
+import sessionService from '../sessionService';
 
 const initialState = {
   isLoading: true,
   isAuthenticated: false,
-  user: undefined,
+  session: {
+    user: undefined,
+    token: undefined,
+  },
 };
 
 function useAuthActions() {
@@ -16,16 +19,15 @@ function useAuthActions() {
   useEffect(() => {
     const bootstrapAsync = async () => {
       // Getting session from localStorage
-      const existingSession = await tokenService.isVailable();
+      const existingSession = await sessionService.isAvailable();
 
       if (existingSession) {
         // We have data!!
-        const user = await tokenService.getUser();
-        console.log(user);
-        if (user) {
-          const userData = JSON.parse(user);
-          dispatch({ type: 'RESTORE_TOKEN', payload: userData });
-        } else {
+        try {
+          const session = await sessionService.getSession();
+          //const sessionData = JSON.parse(session);
+          dispatch({ type: 'RESTORE_TOKEN', payload: session });
+        } catch (error) {
           dispatch({ type: 'SIGN_OUT' });
         }
       } else {
@@ -35,16 +37,26 @@ function useAuthActions() {
     bootstrapAsync().catch((err) => console.log(err));
   }, []);
 
-  const login = (user: User) => {
-    dispatch({
-      type: 'SIGN_IN',
-      payload: user,
-    });
+  const login = async (session: Session) => {
+    try {
+      await sessionService.saveSession(session);
+      dispatch({
+        type: 'SIGN_IN',
+        payload: session,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  function signOut() {
+  const signOut = async () => {
     console.log('signOut');
-    dispatch({ type: 'SIGN_OUT' });
-  }
+    try {
+      await sessionService.deleteSession();
+      dispatch({ type: 'SIGN_OUT' });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return {
     state,
@@ -61,7 +73,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         isAuthenticated: state?.isAuthenticated,
         isLoading: state?.isLoading,
-        user: state?.user,
+        user: state?.session?.user,
+        session: state?.session,
         login,
         signOut,
       }}

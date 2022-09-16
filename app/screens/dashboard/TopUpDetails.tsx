@@ -1,33 +1,38 @@
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import moment from 'moment';
 import { Button } from '../../components';
 import { COLORS, SIZES } from '../../theme';
 import Info from './components/Info';
 
-const TopUpDetails = ({ router, navigation }: any) => {
-  return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        navigation.goBack();
-      }}
-      style={{ flex: 1 }}
-    >
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <Info tittle="ID" data="2200" />
-          <Info tittle="ESTADO" data="COMPLETADA" />
-          <Info tittle="TELÉFONO" data="5832482348" />
-          <Info tittle="MONTO CUP" data="2200" />
-          <Info tittle="FECHA DE CREADA" data="09/11/2022, 01:26 PM" />
-          <Button
-            title="Cerrar"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
+const TopUpDetails = ({ route, navigation }: any) => {
+  console.log(route.params.props);
+  if (route.params.props) {
+    const code = route.params.props.code;
+    const amount = route.params.props.amount;
+    const phoneNumber = route.params.props.phoneNumber;
+    const processingState = route.params.props.processingState;
+    const createAt = route.params.props.createAt;
+    return (
+      <TouchableWithoutFeedback style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.content}>
+            <Info tittle="ID" data={code.toUpperCase()} />
+            <Info tittle="ESTADO" data={processingState} />
+            <Info tittle="TELÉFONO" data={phoneNumber} />
+            <Info tittle="MONTO CUP" data={amount} />
+            <Info tittle="FECHA DE CREADA" data={moment(createAt).format('lll')} />
+            <Button
+              title="Cerrar"
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
-  );
+      </TouchableWithoutFeedback>
+    );
+  }
+  return <View></View>;
 };
 
 export default TopUpDetails;
