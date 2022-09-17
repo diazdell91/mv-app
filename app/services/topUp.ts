@@ -2,7 +2,7 @@
 import axios from 'axios';
 const baseUrl = 'http://localhost:3001/api/';
 
-type TopUps = {
+type TopUp = {
   id: string;
   client: string;
   phoneNumber: string;
@@ -20,11 +20,26 @@ const getTopups = async (token: string) => {
   };
   const { data } = await axios.get(`${baseUrl}GetTopups`, config);
   return data as {
-    topups: TopUps[];
+    topups: TopUp[];
     totalItems: number;
     totalPages: number;
     currentPage: number;
   };
 };
+const createTopup = async (token: string, amount: number, phone: string) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const { data } = await axios.post(
+    `${baseUrl}CreateTopup`,
+    {
+      client: phone,
+      amount,
+      phone,
+    },
+    config,
+  );
+  return data as TopUp;
+};
 
-export default { getTopups };
+export default { getTopups, createTopup };

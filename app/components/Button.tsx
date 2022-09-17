@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    color: COLORS.white,
+    color: COLORS.black,
     fontFamily: 'Poppins-Bold',
     fontSize: SIZES.l,
     paddingHorizontal: SIZES.m,

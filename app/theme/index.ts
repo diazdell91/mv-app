@@ -82,12 +82,12 @@ export const SIZES = {
   // spacing
 };
 
-const tintColorLight = '#0C79F8';
+const tintColorLight = '#002233';
 
 export const COLORS = {
   // app colors
   white: '#fff',
-  primary: '#0C79F8',
+  primary: '#C0FAA0',
   secondary: '#56CCF2',
   yellow: '#F2C94C',
   stroke: '#E1E1E2',
@@ -98,7 +98,7 @@ export const COLORS = {
   gradient: '#efefef',
   red: '#a21010',
   red2: '#f27475',
-  black: '#000',
+  black: '#002233',
   blue: '#00a0e9',
   blackOpacity: 'rgba(0, 0, 0, 0.4)',
 
