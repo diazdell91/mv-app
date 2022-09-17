@@ -13,6 +13,7 @@ const DashboardSceen = () => {
   const { top } = useSafeAreaInsets();
   const {
     session: { token },
+    user,
   } = useAuth();
 
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,8 @@ const DashboardSceen = () => {
     totalPages: 0,
     currentPage: 0,
   });
+
+  console.log(user);
 
   const getTopUps = (token: string) => {
     topUpServices

@@ -3,11 +3,15 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import BottomTabNavigation from './TabNavigator';
 import TopUpDetails from '../screens/dashboard/TopUpDetails';
 import CreateTopup from '../screens/dashboard/CreateTopup';
+import SuccessTopup from '../screens/dashboard/views/SuccessTopup';
+import FailTopup from '../screens/dashboard/views/FailTopup';
 
 type MainStackParamList = {
   Tab: undefined;
   TopUpDetails: undefined;
   CreateTopup: undefined;
+  SuccessTopup: undefined;
+  FailTopup: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -37,7 +41,26 @@ function MainNavigator() {
           }}
         />
       </Main.Group>
-
+      <Main.Group
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Main.Screen
+          name="SuccessTopup"
+          component={SuccessTopup}
+          options={{
+            title: 'Crear recarga',
+          }}
+        />
+        <Main.Screen
+          name="FailTopup"
+          component={FailTopup}
+          options={{
+            title: 'Crear recarga',
+          }}
+        />
+      </Main.Group>
       <Main.Group
         key={'modal'}
         screenOptions={{ headerShown: false, presentation: 'transparentModal' }}

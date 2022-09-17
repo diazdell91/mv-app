@@ -7,7 +7,7 @@ import { Button, Input } from '../../components';
 import { COLORS } from '../../theme';
 import { useAuth } from '../../context/auth/authProvider';
 
-const CreateTopup = () => {
+const CreateTopup = ({ navigation }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
   const { session } = useAuth();
   const [phone, setPhone] = useState('');
@@ -19,11 +19,11 @@ const CreateTopup = () => {
     console.log('handleCreateTopup');
     topUpServices
       .createTopup(session.token, parseInt(amount), phone)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        navigation.navigate('SuccessTopup');
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        navigation.navigate('FailTopup');
       })
       .finally(() => {
         setLoading(false);
@@ -41,6 +41,7 @@ const CreateTopup = () => {
           keyboardType="phone-pad"
           value={phone}
           onChangeText={setPhone}
+          maxLength={8}
         />
         <Input
           placeholder="Cantidad 500-1000"
@@ -49,6 +50,7 @@ const CreateTopup = () => {
           keyboardType="numeric"
           value={amount}
           onChangeText={setAmount}
+          maxLength={4}
         />
         <Button title="Crear recarga" onPress={handleCreateTopup} />
       </ScrollView>
