@@ -33,6 +33,8 @@ export interface ITheme {
     yellow: string;
     stroke: string;
     background: string;
+    placeHolder: string;
+    textDark: string;
     backgroundAlt: string;
     white: string;
     black: string;
@@ -41,6 +43,18 @@ export interface ITheme {
     red: string;
     red2: string;
     blue: string;
+    fog: string;
+    caramel: string;
+    doggerBlue: string;
+    sulu: string;
+    strawberry: string;
+    zeus: string;
+    reef: string;
+    mirage: string;
+    beeswax: string;
+    mineShaft: string;
+    tuna: string;
+    stornGray: string;
 
     // surfaces colors
     backDrop: string;
@@ -92,7 +106,9 @@ export const COLORS = {
   yellow: '#F2C94C',
   stroke: '#E1E1E2',
   backgroundAlt: '#d8d8d8',
-  background: '#f7f7f7',
+  background: '#202226',
+  placeHolder: '#3D3E49',
+  textDark: '#72737B',
   green: '#27AE60',
   gray: '#808080',
   gradient: '#efefef',
@@ -102,6 +118,19 @@ export const COLORS = {
   blue: '#00a0e9',
   blackOpacity: 'rgba(0, 0, 0, 0.4)',
 
+  //secondary colors
+  fog: '#E6D6FF',
+  caramel: '#FED6AD',
+  doggerBlue: '#336DFF',
+  sulu: '#336DFF',
+  strawberry: '#FF3482',
+  zeus: '#16120F',
+  reef: '#C0FAA0',
+  mirage: '#16120F',
+  beeswax: '#FEF0C6',
+  mineShaft: '#2A2A2A',
+  tuna: '#3D3E49',
+  stornGray: '#72737B',
   //
   tint: tintColorLight,
   tabIconDefault: '#ccc',

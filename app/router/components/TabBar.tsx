@@ -21,8 +21,8 @@ function TabBar({ state, descriptors, navigation }: any) {
           const color = isFocused ? COLORS.black : COLORS.gray;
 
           const icon =
-            route.name === 'Buscar'
-              ? 'Search'
+            route.name === 'Staff'
+              ? 'Staff'
               : route.name === 'Dashboard'
               ? 'Appoiments'
               : route.name === 'Informes'
@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: SIZES.m,
     backgroundColor: COLORS.white,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.gradient,
   },
   tab: {
     height: 86,

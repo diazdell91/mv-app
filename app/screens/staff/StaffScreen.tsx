@@ -1,35 +1,21 @@
-import { useCallback, useEffect, useState } from 'react';
+//
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import topUpServices from '../../services/topUpServices';
-import { Header, Input, Loading, TopUp } from '../../components';
-import { COLORS } from '../../theme';
+import staffServices from '../../services/staff';
+import { Input, Loading, Header } from '../../components';
 import { ScrollView } from 'react-native-gesture-handler';
-import moment from 'moment';
+import StaffBox from './components/StaffBox';
+import { COLORS } from '../../theme';
 
-const InsightsScreen = ({ navigation, route }: any) => {
+const StaffScreen = ({ navigation }: any) => {
   const [loading, setLoading] = useState(true);
-  const [startOfDate, setStartOfDate] = useState(moment().subtract(1, 'day').toDate());
-  const [endOfDate, setEndOfDate] = useState(moment().endOf('day').toDate());
-  const [processingState, setProcessingState] = useState('PENDING');
-  const [page] = useState(0);
-  const [data, setData] = useState({
-    topups: [],
-    totalItems: 0,
-    totalPages: 0,
-    currentPage: 0,
-  });
+  const [data, setData] = useState<any>();
 
-  const getTopups = useCallback(() => {
-    console.log('date', startOfDate, endOfDate);
-    topUpServices
-      .getTopups({
-        startOfDate,
-        endOfDate,
-        processingState,
-        page,
-      })
+  const getStaff = () => {
+    staffServices
+      .getStaff()
       .then((res) => {
-        console.log(res);
+        console.log('Staff');
         setData(res);
       })
       .catch((err) => {
@@ -39,35 +25,23 @@ const InsightsScreen = ({ navigation, route }: any) => {
         console.log('finally');
         setLoading(false);
       });
-  }, [page, startOfDate, endOfDate, processingState]);
+  };
 
   useEffect(() => {
-    if (route.params) {
-      console.log(route.params);
-      const { startOfDate, endOfDate, processingState } = route.params;
-      setStartOfDate(startOfDate);
-      setEndOfDate(endOfDate);
-      setProcessingState(processingState);
-    }
-  }, [route.params]);
-
-  useEffect(() => {
-    console.log('useEffect');
-    return getTopups();
-  }, [getTopups]);
+    return getStaff();
+  }, []);
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={{ flex: 1 }}>
         <Header
-          iconRightName="filter"
+          iconRightName="plus-circle"
           iconRightColor={COLORS.placeHolder}
           iconRightPress={() => {
-            navigation.navigate('FilterHistoryScreen');
+            navigation.navigate('CreateUser');
           }}
         >
           <Input
-            editable={false}
             placeholder="Buscar..."
             autoFocus={false}
             iconLeft="magnify"
@@ -89,10 +63,10 @@ const InsightsScreen = ({ navigation, route }: any) => {
   return (
     <View style={styles.container}>
       <Header
-        iconRightName="filter"
+        iconRightName="plus-circle"
         iconRightColor={COLORS.placeHolder}
         iconRightPress={() => {
-          navigation.navigate('FilterHistoryScreen');
+          navigation.navigate('CreateUser');
         }}
       >
         <Input
@@ -108,20 +82,25 @@ const InsightsScreen = ({ navigation, route }: any) => {
           style={{ borderRadius: 56, marginHorizontal: 8, backgroundColor: COLORS.placeHolder }}
         />
       </Header>
+
       <ScrollView>
-        {data.totalItems > 0 &&
-          data?.topups.map((item) => {
-            return <TopUp key={item._id} {...item} />;
-          })}
+        <View style={{ marginHorizontal: 8 }}>
+          {data &&
+            data?.map((item) => {
+              return <StaffBox key={item._id} {...item} />;
+            })}
+        </View>
       </ScrollView>
     </View>
   );
 };
 
-export default InsightsScreen;
+export default StaffScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    backgroundColor: COLORS.gradient,
   },
 });

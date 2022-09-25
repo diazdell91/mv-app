@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Button, Input } from '../../components';
 import { REGEX_EMAIL } from '../../constants/regex';
 import { useAuth } from '../../context/auth/authProvider';
@@ -11,6 +11,7 @@ const Login = () => {
   // states
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const [securyTextEntry, setSecuryTextEntry] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('Error al iniciar sesión');
   //const [isVisible, setIsVisible] = useState(false);
@@ -19,12 +20,15 @@ const Login = () => {
   const { login } = useAuth();
 
   const handleLogin = async () => {
+    console.log('handleLogin');
     setIsLoading(true);
     try {
       const session = await loginService.login({ email, password: pass });
       login(session);
     } catch (error) {
+      console.log(error);
       setError(error?.message);
+      Alert.alert('Error', error?.message);
     }
     setIsLoading(false);
   };
@@ -37,18 +41,26 @@ const Login = () => {
     <AuthLayout>
       <View style={{ marginHorizontal: 32 }}>
         <Input
+          autoFocus
           placeholder="Correo electrónico"
           iconLeft="mail"
           value={email}
           onChangeText={setEmail}
           textContentType="emailAddress"
+          keyboardType="email-address"
+          inputStyle={styles.inputStyle}
         />
         <Input
-          placeholder="Indica tu Contraseña"
+          placeholder="Contraseña..."
           iconLeft="lock"
           value={pass}
           onChangeText={setPass}
-          secureTextEntry
+          secureTextEntry={securyTextEntry}
+          iconRight="eye"
+          onPressRight={() => {
+            setSecuryTextEntry(!securyTextEntry);
+          }}
+          inputStyle={styles.inputStyle}
         />
         <Button
           title="No recuerdo la contraseña"
@@ -59,7 +71,7 @@ const Login = () => {
       </View>
 
       <Button
-        disabled={!REGEX_EMAIL.test(email) || pass.length < 4}
+        disabled={!REGEX_EMAIL.test(email) || pass.length < 3}
         title="Iniciar sesión"
         onPress={handleLogin}
         style={{ width: '90%', alignSelf: 'center' }}
@@ -80,5 +92,10 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
+  },
+  inputStyle: {
+    color: COLORS.white,
+    backgroundColor: COLORS.placeHolder,
+    borderRadius: 16,
   },
 });

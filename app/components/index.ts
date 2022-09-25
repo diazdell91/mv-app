@@ -6,5 +6,7 @@ import Icon from './Icon';
 import Avatar from './Avatar';
 import TopUp from './TopUp';
 import Divider from './Divider';
+import Header from './Header';
+import Transaction from './Transaction';
 
-export { Text, Button, Input, Loading, Icon, Avatar, Divider, TopUp };
+export { Text, Button, Input, Loading, Icon, Avatar, Divider, TopUp, Header, Transaction };

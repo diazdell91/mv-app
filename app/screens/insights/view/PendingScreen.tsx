@@ -1,16 +1,10 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Loading, TopUp } from '../../../components';
-import { useAuth } from '../../../context/auth/authProvider';
-import topUpServices from '../../../services/topUp';
+import topUpServices from '../../../services/topUpServices';
 
 const PendingScreen = () => {
-  const { top } = useSafeAreaInsets();
-  const {
-    session: { token },
-  } = useAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     topups: [],
@@ -19,9 +13,9 @@ const PendingScreen = () => {
     currentPage: 0,
   });
 
-  const getTopUps = (token: string) => {
+  const getTopUps = () => {
     topUpServices
-      .getTopups(token)
+      .getTopups()
       .then((res) => {
         setData(res);
       })
@@ -34,8 +28,8 @@ const PendingScreen = () => {
       });
   };
   useEffect(() => {
-    return getTopUps(token);
-  }, [token]);
+    return getTopUps();
+  }, []);
 
   if (loading) {
     return <Loading />;

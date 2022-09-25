@@ -2,33 +2,26 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Loading, Text, TopUp } from '../../components';
-import { useAuth } from '../../context/auth/authProvider';
-import topUpServices from '../../services/topUp';
+import { Loading, Text, Transaction } from '../../components';
+import transactionsServices from '../../services/walletServices';
 import { COLORS } from '../../theme';
 import Balance from './components/Balance';
 import Greetings from './components/Greetings';
 
 const DashboardSceen = () => {
   const { top } = useSafeAreaInsets();
-  const {
-    session: { token },
-    user,
-  } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
-    topups: [],
+    transactions: [],
     totalItems: 0,
     totalPages: 0,
     currentPage: 0,
   });
 
-  console.log(user);
-
-  const getTopUps = (token: string) => {
-    topUpServices
-      .getTopups(token)
+  const getTransactions = () => {
+    transactionsServices
+      .getTransactions()
       .then((res) => {
         setData(res);
       })
@@ -42,8 +35,8 @@ const DashboardSceen = () => {
   };
 
   useEffect(() => {
-    return getTopUps(token);
-  }, [token]);
+    return getTransactions();
+  }, []);
 
   if (loading) {
     return <Loading />;
@@ -55,11 +48,11 @@ const DashboardSceen = () => {
         <Balance ammount={2000} />
         <View style={{ marginHorizontal: 8 }}>
           <Text size={18} color={COLORS.black}>
-            Transacciones recientes
+            Actividad reciente
           </Text>
           {data.totalItems > 0 &&
-            data?.topups.map((item: any) => {
-              return <TopUp key={item._id} {...item} />;
+            data?.transactions.map((item) => {
+              return <Transaction key={item._id} {...item} />;
             })}
         </View>
       </ScrollView>

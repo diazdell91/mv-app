@@ -1,9 +1,9 @@
 import { View, ViewStyle } from 'react-native';
 import { COLORS } from '../theme';
 
-import { Search, Appoiments, Profile, Docs, Filter } from './icons';
+import { Search, Appoiments, Profile, Docs, Filter, Users } from './icons';
 
-export type IconName = 'Search' | 'Appoiments' | 'Profile' | 'Docs' | 'Filter' | 'Share';
+export type IconName = 'Search' | 'Appoiments' | 'Profile' | 'Docs' | 'Filter' | 'Share' | 'Staff';
 
 type Props = {
   name: IconName;
@@ -20,6 +20,7 @@ const Icon = ({ name, color = COLORS.primary, size = 32, style, ...rest }: Props
       {name === 'Profile' && <Profile color={color} width={size} height={size} />}
       {name === 'Docs' && <Docs color={color} width={size} height={size} />}
       {name === 'Filter' && <Filter color={color} width={size} height={size} />}
+      {name === 'Staff' && <Users color={color} width={size} height={size} />}
     </View>
   );
 };

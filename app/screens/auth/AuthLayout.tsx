@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { COLORS } from '../../theme';
 import LogoContainer from './components/LogoContainer';
 
 interface Props {
@@ -20,18 +21,17 @@ const AuthLayout = ({ children }: Props) => {
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={{ flex: 1 }}>
-            <ScrollView
-              contentContainerStyle={styles.contentContainer}
-              showsVerticalScrollIndicator={false}
-              scrollEventThrottle={200}
-            >
-              <LogoContainer />
-              {children}
-            </ScrollView>
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            keyboardShouldPersistTaps="always"
+            contentContainerStyle={styles.contentContainer}
+            showsVerticalScrollIndicator={false}
+            scrollEventThrottle={200}
+          >
+            <LogoContainer />
+            {children}
+          </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </View>
   );
@@ -42,6 +42,7 @@ export default AuthLayout;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.background,
   },
   scrollView: {
     flex: 1,

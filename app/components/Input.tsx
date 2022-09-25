@@ -13,9 +13,11 @@ import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 interface InputProps {
   style?: StyleProp<ViewStyle>;
+  inputStyle?: React.ComponentProps<typeof DefaultInput>['style'];
   iconLeft?: React.ComponentProps<typeof Icon>['name'];
   iconLeftColor?: string;
   iconRight?: React.ComponentProps<typeof Icon>['name'];
+  iconLeftComponent?: React.ReactNode;
   iconRightColor?: string;
   onPressRight?: PressableProps['onPress'];
   flex?: boolean;
@@ -25,8 +27,10 @@ type Props = InputProps & DefaultInput['props'];
 const Input = (props: Props) => {
   const {
     style,
+    inputStyle,
     iconRight,
     iconLeft,
+    iconLeftComponent,
     iconLeftColor = COLORS.stroke,
     iconRightColor = COLORS.stroke,
     onPressRight,
@@ -35,14 +39,16 @@ const Input = (props: Props) => {
   } = props;
 
   return (
-    <View style={{ ...styles.container, flex: flex ? 1 : 0 }}>
+    <View style={[{ ...styles.container, flex: flex ? 1 : 0 }, style]}>
+      {iconLeftComponent && iconLeftComponent}
       {iconLeft && (
         <View style={styles.iconLeft}>
-          <Icon name={iconLeft} color={iconLeftColor} size={32} />
+          <Icon name={iconLeft} color={iconLeftColor} size={22} />
         </View>
       )}
       <DefaultInput
-        style={[styles.inputContainer, { paddingLeft: iconLeft ? 52 : 16 }, style]}
+        style={[styles.inputContainer, { paddingLeft: iconLeft ? 52 : 16 }, inputStyle]}
+        placeholderTextColor={COLORS.textDark}
         autoCorrect={false}
         autoCapitalize="none"
         textContentType="none"
@@ -50,7 +56,7 @@ const Input = (props: Props) => {
       />
       {iconRight && (
         <Pressable onPress={onPressRight} style={styles.iconRigth}>
-          <Icon name={iconRight} color={iconRightColor} size={32} />
+          <Icon name={iconRight} color={iconRightColor} size={22} />
         </Pressable>
       )}
     </View>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/api/login';
+const baseUrl = 'https://conexen-production.up.railway.app/api/Login';
 
 type User = {
   id: string;

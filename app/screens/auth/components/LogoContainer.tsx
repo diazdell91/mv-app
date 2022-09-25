@@ -11,11 +11,11 @@ const LogoContainer = () => {
       <Image
         source={require('../../../../assets/logo.png')}
         style={{
-          width: Layout.window.width * 0.25,
-          height: Layout.window.width * 0.25,
+          width: Layout.window.width * 0.15,
+          height: Layout.window.width * 0.15,
         }}
       />
-      <Text fontFamily="Poppins-Bold" size={22} color={COLORS.blackOpacity}>
+      <Text fontFamily="Poppins-Bold" size={22} color={COLORS.white} style={{ marginTop: 16 }}>
         Conexen Group
       </Text>
     </View>
