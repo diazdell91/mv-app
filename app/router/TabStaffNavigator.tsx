@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import DashboardSceen from '../screens/client/dashboard/DashboardSceen';
-import InsightsScreen from '../screens/client/insights/InsightsScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
-import StaffScreen from '../screens/admin/staff/StaffScreen';
+import ArchiveScreen from '../screens/team/archive/ArchiveScreen';
+import BoardScreen from '../screens/team/board/BoardScreen';
+import TasksScreen from '../screens/team/tasks/TasksScreen';
 import TabBar from './components/TabBar';
 
 const BottomTab = createBottomTabNavigator();
 
-export default function BottomTabNavigation() {
+export default function BottomTabStaffNavigation() {
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -15,9 +15,9 @@ export default function BottomTabNavigation() {
       }}
       tabBar={(props: any) => <TabBar {...props} />}
     >
-      <BottomTab.Screen name="Dashboard" component={DashboardSceen} />
-      <BottomTab.Screen name="Informes" component={InsightsScreen} />
-      <BottomTab.Screen name="Staff" component={StaffScreen} />
+      <BottomTab.Screen name="Tablero" component={BoardScreen} />
+      <BottomTab.Screen name="Tareas" component={TasksScreen} />
+      <BottomTab.Screen name="Informes" component={ArchiveScreen} />
       <BottomTab.Screen name="Profile" component={ProfileScreen} />
     </BottomTab.Navigator>
   );

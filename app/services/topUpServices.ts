@@ -7,7 +7,8 @@ type TopUp = {
   id: string;
   client: string;
   phoneNumber: string;
-  amount: number;
+  amountCup: number;
+  amountUsd: number;
   processingState: string;
   userId: string;
   code: string;
@@ -36,6 +37,42 @@ const getTopups = async ({ size = 25, page = 0, startOfDate, endOfDate, processi
     currentPage: number;
   };
 };
+
+const getTopupsStaff = async ({ size = 25, page = 0, startOfDate, endOfDate, processingState }) => {
+  const session = await tokeService.getSession();
+  const config = {
+    headers: { Authorization: `Bearer ${session?.token}` },
+    params: {
+      startOfDate,
+      endOfDate,
+      processingState,
+      size,
+      page,
+    },
+  };
+  const { data } = await axios.get(`${baseUrl}GetTopupsStaff`, config);
+  return data as {
+    topups: TopUp[];
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+  };
+};
+const updateTopup = async ({ id, processingState }) => {
+  const session = await tokeService.getSession();
+  const config = {
+    headers: { Authorization: `Bearer ${session?.token}` },
+  };
+  const { data } = await axios.post(
+    `${baseUrl}UpdateTopup`,
+    {
+      id,
+      processingState,
+    },
+    config,
+  );
+  return data as TopUp;
+};
 const createTopup = async (phone: string, amountCup: number, amountUsd: number) => {
   const session = await tokeService.getSession();
   const config = {
@@ -54,4 +91,4 @@ const createTopup = async (phone: string, amountCup: number, amountUsd: number) 
   return data as TopUp;
 };
 
-export default { getTopups, createTopup };
+export default { getTopups, createTopup, getTopupsStaff, updateTopup };

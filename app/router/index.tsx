@@ -6,6 +6,7 @@ import { COLORS } from '../theme';
 
 //navigation
 import MainNavigator from './Main';
+import MainStaffNavigator from './MainStaff';
 import AuthNavigator from './stacks/AuthStack';
 
 const CustomTheme = {
@@ -30,6 +31,8 @@ const RootStack = createNativeStackNavigator();
 function RootNavigator() {
   const { isAuthenticated, session, isLoading } = useAuth();
 
+  const roles = session?.user?.roles;
+
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {isLoading && <RootStack.Screen name="Loading" component={LoadingScreen} />}
@@ -37,7 +40,12 @@ function RootNavigator() {
         <RootStack.Screen name="Auth" component={AuthNavigator} />
       ) : (
         <>
-          <RootStack.Screen name="Main" component={MainNavigator} />
+          {roles.includes('1000') ? (
+            <RootStack.Screen name="Main" component={MainNavigator} />
+          ) : (
+            <RootStack.Screen name="StaffMain" component={MainStaffNavigator} />
+            //<RootStack.Screen name="MainClient" component={MainNavigator} />
+          )}
         </>
       )}
     </RootStack.Navigator>

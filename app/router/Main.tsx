@@ -1,14 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import BottomTabNavigation from './TabNavigator';
-import TopUpDetails from '../screens/dashboard/TopUpDetails';
-import SuccessTopup from '../screens/dashboard/views/SuccessTopup';
-import FailTopup from '../screens/dashboard/views/FailTopup';
-import CreateUserScreen from '../screens/staff/CreateUserScreen';
-import SuccessUser from '../screens/staff/views/SuccessUser';
-import CreateTopupStepOne from '../screens/dashboard/CreateTopupStepOne';
-import CreateTopupStepTwo from '../screens/dashboard/CreateTopupStepTwo';
-import FilterHistoryScreen from '../screens/insights/FilterHistoryScreen';
+import TopUpDetails from '../screens/client/dashboard/TopUpDetails';
+import SuccessTopup from '../screens/client/dashboard/views/SuccessTopup';
+import FailTopup from '../screens/client/dashboard/views/FailTopup';
+import CreateUserScreen from '../screens/admin/staff/CreateUserScreen';
+import SuccessUser from '../screens/admin/staff/views/SuccessUser';
+import CreateTopupStepOne from '../screens/client/dashboard/CreateTopupStepOne';
+import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
+import FilterHistoryScreen from '../screens/client/insights/FilterHistoryScreen';
 
 type MainStackParamList = {
   Tab: undefined;
