@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Platform,
-} from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { COLORS } from '../../theme';
 import LogoContainer from './components/LogoContainer';

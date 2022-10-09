@@ -4,12 +4,15 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  roles: string[];
+  role: string;
 }
 
 export interface Session {
   user: User;
-  token: string;
+  tokens: {
+    token: string;
+    refreshToken: string;
+  };
 }
 
 export const AuthContext = createContext(

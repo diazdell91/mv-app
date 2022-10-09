@@ -7,11 +7,13 @@ import { COLORS } from '../../../../theme';
 type Props = {
   name: string;
   price: number;
+  description: string;
   selected: boolean;
 };
 
 const TopupProduct = (props: Props) => {
-  const { name, price, selected } = props;
+  const { name, price, description, selected } = props;
+  const priceInt = Math.floor(price / 100).toFixed(2);
   return (
     <View
       style={{
@@ -19,15 +21,18 @@ const TopupProduct = (props: Props) => {
         backgroundColor: selected ? COLORS.placeHolder : COLORS.stornGray,
       }}
     >
-      <Text color={COLORS.caramel}>El destinatario recibe</Text>
+      <Text color={COLORS.caramel}>Recarga</Text>
       <Text h2 color={COLORS.caramel}>
         {name}
+      </Text>
+      <Text h2 size={18} color={COLORS.white}>
+        {description}
       </Text>
       <Text h2 size={26} color={COLORS.white}>
         <Text size={26} color={COLORS.white}>
           {'Precio'}
         </Text>
-        {` - $${price.toString()} USD`}
+        {` - $${priceInt.toString()} USD`}
       </Text>
       {selected && (
         <MaterialCommunityIcons

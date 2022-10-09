@@ -2,7 +2,7 @@
   "expo": {
     "name": "Conexen",
     "slug": "conexen",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "scheme": "myapp",
@@ -14,11 +14,11 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.conexen.con",
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "package": "com.conexen.con",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

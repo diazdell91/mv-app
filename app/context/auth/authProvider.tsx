@@ -9,7 +9,7 @@ const initialState = {
   isAuthenticated: false,
   session: {
     user: undefined,
-    token: undefined,
+    tokens: undefined,
   },
 };
 

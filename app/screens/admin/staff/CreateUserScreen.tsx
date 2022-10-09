@@ -14,31 +14,6 @@ const CreateUserScreen = ({ navigation }: any) => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [role, setRole] = useState('2000');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleCreateUser = () => {
-    console.log('handleCreateTopup');
-    const user = {
-      name,
-      email,
-      password,
-      roles: [role],
-    };
-    staffService
-      .createUser(user)
-      .then((res) => {
-        console.log(res);
-        navigation.navigate('SuccessUser');
-      })
-      .catch((err) => {
-        console.log(err);
-        navigation.navigate('FailTopup');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
 
   return (
     <View style={{ ...styles.container, paddingBottom }}>

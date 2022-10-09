@@ -10,7 +10,7 @@ import Version from './components/Version';
 const ProfileScreen = () => {
   const { top } = useSafeAreaInsets();
   const { user, signOut } = useAuth();
-  console.log(user);
+
   return (
     <View style={{ ...styles.container, paddingTop: top }}>
       <ScrollView contentInset={{ top }} showsVerticalScrollIndicator={false}>
@@ -20,7 +20,6 @@ const ProfileScreen = () => {
           </Text>
         </View>
         <ActionBox icon="cog-outline" title="Ajustes" onPress={() => {}} />
-        <ActionBox icon="beach" title="Modo Vacaciones" toggle />
         <ActionBox icon="checkbox-blank-badge" title="Notificaciones" />
         <ActionBox
           icon="ticket-percent"

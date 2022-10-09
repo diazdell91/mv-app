@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Loading, TopUp } from '../../../../components';
-import topUpServices from '../../../../services/topUpServices';
 
 const PendingScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -12,24 +11,6 @@ const PendingScreen = () => {
     totalPages: 0,
     currentPage: 0,
   });
-
-  const getTopUps = () => {
-    topUpServices
-      .getTopups()
-      .then((res) => {
-        setData(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log('finally');
-        setLoading(false);
-      });
-  };
-  useEffect(() => {
-    return getTopUps();
-  }, []);
 
   if (loading) {
     return <Loading />;

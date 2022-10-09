@@ -1,94 +1,71 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { useQuery } from '@apollo/client';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import topUpServices from '../../../services/topUpServices';
-import { Loading, Text, TopUp, RefreshButtom } from '../../../components';
-import { COLORS } from '../../../theme';
-import Greetings from '../../client/dashboard/components/Greetings';
-import moment from 'moment';
+import { Loading, TopUp, RefreshButtom } from '../../../components';
+import { TOPUPS_ASSIGNED } from '../../../graphql/topup.grapgql';
+import { useState } from 'react';
+import EmptyList from '../../../components/EmptyList';
 
-const TasksScreen = ({ navigation }: any) => {
+const TasksScreen = ({ navigation, route }: any) => {
   const { top } = useSafeAreaInsets();
+  const PAGE_SIZE = 10;
+  const [page, setPage] = useState(0);
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({
-    topups: [],
-    totalItems: 0,
-    totalPages: 0,
-    currentPage: 0,
+  const { data, loading, error, refetch } = useQuery(TOPUPS_ASSIGNED, {
+    variables: {
+      input: { offset: page * PAGE_SIZE, limit: PAGE_SIZE },
+    },
   });
 
-  const getTopupsPending = () => {
-    topUpServices
-      .getTopupsStaff({
-        processingState: 'PENDING',
-        page: 0,
-        size: 10,
-        startOfDate: moment().subtract(1, 'month').toDate(),
-        endOfDate: moment().endOf('day').toDate(),
-      })
-      .then((res) => {
-        setData(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log('finally');
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    return getTopupsPending();
-  }, []);
+  if (error) {
+    console.log(error);
+  }
 
   if (loading) {
     return (
       <View style={{ ...styles.container, paddingTop: top }}>
-        <Loading />
+        <View style={{ flex: 1 }}>
+          <Loading />
+        </View>
       </View>
     );
   }
-  return (
-    <View style={{ ...styles.container, paddingTop: top }}>
-      {data.topups.length < 1 ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text size={32} color={COLORS.black}>
-            Bien💪🏻
-          </Text>
-          <Text size={16} color={COLORS.black}>
-            No tienes tareas pendientes
-          </Text>
-        </View>
-      ) : (
-        <ScrollView>
-          <View style={{ marginHorizontal: 8 }}>
-            <Text size={18} color={COLORS.black}>
-              Tareas pendientes
-            </Text>
-            {data.totalItems > 0 &&
-              data?.topups.map((item) => {
-                return (
-                  <Pressable
-                    key={item._id}
-                    onPress={() => {
-                      navigation.navigate('TopUpActions', {
-                        props: item,
-                      });
-                    }}
-                  >
-                    <TopUp {...item} />
-                  </Pressable>
-                );
-              })}
-          </View>
-        </ScrollView>
-      )}
-      <RefreshButtom onPress={getTopupsPending} />
-    </View>
-  );
+  if (data) {
+    const { listTopupsAssigned } = data;
+    const { docs, totalDocs } = listTopupsAssigned;
+    console.log(docs.length);
+
+    return (
+      <View style={{ ...styles.container, paddingTop: top }}>
+        {docs.length <= 0 ? (
+          <EmptyList title={'Excelente! 💪🏻'} text="No tienes tareas pendientes" />
+        ) : (
+          <FlatList
+            data={docs}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item: topup }) => (
+              <TopUp
+                onPress={() =>
+                  navigation.navigate('TopUpActions', {
+                    topup,
+                  })
+                }
+                {...topup}
+              />
+            )}
+          />
+        )}
+        <RefreshButtom
+          onPress={async () => {
+            console.log('refetch');
+            await refetch();
+          }}
+        />
+      </View>
+    );
+  }
 };
 
 export default TasksScreen;

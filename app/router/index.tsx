@@ -6,6 +6,7 @@ import { COLORS } from '../theme';
 
 //navigation
 import MainNavigator from './Main';
+import MainAdminNavigator from './MainAdmin';
 import MainStaffNavigator from './MainStaff';
 import AuthNavigator from './stacks/AuthStack';
 
@@ -31,7 +32,7 @@ const RootStack = createNativeStackNavigator();
 function RootNavigator() {
   const { isAuthenticated, session, isLoading } = useAuth();
 
-  const roles = session?.user?.roles;
+  const role = session?.user?.role;
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
@@ -40,11 +41,12 @@ function RootNavigator() {
         <RootStack.Screen name="Auth" component={AuthNavigator} />
       ) : (
         <>
-          {roles.includes('1000') ? (
-            <RootStack.Screen name="Main" component={MainNavigator} />
+          {role === 'ADMIN' ? (
+            <RootStack.Screen name="AdminMain" component={MainAdminNavigator} />
+          ) : role === 'CLIENT' ? (
+            <RootStack.Screen name="ClientMain" component={MainNavigator} />
           ) : (
             <RootStack.Screen name="StaffMain" component={MainStaffNavigator} />
-            //<RootStack.Screen name="MainClient" component={MainNavigator} />
           )}
         </>
       )}

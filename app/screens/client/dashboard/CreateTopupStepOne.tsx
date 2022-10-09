@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button, Input, Text } from '../../../components';
 import { COLORS } from '../../../theme';
@@ -43,7 +43,7 @@ const CreateTopupStepOne = ({ navigation }: any) => {
         title="Confirmar número"
         onPress={handleConfirmPhone}
         style={{
-          bottom: keyboardHeight,
+          bottom: Platform.OS === 'ios' ? keyboardHeight : 0,
           backgroundColor: !PHONE_REGEX.test(phone) ? COLORS.backgroundAlt : COLORS.primary,
         }}
       />

@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Button, Input } from '../../components';
@@ -5,32 +6,39 @@ import { REGEX_EMAIL } from '../../constants/regex';
 import { useAuth } from '../../context/auth/authProvider';
 import { COLORS } from '../../theme';
 import AuthLayout from './AuthLayout';
-import loginService from '../../services/login';
+import { LOGIN } from '../../graphql/auth.graphql';
 
 const Login = () => {
   // states
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [securyTextEntry, setSecuryTextEntry] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('Error al iniciar sesión');
+  const [loginService, { loading, error }] = useMutation(LOGIN);
   //const [isVisible, setIsVisible] = useState(false);
 
   // context
   const { login } = useAuth();
 
+  // methods
   const handleLogin = async () => {
-    console.log('handleLogin');
-    setIsLoading(true);
-    try {
-      const session = await loginService.login({ email, password: pass });
+    console.log('first');
+    const { data } = await loginService({
+      variables: {
+        input: {
+          email,
+          password: pass,
+        },
+      },
+    });
+    if (data.login.success) {
+      const { tokens, user } = data.login;
+      const session = {
+        tokens,
+        user,
+      };
       login(session);
-    } catch (error) {
-      console.log(error);
-      setError(error?.message);
-      Alert.alert('Error', error?.message);
     }
-    setIsLoading(false);
+    Alert.alert(data?.login?.message);
   };
 
   const handleForgotPass = () => {
@@ -72,8 +80,8 @@ const Login = () => {
 
       <Button
         disabled={!REGEX_EMAIL.test(email) || pass.length < 3}
-        title="Iniciar sesión"
         onPress={handleLogin}
+        title="Iniciar sesión"
         style={{ width: '90%', alignSelf: 'center' }}
       />
     </AuthLayout>
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
-    color: COLORS.black,
+    color: COLORS.white,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
   },

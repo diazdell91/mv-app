@@ -4,11 +4,13 @@ import FailTopup from '../screens/client/dashboard/views/FailTopup';
 import BottomTabStaffNavigation from './TabStaffNavigator';
 import TopUpActions from '../screens/team/tasks/TopUpActions';
 import FilterArchiveScreen from '../screens/team/archive/FilterArchiveScreen';
+import TopUpAvailableActions from '../screens/team/board/TopUpAvailableActions';
 
 type MainStackParamList = {
   Tab: undefined;
   TopUpDetails: undefined;
   TopUpActions: undefined;
+  TopUpAvailableActions: undefined;
   FailTopup: undefined;
   FilterArchiveScreen: undefined;
 };
@@ -51,6 +53,7 @@ function MainStaffNavigator() {
         screenOptions={{ headerShown: false, presentation: 'containedTransparentModal' }}
       >
         <Main.Screen name="TopUpActions" component={TopUpActions} />
+        <Main.Screen name="TopUpAvailableActions" component={TopUpAvailableActions} />
       </Main.Group>
     </Main.Navigator>
   );

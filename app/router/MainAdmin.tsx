@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import BottomTabNavigation from './TabNavigator';
+import AdminTabNavigation from './TabAdminNavigator';
 import TopUpDetails from '../screens/client/dashboard/TopUpDetails';
 import SuccessTopup from '../screens/client/dashboard/views/SuccessTopup';
 import FailTopup from '../screens/client/dashboard/views/FailTopup';
@@ -26,10 +26,10 @@ export type MainProps = NativeStackScreenProps<MainStackParamList>;
 
 const Main = createNativeStackNavigator<MainStackParamList>();
 
-function MainNavigator() {
+function MainAdminNavigator() {
   return (
     <Main.Navigator screenOptions={{ headerShown: false }}>
-      <Main.Screen name="Tab" component={BottomTabNavigation} />
+      <Main.Screen name="Tab" component={AdminTabNavigation} />
       <Main.Group
         screenOptions={{
           headerShown: true,
@@ -55,6 +55,13 @@ function MainNavigator() {
             title: 'Crear recarga',
           }}
         />
+        <Main.Screen
+          name="CreateUser"
+          component={CreateUserScreen}
+          options={{
+            title: 'Crear usuario',
+          }}
+        />
       </Main.Group>
 
       <Main.Group
@@ -76,6 +83,13 @@ function MainNavigator() {
             title: 'Crear recarga',
           }}
         />
+        <Main.Screen
+          name="SuccessUser"
+          component={SuccessUser}
+          options={{
+            title: 'Crear recarga',
+          }}
+        />
       </Main.Group>
       <Main.Group
         key={'modal'}
@@ -88,4 +102,4 @@ function MainNavigator() {
   );
 }
 
-export default MainNavigator;
+export default MainAdminNavigator;

@@ -7,7 +7,7 @@ import TabBar from './components/TabBar';
 
 const BottomTab = createBottomTabNavigator();
 
-export default function BottomTabNavigation() {
+export default function AdminTabNavigation() {
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -17,6 +17,7 @@ export default function BottomTabNavigation() {
     >
       <BottomTab.Screen name="Dashboard" component={DashboardSceen} />
       <BottomTab.Screen name="Informes" component={InsightsScreen} />
+      <BottomTab.Screen name="Staff" component={StaffScreen} />
       <BottomTab.Screen name="Profile" component={ProfileScreen} />
     </BottomTab.Navigator>
   );

@@ -8,7 +8,7 @@ const sessionService = {
   getSession: async () => {
     const session = await SecureStore.getItemAsync('session');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return session ? JSON.parse(session) : null;
+    return session ? JSON.parse(session) : (null as Session);
   },
   deleteSession: async () => {
     await SecureStore.deleteItemAsync('session');

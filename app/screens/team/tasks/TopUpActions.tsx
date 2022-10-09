@@ -1,32 +1,113 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+import { useState } from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback, Alert } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import moment from 'moment';
 import { Button, Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
-import topUpServices from '../../../services/topUpServices';
+import { useMutation } from '@apollo/client';
+import { CANCEL_TOPUP, COMPLETE_TOPUP, REASSIGN_TOPUP } from '../../../graphql/topup.grapgql';
 
 const TopUpActions = ({ route, navigation }: any) => {
-  if (route.params.props) {
-    const { _id, amountCup, phoneNumber, code, processingState, createdAt } = route.params.props;
-    //const handleCancel = () => {};
+  const [cancel, { loading: cancelLoading }] = useMutation(CANCEL_TOPUP);
+  const [completed] = useMutation(COMPLETE_TOPUP);
+  const [reassign] = useMutation(REASSIGN_TOPUP);
 
-    const handleConfirm = () => {
-      topUpServices
-        .updateTopup({ id: _id, processingState: 'COMPLETED' })
-        .then((res) => {
-          console.log(res);
-          Alert.alert('Recarga confirmada', 'La recarga se ha confirmado correctamente', [
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
-            },
-          ]);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  if (route.params.topup) {
+    const { id, amountCup, phone, code, processingState, createdAt } = route.params.topup;
+
+    const copyToClipboard = async () => {
+      await Clipboard.setStringAsync(phone);
+      Alert.alert(`${phone} ha sido copiado al portapapeles`);
     };
+
+    const handleCancel = () => {
+      Alert.alert(
+        'Reportar error recarga',
+        '¿Estás seguro de que quieres reportar esta recarga?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Aceptar',
+            onPress: async () => {
+              try {
+                await cancel({
+                  variables: {
+                    id,
+                  },
+                });
+                navigation.goBack();
+              } catch (error) {
+                console.log(error);
+              }
+            },
+          },
+        ],
+        { cancelable: false },
+      );
+    };
+
+    const handleCompleted = () => {
+      Alert.alert(
+        'Reportar error recarga',
+        '¿Estás seguro de que quieres reportar esta recarga?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Aceptar',
+            onPress: async () => {
+              try {
+                await completed({
+                  variables: {
+                    id,
+                  },
+                });
+                navigation.goBack();
+              } catch (error) {
+                console.log(error);
+              }
+            },
+          },
+        ],
+        { cancelable: false },
+      );
+    };
+
+    const handleReassign = () => {
+      Alert.alert(
+        'Desechar',
+        '¿Estás seguro de que rechazar esta tarea?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Aceptar',
+            onPress: async () => {
+              try {
+                await reassign({
+                  variables: {
+                    id,
+                  },
+                });
+                navigation.goBack();
+              } catch (error) {
+                console.log(error);
+              }
+            },
+          },
+        ],
+        { cancelable: false },
+      );
+    };
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -44,7 +125,7 @@ const TopUpActions = ({ route, navigation }: any) => {
                 {code.toUpperCase()}
               </Text>
               <Text size={36} fontFamily={'Poppins-Bold'} color={COLORS.white}>
-                {phoneNumber}
+                {phone}
               </Text>
               <Text size={32} fontFamily={'Poppins-Bold'} color={COLORS.white}>
                 {amountCup} CUP
@@ -55,29 +136,18 @@ const TopUpActions = ({ route, navigation }: any) => {
             <View style={styles.wrappperButton}>
               <Button
                 title="Copiar número"
-                onPress={() => {
-                  Alert.alert('Copiar número', phoneNumber);
-                  navigation.goBack();
-                }}
+                onPress={copyToClipboard}
                 style={{ ...styles.button, backgroundColor: COLORS.fog }}
               />
-              <Button title="Marcar Completada" onPress={handleConfirm} style={styles.button} />
               <Button
-                title="Cancelar Recarga"
-                onPress={() => {
-                  Alert.alert('Estas seguro?', '', [
-                    {
-                      text: 'Cancelar',
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'OK',
-                      onPress: () => {
-                        navigation.goBack();
-                      },
-                    },
-                  ]);
-                }}
+                title="Reportar error"
+                onPress={handleCancel}
+                style={{ ...styles.button, backgroundColor: COLORS.strawberry }}
+              />
+              <Button title="Marcar Completada" onPress={handleCompleted} style={styles.button} />
+              <Button
+                title="Liberar"
+                onPress={handleReassign}
                 style={{ ...styles.button, backgroundColor: COLORS.caramel }}
               />
             </View>

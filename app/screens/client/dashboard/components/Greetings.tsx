@@ -6,13 +6,14 @@ import { COLORS } from '../../../../theme';
 
 const Greetings = () => {
   const { user } = useAuth();
+
   return (
     <View style={styles.container}>
       <Text
-        size={32}
+        size={26}
         color={COLORS.black}
         fontFamily={'Poppins-ExtraLight'}
-      >{`Hello, ${user.name} `}</Text>
+      >{`Hello, ${user?.name} `}</Text>
       <View style={{ flexDirection: 'row' }}>
         <Pressable style={styles.profile}>
           <Icon name="account-circle-outline" size={28} color={COLORS.primary} />

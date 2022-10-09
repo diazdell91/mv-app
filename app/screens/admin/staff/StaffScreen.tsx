@@ -8,28 +8,8 @@ import StaffBox from './components/StaffBox';
 import { COLORS } from '../../../theme';
 
 const StaffScreen = ({ navigation }: any) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>();
+  
 
-  const getStaff = () => {
-    staffServices
-      .getStaff()
-      .then((res) => {
-        console.log('Staff');
-        setData(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log('finally');
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    return getStaff();
-  }, []);
 
   if (loading) {
     return (

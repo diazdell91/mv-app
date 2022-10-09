@@ -1,47 +1,35 @@
-import { useCallback, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import topUpServices from '../../../services/topUpServices';
-import { Header, Input, Loading, Text, TopUp } from '../../../components';
+import { Header, Input, Loading, TopUp } from '../../../components';
 import { COLORS } from '../../../theme';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import BalanceSales from './components/BalanceSales';
+import { useQuery } from '@apollo/client';
+import { TOPUPS } from '../../../graphql/topup.grapgql';
+import EmptyList from '../../../components/EmptyList';
 
 const ArchiveScreen = ({ navigation, route }: any) => {
-  const [loading, setLoading] = useState(true);
   const [startOfDate, setStartOfDate] = useState(moment().subtract(1, 'day').toDate());
   const [endOfDate, setEndOfDate] = useState(moment().endOf('day').toDate());
   const [processingState, setProcessingState] = useState('COMPLETED');
   const [totalCupTopUp, setTotalCupTopUp] = useState(0);
   const [page] = useState(0);
-  const [data, setData] = useState({
-    topups: [],
-    totalItems: 0,
-    totalPages: 0,
-    currentPage: 0,
-  });
 
-  const getTopups = useCallback(() => {
-    topUpServices
-      .getTopupsStaff({
-        startOfDate,
-        endOfDate,
-        processingState,
-        page,
-      })
-      .then((res) => {
-        setData(res);
-        const totalCup = res.topups.reduce((acc: number, { amountCup }) => acc + amountCup, 0);
-        setTotalCupTopUp(totalCup);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log('finally');
-        setLoading(false);
-      });
-  }, [page, startOfDate, endOfDate, processingState]);
+  const PAGE_SIZE = 10;
+
+  const { data, loading, error, refetch } = useQuery(TOPUPS, {
+    variables: {
+      input: {
+        offset: page * PAGE_SIZE,
+        limit: PAGE_SIZE,
+        // startOfDate,
+        // endOfDate,
+        // processingState,
+      },
+    },
+  });
 
   useEffect(() => {
     if (route.params) {
@@ -51,11 +39,6 @@ const ArchiveScreen = ({ navigation, route }: any) => {
       setProcessingState(processingState);
     }
   }, [route.params]);
-
-  useEffect(() => {
-    console.log('useEffect');
-    return getTopups();
-  }, [getTopups]);
 
   if (loading) {
     return (
@@ -81,52 +64,49 @@ const ArchiveScreen = ({ navigation, route }: any) => {
       </View>
     );
   }
-  return (
-    <View style={styles.container}>
-      <Header
-        iconRightName="filter"
-        iconRightColor={COLORS.placeHolder}
-        iconRightPress={() => {
-          navigation.navigate('FilterArchiveScreen');
-        }}
-      >
-        <Input
-          placeholder="Buscar..."
-          autoFocus={false}
-          iconLeft="magnify"
-          iconLeftColor={COLORS.white}
-          inputStyle={{
-            borderRadius: 56,
-            backgroundColor: COLORS.placeHolder,
-            color: COLORS.white,
+
+  if (data) {
+    console.log(data);
+    const { listTopupsRecords } = data;
+    const { docs } = listTopupsRecords;
+
+    return (
+      <View style={styles.container}>
+        <Header
+          iconRightName="filter"
+          iconRightColor={COLORS.placeHolder}
+          iconRightPress={() => {
+            navigation.navigate('FilterArchiveScreen');
           }}
-          style={{ borderRadius: 56, marginHorizontal: 8, backgroundColor: COLORS.placeHolder }}
-        />
-      </Header>
-      <BalanceSales total={totalCupTopUp} />
-      {data.topups.length < 1 ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text size={32} color={COLORS.black}>
-            🙁
-          </Text>
-          <Text
-            size={16}
-            color={COLORS.black}
-            style={{ marginHorizontal: 32, textAlign: 'center' }}
-          >
-            No tienes recargas para mostrar, modifica los filtros para ver más.
-          </Text>
-        </View>
-      ) : (
-        <ScrollView>
-          {data.totalItems > 0 &&
-            data?.topups.map((item) => {
-              return <TopUp key={item._id} {...item} />;
-            })}
-        </ScrollView>
-      )}
-    </View>
-  );
+        >
+          <Input
+            placeholder="Buscar..."
+            autoFocus={false}
+            iconLeft="magnify"
+            iconLeftColor={COLORS.white}
+            inputStyle={{
+              borderRadius: 56,
+              backgroundColor: COLORS.placeHolder,
+              color: COLORS.white,
+            }}
+            style={{ borderRadius: 56, marginHorizontal: 8, backgroundColor: COLORS.placeHolder }}
+          />
+        </Header>
+        <BalanceSales total={totalCupTopUp} />
+        {docs.length < 1 ? (
+          <EmptyList title="" text="" />
+        ) : (
+          <FlatList
+            data={docs}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item: topup }) => <TopUp {...topup} />}
+          />
+        )}
+      </View>
+    );
+  }
+
+  return null;
 };
 
 export default ArchiveScreen;

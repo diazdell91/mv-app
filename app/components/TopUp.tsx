@@ -1,61 +1,74 @@
 /* eslint-disable indent */
 import { StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import moment from 'moment';
 import { COLORS } from '../theme';
 import Text from './Text';
+import { useAuth } from '../context/auth/authProvider';
 
 type Props = {
   id: string;
   amountCup: number;
-  phoneNumber: string;
-  processingState: string;
-  createdAt: string;
+  product: {
+    id: string;
+    name: string;
+    receiveValue: number;
+    price: number;
+  };
+  phone: string;
+  status: string;
+  createdAt: number;
 };
 
 const TopUp = (props: Props) => {
-  const { amountCup, phoneNumber, processingState, createdAt } = props;
-
+  const { phone, status, createdAt, product, ...otherProps } = props;
+  const { user } = useAuth();
+  const price =
+    user.role === 'STAFF' ? product.receiveValue : Math.floor(product.price / 100).toFixed(2);
+  const priceCurrency = user.role === 'STAFF' ? 'CUP' : 'USD';
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapperIcon}>
-        <Icon name="cellphone-nfc" size={22} color={COLORS.white} />
+    <TouchableOpacity activeOpacity={0.5} {...otherProps}>
+      <View style={styles.container}>
+        <View style={styles.wrapperIcon}>
+          <Icon name="cellphone-nfc" size={22} color={COLORS.white} />
+        </View>
+        <View style={{ flex: 1, marginStart: 16 }}>
+          <Text size={16} fontFamily={'Poppins-Bold'} color={COLORS.black}>
+            {phone}
+          </Text>
+          <Text size={12}>{moment.unix(createdAt / 1000).format('lll')}</Text>
+        </View>
+        <View style={{ marginStart: 8 }}>
+          <Text size={16} fontFamily={'Poppins-Bold'} color={COLORS.black}>
+            {price} {priceCurrency}
+          </Text>
+        </View>
+        <View
+          style={{
+            ...styles.state,
+            backgroundColor:
+              status === 'COMPLETED'
+                ? COLORS.primary
+                : status === 'CANCELLED'
+                ? COLORS.strawberry
+                : COLORS.fog,
+          }}
+        >
+          <Icon
+            name={
+              status === 'COMPLETED'
+                ? 'check'
+                : status === 'CANCELLED'
+                ? 'window-close'
+                : 'clock-fast'
+            }
+            size={24}
+            color={COLORS.white}
+          />
+        </View>
       </View>
-      <View style={{ flex: 1, marginStart: 16 }}>
-        <Text size={16} fontFamily={'Poppins-Bold'} color={COLORS.black}>
-          {phoneNumber}
-        </Text>
-        <Text size={12}>{moment(createdAt).format('lll')}</Text>
-      </View>
-      <View style={{ marginStart: 8 }}>
-        <Text size={18} fontFamily={'Poppins-Bold'} color={COLORS.black}>
-          {amountCup} CUP
-        </Text>
-      </View>
-      <View
-        style={{
-          ...styles.state,
-          backgroundColor:
-            processingState === 'COMPLETED'
-              ? COLORS.primary
-              : processingState === 'CANCELLED'
-              ? COLORS.strawberry
-              : COLORS.fog,
-        }}
-      >
-        <Icon
-          name={
-            processingState === 'COMPLETED'
-              ? 'check'
-              : processingState === 'CANCELLED'
-              ? 'window-close'
-              : 'clock-fast'
-          }
-          size={24}
-          color={COLORS.white}
-        />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
