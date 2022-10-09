@@ -4,7 +4,7 @@ import { setContext } from '@apollo/client/link/context';
 import sessionService from '../context/sessionService';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/',
+  uri: 'https://conexen-server-graphql.herokuapp.com/',
 });
 
 const authLink = setContext(async (_, { headers }) => {
