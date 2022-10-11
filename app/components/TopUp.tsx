@@ -37,7 +37,7 @@ const TopUp = (props: Props) => {
           <Text size={16} fontFamily={'Poppins-Bold'} color={COLORS.black}>
             {phone}
           </Text>
-          <Text size={12}>{moment.unix(createdAt / 1000).format('lll')}</Text>
+          <Text size={12}>{moment(createdAt).format('lll')}</Text>
         </View>
         <View style={{ marginStart: 8 }}>
           <Text size={16} fontFamily={'Poppins-Bold'} color={COLORS.black}>

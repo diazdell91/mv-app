@@ -4,22 +4,22 @@ import BottomTabNavigation from './TabNavigator';
 import TopUpDetails from '../screens/client/dashboard/TopUpDetails';
 import SuccessTopup from '../screens/client/dashboard/views/SuccessTopup';
 import FailTopup from '../screens/client/dashboard/views/FailTopup';
-import CreateUserScreen from '../screens/admin/staff/CreateUserScreen';
-import SuccessUser from '../screens/admin/staff/views/SuccessUser';
 import CreateTopupStepOne from '../screens/client/dashboard/CreateTopupStepOne';
 import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
 import FilterHistoryScreen from '../screens/client/insights/FilterHistoryScreen';
+import FilterTransactionsScreen from '../screens/client/wallet/FilterTransactionsScreen';
+import TransactionsScreen from '../screens/client/wallet/TransactionsScreen';
 
 type MainStackParamList = {
   Tab: undefined;
   TopUpDetails: undefined;
   CreateTopupStepOne: undefined;
   CreateTopupStepTwo: undefined;
-  CreateUser: undefined;
   SuccessTopup: undefined;
-  SuccessUser: undefined;
   FailTopup: undefined;
   FilterHistoryScreen: undefined;
+  FilterTransactions: undefined;
+  Transactions: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -76,6 +76,13 @@ function MainNavigator() {
             title: 'Crear recarga',
           }}
         />
+        <Main.Screen
+          name="Transactions"
+          component={TransactionsScreen}
+          options={{
+            title: 'Crear recarga',
+          }}
+        />
       </Main.Group>
       <Main.Group
         key={'modal'}
@@ -83,6 +90,7 @@ function MainNavigator() {
       >
         <Main.Screen name="TopUpDetails" component={TopUpDetails} />
         <Main.Screen name="FilterHistoryScreen" component={FilterHistoryScreen} />
+        <Main.Screen name="FilterTransactions" component={FilterTransactionsScreen} />
       </Main.Group>
     </Main.Navigator>
   );

@@ -3,28 +3,18 @@ import { StyleSheet, View } from 'react-native';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { Text } from '../../../../components';
 import { COLORS } from '../../../../theme';
+import { financial } from '../../../../util/financial';
 
 type Props = {
   name: string;
   balance?: number;
+  currency?: string;
 };
 
 const AVATAR_SIZE = 42;
 
 const StaffProfile = (props: Props) => {
-  const { name, balance = 2000 } = props;
-  const show = [
-    { status: 'show' },
-    { status: 'cancel' },
-    { status: 'modify' },
-    { status: 'show' },
-    { status: 'noShow' },
-    { status: 'show' },
-    { status: 'show' },
-    { status: 'show' },
-    { status: 'noShow' },
-    { status: 'show' },
-  ];
+  const { name, balance, currency = 'USD' } = props;
 
   return (
     <View style={styles.container}>
@@ -35,22 +25,12 @@ const StaffProfile = (props: Props) => {
         <Text size={14} fontFamily={'Poppins-Medium'}>
           {name}
         </Text>
-        <View style={styles.wrapperIndicator}>
-          {show.map(({ status }, index) => {
-            const backgroundColor =
-              status === 'show'
-                ? COLORS.green
-                : status === 'modify'
-                ? COLORS.gray
-                : status === 'noShow'
-                ? COLORS.red
-                : COLORS.black;
-
-            return <View key={index} style={{ ...styles.indicator, backgroundColor }} />;
-          })}
-        </View>
         <View style={styles.wrapperInfo}>
-          {balance && <Text size={12} color={COLORS.gray}>{` ${balance?.toString()} CUP`}</Text>}
+          {balance !== null && (
+            <Text size={12} color={COLORS.gray}>
+              {financial(balance)} {currency}
+            </Text>
+          )}
         </View>
       </View>
     </View>

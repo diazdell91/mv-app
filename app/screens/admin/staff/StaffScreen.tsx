@@ -1,19 +1,26 @@
 //
-import { useEffect, useState } from 'react';
+
 import { StyleSheet, View } from 'react-native';
-import staffServices from '../../../services/staff';
-import { Input, Loading, Header } from '../../../components';
+import { Input, Header } from '../../../components';
 import { ScrollView } from 'react-native-gesture-handler';
-import StaffBox from './components/StaffBox';
+import User from './components/User';
 import { COLORS } from '../../../theme';
+import { ALL_USERS } from '../../../graphql/user.graphql';
+import { useQuery } from '@apollo/client';
 
 const StaffScreen = ({ navigation }: any) => {
-  
+  const { data, loading, error } = useQuery(ALL_USERS);
 
+  if (loading) return null;
+  if (error) return null;
 
-  if (loading) {
+  if (data) {
+    const { allUsers } = data;
+
+    console.log(allUsers);
+
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Header
           iconRightName="plus-circle"
           iconRightColor={COLORS.placeHolder}
@@ -34,45 +41,17 @@ const StaffScreen = ({ navigation }: any) => {
             style={{ borderRadius: 56, marginHorizontal: 8, backgroundColor: COLORS.placeHolder }}
           />
         </Header>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Loading color={COLORS.fog} />
-        </View>
+
+        <ScrollView>
+          <View style={{ marginHorizontal: 8 }}>
+            {allUsers.map((user: any) => (
+              <User key={user.id} {...user} />
+            ))}
+          </View>
+        </ScrollView>
       </View>
     );
   }
-  return (
-    <View style={styles.container}>
-      <Header
-        iconRightName="plus-circle"
-        iconRightColor={COLORS.placeHolder}
-        iconRightPress={() => {
-          navigation.navigate('CreateUser');
-        }}
-      >
-        <Input
-          placeholder="Buscar..."
-          autoFocus={false}
-          iconLeft="magnify"
-          iconLeftColor={COLORS.white}
-          inputStyle={{
-            borderRadius: 56,
-            backgroundColor: COLORS.placeHolder,
-            color: COLORS.white,
-          }}
-          style={{ borderRadius: 56, marginHorizontal: 8, backgroundColor: COLORS.placeHolder }}
-        />
-      </Header>
-
-      <ScrollView>
-        <View style={{ marginHorizontal: 8 }}>
-          {data &&
-            data?.map((item) => {
-              return <StaffBox key={item._id} {...item} />;
-            })}
-        </View>
-      </ScrollView>
-    </View>
-  );
 };
 
 export default StaffScreen;

@@ -1,27 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Loading, TopUp, EmptyList, RefreshButtom } from '../../../components';
+import { Loading, EmptyList, RefreshButtom, Transaction } from '../../../components';
 import { COLORS } from '../../../theme';
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
-import { TOPUPS } from '../../../graphql/topup.grapgql';
-import HeaderFilter from './components/HeaderFilter';
+import HeaderTransferFilter from './components/HeaderTransferFilter';
 import ActiveFilters from './components/ActiveFilters';
+import { TRANSFERS } from '../../../graphql/wallet.grapgql';
 
-const InsightsScreen = ({ navigation, route }: any) => {
+const TransactionsScreen = ({ navigation, route }: any) => {
   const [page] = useState(0);
 
   const [filters, setFilters] = useState({
     startOfDate: moment().subtract(1, 'day').toDate().toLocaleDateString(),
     endOfDate: moment().endOf('day').toDate().toLocaleDateString(),
-    status: null,
   });
 
   const PAGE_SIZE = 25;
 
-  const { data, loading, error, refetch } = useQuery(TOPUPS, {
+  const { data, loading, error, refetch } = useQuery(TRANSFERS, {
     variables: {
       input: {
         page: page * PAGE_SIZE,
@@ -41,7 +40,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <HeaderFilter />
+        <HeaderTransferFilter title="Trasacciones" />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Loading color={COLORS.fog} />
         </View>
@@ -49,17 +48,20 @@ const InsightsScreen = ({ navigation, route }: any) => {
     );
   }
 
-  if (data) {
-    const { listTopupsRecords } = data;
-    const { docs } = listTopupsRecords;
+  if (error) {
+    console.log(error);
+  }
 
-    console.log(docs);
+  if (data) {
+    const { transfersRecords } = data;
+    const { docs } = transfersRecords;
 
     return (
       <View style={styles.container}>
-        <HeaderFilter
+        <HeaderTransferFilter
+          title="Transacciones"
           onPress={() => {
-            navigation.navigate('FilterHistoryScreen');
+            navigation.navigate('FilterTransactions');
           }}
         />
         <ActiveFilters filters={filters} />
@@ -69,7 +71,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
           <FlatList
             data={docs}
             keyExtractor={(item) => item.id}
-            renderItem={({ item: topup }) => <TopUp disabled {...topup} />}
+            renderItem={({ item: transfer }) => <Transaction {...transfer} />}
           />
         )}
         <RefreshButtom onPress={() => refetch()} />
@@ -80,7 +82,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
   return null;
 };
 
-export default InsightsScreen;
+export default TransactionsScreen;
 
 const styles = StyleSheet.create({
   container: {

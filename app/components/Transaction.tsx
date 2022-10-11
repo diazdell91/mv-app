@@ -1,6 +1,5 @@
 /* eslint-disable indent */
 import { StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import moment from 'moment';
 import { COLORS } from '../theme';
 import Text from './Text';
@@ -22,25 +21,25 @@ const Transaction = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.wrapperIcon}>
-        <Icon name="cellphone-nfc" size={24} color={COLORS.white} />
-      </View>
       <View style={{ flex: 1, marginStart: 16 }}>
         <Text size={16} fontFamily={'Poppins-Bold'} color={COLORS.black}>
+          {type}
+        </Text>
+        <Text size={14} color={COLORS.gray}>
           {description}
         </Text>
-        <Text size={14}>{moment(createdAt).format('lll')}</Text>
+        <Text size={12}>{moment(createdAt).format('lll')}</Text>
       </View>
       <View style={{ marginStart: 8, alignItems: 'flex-end' }}>
-        <Text size={22} fontFamily={'Poppins-Bold'} color={COLORS.black}>
-          {`${type === 'DEBIT' ? '-$' : '+$'}${amount}`}
+        <Text size={18} fontFamily={'Poppins-Bold'} color={COLORS.black}>
+          {`${Math.floor(amount / 100).toFixed(2)}$`}
         </Text>
-        <Text color={COLORS.black} size={12}>
+        {/* <Text color={COLORS.black} size={12}>
           {`${balanceBefore} USD`}
         </Text>
         <Text color={COLORS.black} size={14}>
           {`${balanceAfter} USD`}
-        </Text>
+        </Text> */}
       </View>
     </View>
   );

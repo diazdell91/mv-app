@@ -9,18 +9,28 @@ import { COLORS } from '../../../../theme';
 import moment from 'moment';
 
 export type CustomerProps = {
-  id: number;
+  id: string;
   name: string;
   email: string;
   phone: string;
+  createdAt: string;
+  updatedAt: string;
   lastTask: string;
   disabled: boolean;
-  balance: number;
+  pushToken: string;
+  servicesAllowed: [string];
+  role: string;
+  wallet: {
+    id: string;
+    balance: number;
+    createdAt: string;
+    currency: string;
+  };
 };
 
-const StaffBox = (props: CustomerProps) => {
+const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
-  const { name, lastTask, email, phone = '+5353288387', balance, disabled } = props;
+  const { name, wallet, email, phone, disabled, lastTask } = props;
   return (
     <Pressable
       onPress={() => {
@@ -29,7 +39,7 @@ const StaffBox = (props: CustomerProps) => {
       style={styles.container}
     >
       <View style={styles.customer}>
-        <StaffProfile name={name} balance={balance} />
+        <StaffProfile name={name} balance={wallet.balance} />
         <View style={{ alignItems: 'flex-end' }}>
           <Text h4>Ultima actividad</Text>
           <Text align="center" h4>
@@ -65,7 +75,7 @@ const StaffBox = (props: CustomerProps) => {
   );
 };
 
-export default StaffBox;
+export default User;
 
 const styles = StyleSheet.create({
   container: {

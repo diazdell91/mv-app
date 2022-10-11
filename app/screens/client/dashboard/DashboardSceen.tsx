@@ -10,7 +10,7 @@ const DashboardSceen = () => {
   return (
     <View style={{ ...styles.container, paddingTop: top }}>
       <Greetings />
-      <Wallet ammount={2000} />
+      <Wallet />
       <Services />
     </View>
   );

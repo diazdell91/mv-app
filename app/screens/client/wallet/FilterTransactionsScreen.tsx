@@ -8,35 +8,43 @@ import DatePicker from '../../../components/DatePicker';
 import { COLORS } from '../../../theme';
 import SelectedFilter from './components/SelectedFilter';
 
-const FilterHistoryScreen = ({ navigation }: any) => {
+const FilterTransactionsScreen = ({ navigation }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
   const [startOfDate, setStartOfDate] = useState({ label: '', value: new Date() });
   const [endOfDate, setEndOfDate] = useState({ label: '', value: new Date() });
-  const [status, setStatus] = useState(null);
+  const [type, setType] = useState(null);
 
-  const statusOptions = [
+  const typeOptions = [
     { label: 'Todas', value: null },
-    { label: 'Pendientes', value: 'PENDING' },
-    { label: 'Prosesando', value: 'ASSIGNED' },
-    { label: 'Completada', value: 'COMPLETED' },
-    { label: 'Fallida', value: 'CANCELLED' },
+    { label: 'Recargas', value: 'TOPUP' },
+    { label: 'Remesas', value: 'REMITTANCE' },
+    { label: 'Pagos de servicios', value: 'BILLPAYMENT' },
+    { label: 'Boletos de avión', value: 'AIRPLANETICKET' },
+    { label: 'Reservaciones de hotel', value: 'HOTELBOOKING' },
+    { label: 'Renta de autos', value: 'CARRENTAL' },
+    { label: 'Comida a domicilio', value: 'FOODDELIVERY' },
+    { label: 'Tarjeta de crédito', value: 'CREDIT_CARD' },
+    { label: 'Transferencia Zelle', value: 'ZELLE_TRANSFER' },
+    { label: 'Cheque', value: 'CHECK' },
+    { label: 'Efectivo', value: 'CASH' },
+    { label: 'Otros', value: 'OTHERS' },
   ];
 
   const filters = {
     startOfDate: startOfDate.value.toLocaleDateString(),
     endOfDate: endOfDate.value.toLocaleDateString(),
-    status,
+    type,
   };
 
   const handleFilter = () => {
-    navigation.navigate('Informes', {
+    navigation.navigate('Transactions', {
       filters,
     });
   };
   return (
     <View style={{ ...styles.container, paddingBottom }}>
       <Header
-        title="Filtro"
+        title="Filtro de transacciones"
         iconRightName="close"
         iconRightPress={() => {
           navigation.goBack();
@@ -71,25 +79,25 @@ const FilterHistoryScreen = ({ navigation }: any) => {
           />
         </View>
         <View style={{ marginHorizontal: 8, marginTop: 8 }}>
-          <Text fontFamily="Poppins-Bold">Estado</Text>
+          <Text fontFamily="Poppins-Bold">Concepto</Text>
         </View>
 
         <View
           style={{
             flexDirection: 'row',
             flexWrap: 'wrap',
-            marginHorizontal: 8,
-            marginTop: 8,
+            marginHorizontal: 4,
+            marginTop: 4,
           }}
         >
-          {statusOptions.map((item) => (
+          {typeOptions.map((item) => (
             <Pressable
               key={item.value}
               onPress={() => {
-                setStatus(item.value);
+                setType(item.value);
               }}
             >
-              <SelectedFilter item={item} selected={item.value === status} />
+              <SelectedFilter item={item} selected={item.value === type} />
             </Pressable>
           ))}
         </View>
@@ -99,7 +107,7 @@ const FilterHistoryScreen = ({ navigation }: any) => {
   );
 };
 
-export default FilterHistoryScreen;
+export default FilterTransactionsScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -4,7 +4,7 @@ import AdminTabNavigation from './TabAdminNavigator';
 import TopUpDetails from '../screens/client/dashboard/TopUpDetails';
 import SuccessTopup from '../screens/client/dashboard/views/SuccessTopup';
 import FailTopup from '../screens/client/dashboard/views/FailTopup';
-import CreateUserScreen from '../screens/admin/staff/CreateUserScreen';
+import CreateUserScreen from '../screens/admin/users/CreateUserScreen';
 import SuccessUser from '../screens/admin/staff/views/SuccessUser';
 import CreateTopupStepOne from '../screens/client/dashboard/CreateTopupStepOne';
 import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
