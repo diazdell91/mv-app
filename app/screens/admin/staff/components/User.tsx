@@ -30,11 +30,11 @@ export type CustomerProps = {
 
 const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
-  const { name, wallet, email, phone, disabled, lastTask } = props;
+  const { id, name, wallet, email, phone, disabled, lastTask } = props;
   return (
     <Pressable
       onPress={() => {
-        navigate('CustomerDetails', { customer: props });
+        navigate('UserDetails', { id });
       }}
       style={styles.container}
     >

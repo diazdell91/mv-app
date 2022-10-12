@@ -54,6 +54,7 @@ const CreateUserScreen = ({ navigation }: any) => {
       },
       onCompleted: (data) => {
         console.log(data);
+        navigation.navigate('UserServices', { id: data.createUser.user.id });
       },
       onError: (error) => {
         console.log(error);

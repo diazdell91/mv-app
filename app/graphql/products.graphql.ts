@@ -20,3 +20,9 @@ export const PRODUCTS = gql`
     }
   }
 `;
+
+export const PRODUCT_CATEGORYS = gql`
+  query Query {
+    productsCategorys
+  }
+`;

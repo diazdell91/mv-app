@@ -10,7 +10,37 @@ export const ME = gql`
       lastTask
       disabled
       pushToken
-      servicesAllowed
+      servicesAllowed {
+        category
+        commissionRate
+      }
+      role
+      apiKey
+      createdAt
+      updatedAt
+      wallet {
+        id
+        balance
+        currency
+      }
+    }
+  }
+`;
+
+export const USER = gql`
+  query user($id: String) {
+    user(id: $id) {
+      id
+      name
+      email
+      phone
+      lastTask
+      disabled
+      pushToken
+      servicesAllowed {
+        category
+        commissionRate
+      }
       role
       apiKey
       createdAt
@@ -34,7 +64,10 @@ export const ALL_USERS = gql`
       lastTask
       disabled
       pushToken
-      servicesAllowed
+      servicesAllowed {
+        category
+        commissionRate
+      }
       role
       apiKey
       createdAt
@@ -63,7 +96,6 @@ export const CREATE_USER = gql`
         lastTask
         disabled
         pushToken
-        servicesAllowed
         role
         apiKey
         wallet {
@@ -71,6 +103,33 @@ export const CREATE_USER = gql`
           balance
           currency
         }
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      code
+      success
+      message
+      user {
+        id
+        name
+        email
+        phone
+        lastTask
+        disabled
+        pushToken
+        servicesAllowed {
+          category
+          commissionRate
+        }
+        role
+        apiKey
+        createdAt
+        updatedAt
       }
     }
   }

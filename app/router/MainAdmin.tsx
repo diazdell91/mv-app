@@ -9,6 +9,8 @@ import SuccessUser from '../screens/admin/staff/views/SuccessUser';
 import CreateTopupStepOne from '../screens/client/dashboard/CreateTopupStepOne';
 import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
 import FilterHistoryScreen from '../screens/client/insights/FilterHistoryScreen';
+import UserServicesScreen from '../screens/admin/users/UserServicesScreen';
+import UserDetailsScreen from '../screens/admin/users/UserDetailsScreen';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -20,6 +22,8 @@ type MainStackParamList = {
   SuccessUser: undefined;
   FailTopup: undefined;
   FilterHistoryScreen: undefined;
+  UserServices: undefined;
+  UserDetails: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -60,6 +64,20 @@ function MainAdminNavigator() {
           component={CreateUserScreen}
           options={{
             title: 'Crear usuario',
+          }}
+        />
+        <Main.Screen
+          name="UserServices"
+          component={UserServicesScreen}
+          options={{
+            title: 'Servicios del usuario',
+          }}
+        />
+        <Main.Screen
+          name="UserDetails"
+          component={UserDetailsScreen}
+          options={{
+            title: 'Detalles del usuario',
           }}
         />
       </Main.Group>
