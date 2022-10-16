@@ -49,11 +49,15 @@ const InsightsScreen = ({ navigation, route }: any) => {
     );
   }
 
+  if (error) {
+    console.log('Error', error);
+  }
+
   if (data) {
     const { listTopupsRecords } = data;
     const { docs } = listTopupsRecords;
 
-    console.log(docs);
+    console.log('data', data);
 
     return (
       <View style={styles.container}>
