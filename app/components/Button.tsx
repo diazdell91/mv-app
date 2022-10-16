@@ -7,6 +7,7 @@ import {
   ViewStyle,
   PressableProps,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import { SIZES, COLORS } from '../theme';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
@@ -22,6 +23,7 @@ interface Props {
   iconRight?: React.ComponentProps<typeof Icon>['name'];
   iconLeft?: React.ComponentProps<typeof Icon>['name'];
   iconColor?: string;
+  loading?: boolean;
 }
 
 export type ButtonProps = Props & PressableProps;
@@ -38,6 +40,7 @@ function Button(props: ButtonProps) {
     iconLeft,
     iconColor,
     textStyle,
+    loading,
     ...otherProps
   } = props;
 
@@ -61,16 +64,22 @@ function Button(props: ButtonProps) {
   return (
     <View style={{ width: 'auto', marginHorizontal: 8 }}>
       <Pressable style={buttonStyles} {...otherProps}>
-        {iconLeft && (
-          <View style={styles.iconLeft}>
-            <Icon name={iconLeft} size={56} color={iconColor || COLORS.primary} />
-          </View>
-        )}
-        <Text style={textStyles}>{title}</Text>
-        {iconRight && (
-          <View style={styles.iconRight}>
-            <Icon name={iconRight} size={56} color={iconColor || COLORS.primary} />
-          </View>
+        {loading ? (
+          () => <ActivityIndicator color={COLORS.black} />
+        ) : (
+          <>
+            {iconLeft && (
+              <View style={styles.iconLeft}>
+                <Icon name={iconLeft} size={56} color={iconColor || COLORS.primary} />
+              </View>
+            )}
+            <Text style={textStyles}>{title}</Text>
+            {iconRight && (
+              <View style={styles.iconRight}>
+                <Icon name={iconRight} size={56} color={iconColor || COLORS.primary} />
+              </View>
+            )}
+          </>
         )}
       </Pressable>
     </View>
@@ -86,6 +95,7 @@ const styles = StyleSheet.create({
     marginVertical: SIZES.xs,
     alignItems: 'center',
     alignSelf: 'center',
+    justifyContent: 'center',
     borderRadius: SIZES.buttonRadius,
     backgroundColor: COLORS.primary,
   },

@@ -13,8 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [securyTextEntry, setSecuryTextEntry] = useState(true);
-  const [loginService, { loading, error }] = useMutation(LOGIN);
-  //const [isVisible, setIsVisible] = useState(false);
+  const [loginService, { loading }] = useMutation(LOGIN);
 
   // context
   const { login } = useAuth();
@@ -30,6 +29,10 @@ const Login = () => {
         },
       },
     });
+    if (!data || data.login?.success === false) {
+      console.log(data);
+      Alert.alert(data?.login?.message);
+    }
     if (data.login.success) {
       const { tokens, user } = data.login;
       const session = {
@@ -38,11 +41,6 @@ const Login = () => {
       };
       login(session);
     }
-    Alert.alert(data?.login?.message);
-  };
-
-  const handleForgotPass = () => {
-    //navigation.navigate('ForgotPass');
   };
 
   return (
@@ -70,19 +68,17 @@ const Login = () => {
           }}
           inputStyle={styles.inputStyle}
         />
-        <Button
-          title="No recuerdo la contraseña"
-          onPress={handleForgotPass}
-          style={{ backgroundColor: 'transparent' }}
-          textStyle={styles.buttonText}
-        />
       </View>
-
       <Button
-        disabled={!REGEX_EMAIL.test(email) || pass.length < 3}
+        loading={loading}
+        disabled={!REGEX_EMAIL.test(email) || pass.length < 5}
         onPress={handleLogin}
         title="Iniciar sesión"
-        style={{ width: '90%', alignSelf: 'center' }}
+        style={{
+          width: '90%',
+          backgroundColor:
+            !REGEX_EMAIL.test(email) || pass.length < 5 ? COLORS.backgroundAlt : COLORS.primary,
+        }}
       />
     </AuthLayout>
   );
