@@ -4,8 +4,20 @@ import { Button, Text } from '../../../../components';
 import { COLORS } from '../../../../theme';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
-const SuccessUser = ({ navigation }: any) => {
+const SuccessUser = ({ navigation, route }: any) => {
   const { bottom: paddingBottom, top: paddingTop } = useSafeAreaInsets();
+  console.log(route.params.title);
+  let s = {
+    title: 'Usuario creado con éxito!',
+    subt: 'Epaa uno mas!!',
+  };
+
+  if (route.params.title) {
+    s = {
+      title: 'Usuario actualizado con éxito!',
+      subt: 'Estamos al dia!!',
+    };
+  }
 
   return (
     <View style={{ ...styles.container, paddingTop, paddingBottom }}>
@@ -15,10 +27,10 @@ const SuccessUser = ({ navigation }: any) => {
         </View>
         <View style={{ marginTop: 32 }}>
           <Text fontFamily="Poppins-Light" size={42} color={'#E6D6FF'}>
-            Usuario creado con éxito!
+            {s.title}
           </Text>
           <Text fontFamily="Poppins-Bold" size={52} color={'#FF3482'}>
-            Epaa uno mas!!
+            {s.subt}
           </Text>
         </View>
       </View>

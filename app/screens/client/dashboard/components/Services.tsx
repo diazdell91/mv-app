@@ -2,15 +2,47 @@
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '../../../../components';
-import { COLORS } from '../../../../theme';
 import IconService from './IconService';
 
-const Services = () => {
+const DEFAULT_SERVICES = [
+  {
+    icon: 'wifi-sync',
+    name: 'Internet',
+    allowed: true,
+  },
+  {
+    icon: 'food-variant',
+    name: 'Mercado',
+    allowed: true,
+  },
+  {
+    icon: 'airplane',
+    name: 'Vuelos',
+    allowed: true,
+  },
+  {
+    icon: 'credit-card-chip',
+    name: 'Crédito',
+    allowed: true,
+  },
+  {
+    icon: 'train-car',
+    name: 'Car',
+    allowed: true,
+  },
+  {
+    icon: 'dots-horizontal-circle',
+    name: 'Otros',
+    allowed: true,
+  },
+];
+const Services = (props: any) => {
+  const { services = DEFAULT_SERVICES, title = 'Lista de servicios' } = props;
   const navigation = useNavigation<any>();
   return (
     <View style={styles.container}>
       <Text size={22} style={{ marginStart: 16 }}>
-        Lista de servicios
+        {title}
       </Text>
       <View style={styles.wrapper}>
         <IconService
@@ -20,12 +52,9 @@ const Services = () => {
           name="Recarga Mobil"
           icon="cellphone-charging"
         />
-        <IconService disabled name="Internet" icon="wifi-sync" />
-        <IconService disabled name="Mercado" icon="food-variant" />
-        <IconService disabled name="Vuelos" icon="airplane" />
-        <IconService disabled name="Credito" icon="credit-card-chip" />
-        <IconService disabled name="Car" icon="train-car" />
-        <IconService disabled name="Otros" icon="dots-horizontal-circle" />
+        {services.map((item: any, index: number) => (
+          <IconService key={index} disabled={item.allowed} name={item.name} icon={item.icon} />
+        ))}
       </View>
     </View>
   );

@@ -8,7 +8,7 @@ import { COLORS } from '../../../theme';
 import { ALL_USERS } from '../../../graphql/user.graphql';
 import { useQuery } from '@apollo/client';
 
-const StaffScreen = ({ navigation }: any) => {
+const StaffScreen = ({ navigation, route }: any) => {
   const { data, loading, error } = useQuery(ALL_USERS);
 
   if (loading) return null;

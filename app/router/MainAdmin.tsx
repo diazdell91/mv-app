@@ -11,6 +11,7 @@ import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
 import FilterHistoryScreen from '../screens/client/insights/FilterHistoryScreen';
 import UserServicesScreen from '../screens/admin/users/UserServicesScreen';
 import UserDetailsScreen from '../screens/admin/users/UserDetailsScreen';
+import UserUpdateScreen from '../screens/admin/users/UserUpdateScreen';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -24,6 +25,7 @@ type MainStackParamList = {
   FilterHistoryScreen: undefined;
   UserServices: undefined;
   UserDetails: undefined;
+  UserUpdate: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -78,6 +80,14 @@ function MainAdminNavigator() {
           component={UserDetailsScreen}
           options={{
             title: 'Detalles del usuario',
+            headerShown: false,
+          }}
+        />
+        <Main.Screen
+          name="UserUpdate"
+          component={UserUpdateScreen}
+          options={{
+            title: 'Actualizar Usuario',
           }}
         />
       </Main.Group>
