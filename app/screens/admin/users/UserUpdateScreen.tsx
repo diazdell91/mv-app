@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Input, Text } from '../../../components';
 import { COLORS } from '../../../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,12 +32,18 @@ export default function UserUpdateScreen(props: Props) {
 
   const allServices: any[] = [].concat(servicesAllowed);
   const categories: any[] = [];
-  const [updateUser, { data: userData }] = useMutation(UPDATE_USER);
-  const { data, loading, error } = useQuery(PRODUCT_CATEGORYS);
+  const [updateUser] = useMutation(UPDATE_USER);
+  const { data } = useQuery(PRODUCT_CATEGORYS);
   const { productsCategorys } = data;
 
   productsCategorys.forEach((category: any) => {
-    if (!servicesAllowed.map(({ category }: any) => category).includes(category))
+    if (
+      !servicesAllowed
+        .map(({ category }: any) => {
+          category;
+        })
+        .includes(category)
+    )
       allServices.push({ category, commissionRate: 0 });
   });
 
@@ -117,7 +123,7 @@ export default function UserUpdateScreen(props: Props) {
       variables: {
         input: user,
       },
-      onCompleted: (data) => {
+      onCompleted: () => {
         navigation.navigate('SuccessUser', {
           title: 'Updated',
         });
@@ -254,7 +260,7 @@ export default function UserUpdateScreen(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
   },
   select: {
     width: '45%',
