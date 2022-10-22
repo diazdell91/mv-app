@@ -7,6 +7,8 @@ import StaffProfile from './StaffProfile';
 import { Text } from '../../../../components';
 import { COLORS } from '../../../../theme';
 import moment from 'moment';
+import { useMutation, useQuery } from '@apollo/client';
+import { ME, UPDATE_USER, USER } from '../../../../graphql/user.graphql';
 
 export type CustomerProps = {
   id: string;
@@ -30,7 +32,29 @@ export type CustomerProps = {
 
 const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
-  const { id, name, wallet, email, phone, disabled, lastTask } = props;
+  const { id, name, wallet, email, phone, lastTask } = props;
+  let { disabled } = props;
+  const { data } = useQuery(ME);
+  const [updateUser, { loading }] = useMutation(UPDATE_USER);
+
+  const handleUpdateServices = async () => {
+    await updateUser({
+      variables: {
+        input: {
+          id,
+          enabled: !disabled,
+        },
+      },
+      onCompleted: (data) => {
+        disabled = data.updateUser.user.disabled;
+        console.log(data)
+      },
+      onError: (error) => {
+        console.log('error', error);
+      },
+    });
+  };
+
   return (
     <Pressable
       onPress={() => {
@@ -47,6 +71,7 @@ const User = (props: CustomerProps) => {
           </Text>
         </View>
         <Ionicons
+          onPress={handleUpdateServices}
           name={disabled ? 'md-lock-closed-outline' : 'md-lock-open-outline'}
           size={22}
           color={COLORS.gray}

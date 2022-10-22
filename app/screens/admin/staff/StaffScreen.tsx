@@ -7,18 +7,40 @@ import User from './components/User';
 import { COLORS } from '../../../theme';
 import { ALL_USERS } from '../../../graphql/user.graphql';
 import { useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 
 const StaffScreen = ({ navigation, route }: any) => {
   const { data, loading, error } = useQuery(ALL_USERS);
+  const [filtered, setFiltered] = useState<any[]>([]);
 
-  if (loading) return null;
-  if (error) return null;
+  useEffect(() => {
+    const onCompleted = (data) => {
+      setFiltered(data.allUsers);
+    };
+    const onError = (error) => {};
+
+    if (onCompleted || onError) {
+      if (onCompleted && !loading && !error) {
+        onCompleted(data);
+      } else if (onError && !loading && error) {
+        onError(error);
+      }
+    }
+  }, [loading, data, error]);
 
   if (data) {
     const { allUsers } = data;
 
-    console.log(allUsers);
+    const onSearch = (val: string) => {
+ 
+      const result = allUsers.filter(
+        (item: any, index: number) =>
+          item.name.toLowerCase().includes(val.toLocaleLowerCase()) ||
+          item.email.toLowerCase().includes(val.toLocaleLowerCase()),
+      );
 
+      setFiltered(result);
+    };
     return (
       <View style={styles.container}>
         <Header
@@ -39,12 +61,13 @@ const StaffScreen = ({ navigation, route }: any) => {
               color: COLORS.white,
             }}
             style={{ borderRadius: 56, marginHorizontal: 8, backgroundColor: COLORS.placeHolder }}
+            onChangeText={onSearch}
           />
         </Header>
 
         <ScrollView>
           <View style={{ marginHorizontal: 8 }}>
-            {allUsers.map((user: any) => (
+            {filtered.map((user: any) => (
               <User key={user.id} {...user} />
             ))}
           </View>

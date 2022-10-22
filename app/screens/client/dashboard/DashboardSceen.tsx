@@ -3,16 +3,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Wallet from './components/Wallet';
 import Greetings from './components/Greetings';
 import Services from './components/Services';
+import { useAuth } from '../../../context/auth/authProvider';
+import { useQuery } from '@apollo/client';
+import { ME } from '../../../graphql/user.graphql';
 
 const DashboardSceen = () => {
+  const { data } = useQuery(ME);
   const { top } = useSafeAreaInsets();
 
-  return (
+  return data ? (
     <View style={{ ...styles.container, paddingTop: top }}>
       <Greetings />
-      <Wallet />
-      <Services />
+      {data.me.role !== 'ADMIN' ? <Wallet /> : <></>}
+      <Services services={data.me.servicesAllowed} />
     </View>
+  ) : (
+    <></>
   );
 };
 

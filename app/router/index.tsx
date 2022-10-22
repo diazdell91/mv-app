@@ -1,6 +1,7 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../context/auth/authProvider';
+import PrivacyPolicy from '../screens/Info/PrivacyPolicy';
 import LoadingScreen from '../screens/loading/LoadingScreen';
 import { COLORS } from '../theme';
 
@@ -50,6 +51,7 @@ function RootNavigator() {
           )}
         </>
       )}
+      <RootStack.Screen name="Info" component={PrivacyPolicy} />
     </RootStack.Navigator>
   );
 }

@@ -59,8 +59,7 @@ const UserServicesScreen = ({ navigation, route }: any) => {
       },
     });
   };
-  console.log(categorys.length < 1);
-
+ 
   if (data) {
     const { productsCategorys } = data;
     return (

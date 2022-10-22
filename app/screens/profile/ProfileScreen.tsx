@@ -1,15 +1,20 @@
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text } from '../../components';
+import { Input, Text } from '../../components';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useAuth } from '../../context/auth/authProvider';
 import ActionBox from './components/ActionBox';
 import { COLORS } from '../../theme';
 import Version from './components/Version';
+import { useQuery } from '@apollo/client';
+import { ME } from '../../graphql/user.graphql';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
-  const { user, signOut } = useAuth();
+  const { signOut } = useAuth();
+
+  const { data } = useQuery(ME);
+  const { me } = data;
 
   return (
     <View style={{ ...styles.container, paddingTop: top }}>
@@ -19,21 +24,36 @@ const ProfileScreen = () => {
             PREFERENCIAS
           </Text>
         </View>
-        <ActionBox icon="cog-outline" title="Ajustes" onPress={() => {}} />
-        <ActionBox icon="checkbox-blank-badge" title="Notificaciones" />
-        <ActionBox
-          icon="ticket-percent"
-          title="Comision por venta"
-          subTitle="8%"
-          onPress={() => {}}
-        />
+        <Input value={me.name} iconLeft="account" editable={false} />
+        <Input value={me.email} iconLeft="email" editable={false} />
+        <Input value={me.phone} iconLeft="phone-dial-outline" editable={false} />
+        <Input value={me.role} iconLeft="security" editable={false} />
+
         <View style={styles.header}>
           <Text size={16} fontFamily="Poppins-Medium" color={COLORS.zeus}>
             Legal
           </Text>
         </View>
-        <ActionBox icon="shield-account" title="Políticas de Privacidad" onPress={() => {}} />
-        <ActionBox icon="file-certificate" title="Terminos de servicio" onPress={() => {}} />
+        <ActionBox
+          icon="shield-account"
+          title="Políticas de Privacidad"
+          onPress={() => {
+            navigation.navigate('Info', {
+              title: 'Política de Privacidad',
+              content: 'Contenido política de privacidad',
+            });
+          }}
+        />
+        <ActionBox
+          icon="file-certificate"
+          title="Terminos de servicio"
+          onPress={() => {
+            navigation.navigate('Info', {
+              title: 'Términos de Servicios',
+              content: 'Este es el contenido de la política de servicios',
+            });
+          }}
+        />
         <ActionBox icon="arrow-right-bold" title="Salir" onPress={signOut} />
         <Version />
       </ScrollView>
@@ -46,6 +66,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: 8,
   },
   header: {
     marginVertical: 16,

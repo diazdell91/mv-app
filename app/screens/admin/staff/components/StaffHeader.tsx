@@ -5,12 +5,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '../../../../theme';
 import { Text } from '../../../../components';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../../../context/auth/authProvider';
 
 export default function StaffHeader(props: any) {
   const { data } = props;
   const navigation = useNavigation();
   const { navigate } = useNavigation<any>();
   const { top } = useSafeAreaInsets();
+  const { user } = useAuth();
 
   const updateUser = () => {
     navigate('UserUpdate', {
@@ -29,7 +31,7 @@ export default function StaffHeader(props: any) {
       <Text color={COLORS.white} size={24}>
         Detalles del usuario
       </Text>
-      <Icon onPress={updateUser} color={COLORS.white} name="dots-vertical" size={32} />
+      {user && <Icon onPress={updateUser} color={COLORS.white} name="dots-vertical" size={32} />}
     </View>
   );
 }
