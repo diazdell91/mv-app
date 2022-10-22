@@ -9,15 +9,15 @@ import { ALL_USERS } from '../../../graphql/user.graphql';
 import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
-const StaffScreen = ({ navigation, route }: any) => {
+const StaffScreen = ({ navigation }: any) => {
   const { data, loading, error } = useQuery(ALL_USERS);
   const [filtered, setFiltered] = useState<any[]>([]);
 
   useEffect(() => {
-    const onCompleted = (data) => {
+    const onCompleted = (data: any) => {
       setFiltered(data.allUsers);
     };
-    const onError = (error) => {};
+    const onError = (error: any) => {};
 
     if (onCompleted || onError) {
       if (onCompleted && !loading && !error) {
@@ -32,9 +32,9 @@ const StaffScreen = ({ navigation, route }: any) => {
     const { allUsers } = data;
 
     const onSearch = (val: string) => {
- 
       const result = allUsers.filter(
         (item: any, index: number) =>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           item.name.toLowerCase().includes(val.toLocaleLowerCase()) ||
           item.email.toLowerCase().includes(val.toLocaleLowerCase()),
       );
@@ -75,6 +75,8 @@ const StaffScreen = ({ navigation, route }: any) => {
       </View>
     );
   }
+
+  return null;
 };
 
 export default StaffScreen;

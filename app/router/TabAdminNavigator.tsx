@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import DashboardSceen from '../screens/client/dashboard/DashboardSceen';
 import InsightsScreen from '../screens/client/insights/InsightsScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import StaffScreen from '../screens/admin/staff/StaffScreen';
@@ -15,7 +14,6 @@ export default function AdminTabNavigation() {
       }}
       tabBar={(props: any) => <TabBar {...props} />}
     >
-      <BottomTab.Screen name="Dashboard" component={DashboardSceen} />
       <BottomTab.Screen name="Informes" component={InsightsScreen} />
       <BottomTab.Screen name="Staff" component={StaffScreen} />
       <BottomTab.Screen name="Profile" component={ProfileScreen} />

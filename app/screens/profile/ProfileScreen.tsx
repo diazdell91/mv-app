@@ -12,11 +12,14 @@ import { ME } from '../../graphql/user.graphql';
 const ProfileScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
   const { signOut } = useAuth();
+  let me = null;
+  const { data, loading, error } = useQuery(ME);
 
-  const { data } = useQuery(ME);
-  const { me } = data;
+  if (data) {
+    me = data.me;
+  }
 
-  return (
+  return data ? (
     <View style={{ ...styles.container, paddingTop: top }}>
       <ScrollView contentInset={{ top }} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
@@ -58,6 +61,8 @@ const ProfileScreen = ({ navigation }: any) => {
         <Version />
       </ScrollView>
     </View>
+  ) : (
+    <></>
   );
 };
 
