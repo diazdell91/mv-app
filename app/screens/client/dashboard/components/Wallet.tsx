@@ -14,7 +14,6 @@ const Wallet = () => {
   const { data } = useQuery(ME);
 
   if (data) {
-    console.log(data);
     const { me } = data;
     const wallet = me?.wallet;
     const balance = wallet?.balance || '0.00';
@@ -38,19 +37,25 @@ const Wallet = () => {
         <View style={{ marginTop: 8 }}>
           <Wave style={{ zIndex: -1, position: 'absolute', left: 0, bottom: -1, right: 0 }} />
           <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 // navigation.navigate('CreateTopupStepOne');
               }}
             >
               <Icon name="progress-download" size={36} color={COLORS.black} />
-            </Pressable>
+            </Pressable> */}
+
             <Pressable
               onPress={() => {
                 navigation.navigate('Transactions');
               }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Icon name="progress-clock" size={36} color={COLORS.black} />
+
+              <Text h4 align="center" style={{ marginStart: 8 }}>
+                Ver historial
+              </Text>
             </Pressable>
           </View>
         </View>
