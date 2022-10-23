@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons as Icon, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import DashedLine from 'react-native-dashed-line';
 import { useQuery } from '@apollo/client';
 import { USER } from '../../../graphql/user.graphql';
@@ -10,7 +10,6 @@ import { COLORS, SIZES } from '../../../theme';
 import { CustomerProps } from '../staff/components/User';
 import Wave from '../../../components/Wave';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Layout from '../../../theme/Layout';
 import Services from '../../client/dashboard/components/Services';
 import StaffHeader from '../staff/components/StaffHeader';
 
@@ -66,11 +65,11 @@ const UserDetailsScreen = (props: Props) => {
           <StaffHeader data={user} />
           <View style={{ ...styles.alignHorizontal, marginTop: top }}>
             <View style={styles.wrapperAvatar}>
-              <Icon name="account-outline" size={68} color={COLORS.white} />
+              <Icon name="account-outline" size={56} color={COLORS.white} />
             </View>
             <View style={{ marginTop: SIZES.xs }}>
               <Text align="center" color={COLORS.white}>
-                Hola, {user.name}
+                {user.name}
               </Text>
               <Text align="center" h4 color={COLORS.white}>
                 {user.email}
@@ -87,7 +86,7 @@ const UserDetailsScreen = (props: Props) => {
               justifyContent: 'center',
             }}
           >
-            <Text size={28}>{wallet.balance} </Text>
+            <Text size={28}>{wallet.balance / 100} </Text>
             <Icon name="currency-usd" size={28} />
           </View>
           <Text h4 align="center">

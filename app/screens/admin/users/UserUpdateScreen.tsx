@@ -1,6 +1,6 @@
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useState } from 'react';
-import { Button, Input, Text } from '../../../components';
+import { Button, Input } from '../../../components';
 import { COLORS } from '../../../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMutation, useQuery } from '@apollo/client';
@@ -21,14 +21,7 @@ export default function UserUpdateScreen(props: Props) {
   const { route } = props;
   const { user } = route.params;
 
-  const {
-    id,
-    email: userEmail,
-    name: userName,
-    phone: userPhone,
-    role: userRole,
-    servicesAllowed,
-  } = user;
+  const { id, email: userEmail, name: userName, phone: userPhone, servicesAllowed } = user;
 
   const allServices: any[] = [].concat(servicesAllowed);
   const categories: any[] = [];
@@ -56,7 +49,6 @@ export default function UserUpdateScreen(props: Props) {
   const [phone, setPhone] = useState(userPhone);
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [role, setRole] = useState(userRole);
   const [selectedCategories, setSelectedCategories] = useState<any[]>(categories);
 
   const validate = () => {
@@ -106,7 +98,6 @@ export default function UserUpdateScreen(props: Props) {
       email,
       phone,
       password,
-      role,
       servicesAllowed: selectedCategories.map((item: any) => {
         if (item.commissionRate >= 0 && item.commissionRate !== '')
           return {
@@ -119,7 +110,7 @@ export default function UserUpdateScreen(props: Props) {
     if (password === '') {
       user.password = 'Test2020';
     }
-    
+
     await updateUser({
       variables: {
         input: user,
@@ -181,34 +172,6 @@ export default function UserUpdateScreen(props: Props) {
           maxLength={32}
           secureTextEntry
         />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            borderColor: COLORS.stornGray,
-            borderWidth: 1,
-            borderRadius: 56,
-          }}
-        >
-          <Pressable
-            onPress={() => setRole('CLIENT')}
-            style={{
-              ...styles.select,
-              backgroundColor: role === 'CLIENT' ? COLORS.caramel : COLORS.white,
-            }}
-          >
-            <Text>Cliente</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setRole('STAFF')}
-            style={{
-              ...styles.select,
-              backgroundColor: role === 'STAFF' ? COLORS.caramel : COLORS.white,
-            }}
-          >
-            <Text>Operador</Text>
-          </Pressable>
-        </View>
         {allServices.map((item: any, index: number) => (
           <View
             key={index}

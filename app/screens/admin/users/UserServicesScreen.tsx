@@ -59,7 +59,7 @@ const UserServicesScreen = ({ navigation, route }: any) => {
       },
     });
   };
- 
+
   if (data) {
     const { productsCategorys } = data;
     return (

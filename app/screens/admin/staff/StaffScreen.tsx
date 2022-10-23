@@ -1,8 +1,7 @@
-//
-
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { StyleSheet, View } from 'react-native';
-import { Input, Header } from '../../../components';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Input, Header, RefreshButtom } from '../../../components';
+import { FlatList } from 'react-native-gesture-handler';
 import User from './components/User';
 import { COLORS } from '../../../theme';
 import { ALL_USERS } from '../../../graphql/user.graphql';
@@ -10,15 +9,23 @@ import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 const StaffScreen = ({ navigation }: any) => {
-  const { data, loading, error } = useQuery(ALL_USERS);
+  const { data, loading, error, refetch } = useQuery(ALL_USERS, {
+    onCompleted(data) {
+      console.log(data);
+    },
+    onError(error) {
+      console.log(error);
+    },
+  });
   const [filtered, setFiltered] = useState<any[]>([]);
 
   useEffect(() => {
     const onCompleted = (data: any) => {
       setFiltered(data.allUsers);
     };
-    const onError = (error: any) => {};
-
+    const onError = (error: any) => {
+      console.log(error);
+    };
     if (onCompleted || onError) {
       if (onCompleted && !loading && !error) {
         onCompleted(data);
@@ -33,7 +40,7 @@ const StaffScreen = ({ navigation }: any) => {
 
     const onSearch = (val: string) => {
       const result = allUsers.filter(
-        (item: any, index: number) =>
+        (item: any) =>
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           item.name.toLowerCase().includes(val.toLocaleLowerCase()) ||
           item.email.toLowerCase().includes(val.toLocaleLowerCase()),
@@ -65,13 +72,14 @@ const StaffScreen = ({ navigation }: any) => {
           />
         </Header>
 
-        <ScrollView>
-          <View style={{ marginHorizontal: 8 }}>
-            {filtered.map((user: any) => (
-              <User key={user.id} {...user} />
-            ))}
-          </View>
-        </ScrollView>
+        <View style={{ flex: 1, marginHorizontal: 8 }}>
+          <FlatList
+            data={filtered}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item: user }) => <User key={user.id} {...user} />}
+          />
+        </View>
+        <RefreshButtom onPress={() => refetch()} />
       </View>
     );
   }

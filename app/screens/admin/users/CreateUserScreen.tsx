@@ -10,7 +10,7 @@ import { CREATE_USER } from '../../../graphql/user.graphql';
 const CreateUserScreen = ({ navigation }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
 
-  const [createUser, { data }] = useMutation(CREATE_USER);
+  const [createUser] = useMutation(CREATE_USER);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
