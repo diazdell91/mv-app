@@ -3,21 +3,34 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button, Header, Text } from '../../../components';
-import DatePicker from '../../../components/DatePicker';
-import { COLORS } from '../../../theme';
+import { Button, Header, Text } from '../../components';
+import DatePicker from '../../components/DatePicker';
+import { COLORS } from '../../theme';
+import SelectedFilter from './components/SelectedFilter';
 
-const FilterArchiveScreen = ({ navigation }: any) => {
+const FilterHistoryScreen = ({ navigation }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
   const [startOfDate, setStartOfDate] = useState({ label: '', value: new Date() });
   const [endOfDate, setEndOfDate] = useState({ label: '', value: new Date() });
-  const [processingState, setProcessingState] = useState('COMPLETED');
+  const [status, setStatus] = useState(null);
+
+  const statusOptions = [
+    { label: 'Todas', value: null },
+    { label: 'Pendientes', value: 'PENDING' },
+    { label: 'Prosesando', value: 'ASSIGNED' },
+    { label: 'Completada', value: 'COMPLETED' },
+    { label: 'Fallida', value: 'CANCELLED' },
+  ];
+
+  const filters = {
+    startOfDate: startOfDate.value.toLocaleDateString(),
+    endOfDate: endOfDate.value.toLocaleDateString(),
+    status,
+  };
 
   const handleFilter = () => {
     navigation.navigate('Informes', {
-      startOfDate: startOfDate.value.toDateString(),
-      endOfDate: endOfDate.value.toDateString(),
-      processingState,
+      filters,
     });
   };
   return (
@@ -60,35 +73,25 @@ const FilterArchiveScreen = ({ navigation }: any) => {
         <View style={{ marginHorizontal: 8, marginTop: 8 }}>
           <Text fontFamily="Poppins-Bold">Estado</Text>
         </View>
+
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            borderColor: COLORS.stornGray,
-            borderWidth: 1,
-            borderRadius: 56,
+            flexWrap: 'wrap',
             marginHorizontal: 8,
             marginTop: 8,
           }}
         >
-          <Pressable
-            onPress={() => setProcessingState('PENDING')}
-            style={{
-              ...styles.select,
-              backgroundColor: processingState === 'PENDING' ? COLORS.caramel : COLORS.white,
-            }}
-          >
-            <Text>Pendiente</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setProcessingState('COMPLETED')}
-            style={{
-              ...styles.select,
-              backgroundColor: processingState === 'COMPLETED' ? COLORS.caramel : COLORS.white,
-            }}
-          >
-            <Text>Completada</Text>
-          </Pressable>
+          {statusOptions.map((item) => (
+            <Pressable
+              key={item.value}
+              onPress={() => {
+                setStatus(item.value);
+              }}
+            >
+              <SelectedFilter item={item} selected={item.value === status} />
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
       <Button title="Mostrar resultados" onPress={handleFilter} />
@@ -96,7 +99,7 @@ const FilterArchiveScreen = ({ navigation }: any) => {
   );
 };
 
-export default FilterArchiveScreen;
+export default FilterHistoryScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -104,16 +107,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: COLORS.fog,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  select: {
-    width: '45%',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 32,
-    marginHorizontal: 8,
-    marginVertical: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },

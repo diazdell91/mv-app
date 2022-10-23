@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import BottomTabNavigation from './TabNavigator';
+import BottomTabNavigation from './TabClientNavigator';
 import TopUpDetails from '../screens/client/dashboard/TopUpDetails';
 import SuccessTopup from '../screens/client/dashboard/views/SuccessTopup';
 import FailTopup from '../screens/client/dashboard/views/FailTopup';
 import CreateTopupStepOne from '../screens/client/dashboard/CreateTopupStepOne';
 import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
-import FilterHistoryScreen from '../screens/client/insights/FilterHistoryScreen';
+import FilterHistoryScreen from '../screens/insights/FilterHistoryScreen';
 import FilterTransactionsScreen from '../screens/client/wallet/FilterTransactionsScreen';
 import TransactionsScreen from '../screens/client/wallet/TransactionsScreen';
 

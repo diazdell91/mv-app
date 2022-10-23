@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
-import { COLORS } from '../../../../theme';
-import { Text } from '../../../../components';
+import { COLORS } from '../../../theme';
+import { Text } from '../../../components';
 
 type Props = {
   filters: {

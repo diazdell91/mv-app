@@ -24,8 +24,7 @@ type Props = {
 const TopUp = (props: Props) => {
   const { phone, status, createdAt, product, ...otherProps } = props;
   const { user } = useAuth();
-  const price =
-    user?.role === 'STAFF' ? product.receiveValue : Math.floor(product.price / 100).toFixed(2);
+  const price = user?.role === 'STAFF' ? product.receiveValue : (product.price / 100).toFixed(2);
   const priceCurrency = user?.role === 'STAFF' ? 'CUP' : 'USD';
   return (
     <TouchableOpacity activeOpacity={0.5} {...otherProps}>

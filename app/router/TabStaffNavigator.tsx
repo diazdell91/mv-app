@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import InsightsScreen from '../screens/insights/InsightsScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
-import ArchiveScreen from '../screens/team/archive/ArchiveScreen';
 import BoardScreen from '../screens/team/board/BoardScreen';
 import TasksScreen from '../screens/team/tasks/TasksScreen';
 import TabBar from './components/TabBar';
@@ -17,7 +17,7 @@ export default function BottomTabStaffNavigation() {
     >
       <BottomTab.Screen name="Tablero" component={BoardScreen} />
       <BottomTab.Screen name="Tareas" component={TasksScreen} />
-      <BottomTab.Screen name="Informes" component={ArchiveScreen} />
+      <BottomTab.Screen name="Informes" component={InsightsScreen} />
       <BottomTab.Screen name="Profile" component={ProfileScreen} />
     </BottomTab.Navigator>
   );

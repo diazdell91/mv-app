@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -12,7 +11,6 @@ import EmptyList from '../../../components/EmptyList';
 const BoardScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
   const PAGE_SIZE = 10;
-  const [page, setPage] = useState(0);
 
   const { data, loading, error, refetch } = useQuery(TOPUPS_AVAILABLES, {
     variables: {
@@ -57,16 +55,14 @@ const BoardScreen = ({ navigation }: any) => {
         )}
         <RefreshButtom
           onPress={async () => {
-            console.log('refetch');
             await refetch();
           }}
         />
       </View>
     );
   }
-  if (error) {
-    console.log(error);
-  }
+
+  return null;
 };
 
 export default BoardScreen;

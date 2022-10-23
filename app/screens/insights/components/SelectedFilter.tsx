@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
-import { Text } from '../../../../components';
-import { COLORS } from '../../../../theme';
+import { Text } from '../../../components';
+import { COLORS } from '../../../theme';
 
 type Props = {
   selected: boolean;

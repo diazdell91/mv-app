@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Header, Input } from '../../../../components';
-import { COLORS } from '../../../../theme';
+import { Header, Input } from '../../../components';
+import { COLORS } from '../../../theme';
 
 interface Props {
   onPress?: () => void;

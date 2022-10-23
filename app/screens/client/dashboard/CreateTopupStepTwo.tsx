@@ -6,7 +6,8 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ActivityIndicatorModal, Button, Loading } from '../../../components';
 import { PRODUCTS } from '../../../graphql/products.graphql';
-import { CREATE_TOPUP, TOPUPS } from '../../../graphql/topup.grapgql';
+import { CREATE_TOPUP } from '../../../graphql/topup.grapgql';
+import { ME } from '../../../graphql/user.graphql';
 import { COLORS } from '../../../theme';
 import TopupProduct from './components/TopupProduct';
 
@@ -15,13 +16,15 @@ const CreateTopupStepTwo = ({ navigation, route }: any) => {
   const { phone } = route.params;
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
-  console.log(selectedProduct);
-
   const { data, loading, error } = useQuery(PRODUCTS, {
     variables: {
       input: {
         category: 'TOPUP',
       },
+    },
+    onCompleted(data) {
+      const { docs } = data.products;
+      setSelectedProduct(docs[1]);
     },
   });
 
@@ -36,25 +39,21 @@ const CreateTopupStepTwo = ({ navigation, route }: any) => {
           productId: selectedProduct.id,
         },
       },
-      onCompleted: () => {
+      onCompleted: (data) => {
+        console.log(data);
         setTimeout(() => {
           navigation.navigate('SuccessTopup', { phone });
         }, 500);
       },
-      onError: () => {
+      onError: (error) => {
+        console.log(error);
         setTimeout(() => {
           navigation.navigate('FailTopup', { phone });
         }, 500);
       },
       refetchQueries: [
         {
-          query: TOPUPS,
-          variables: {
-            input: {
-              offset: 0,
-              limit: 25,
-            },
-          },
+          query: ME,
         },
       ],
     });
@@ -92,7 +91,14 @@ const CreateTopupStepTwo = ({ navigation, route }: any) => {
           )}
           keyExtractor={(item) => item.id}
         />
-        <Button disabled={!selectedProduct?.id} onPress={handleSendTopup} title="Crear recarga" />
+        <Button
+          disabled={!selectedProduct?.id}
+          onPress={handleSendTopup}
+          title="Crear recarga"
+          style={{
+            backgroundColor: !selectedProduct?.id ? COLORS.backgroundAlt : COLORS.primary,
+          }}
+        />
         <ActivityIndicatorModal loading={sendLoading} />
       </View>
     );

@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import InsightsScreen from '../screens/client/insights/InsightsScreen';
+import InsightsScreen from '../screens/insights/InsightsScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import StaffScreen from '../screens/admin/staff/StaffScreen';
 import TabBar from './components/TabBar';

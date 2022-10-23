@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Loading, TopUp } from '../../../../components';
+import { Loading, TopUp } from '../../../components';
 
 const PendingScreen = () => {
   const [loading, setLoading] = useState(true);

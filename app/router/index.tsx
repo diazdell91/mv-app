@@ -6,7 +6,7 @@ import LoadingScreen from '../screens/loading/LoadingScreen';
 import { COLORS } from '../theme';
 
 //navigation
-import MainNavigator from './Main';
+import MainNavigator from './MainClient';
 import MainAdminNavigator from './MainAdmin';
 import MainStaffNavigator from './MainStaff';
 import AuthNavigator from './stacks/AuthStack';

@@ -8,10 +8,10 @@ import { TOPUPS_ASSIGNED } from '../../../graphql/topup.grapgql';
 import { useState } from 'react';
 import EmptyList from '../../../components/EmptyList';
 
-const TasksScreen = ({ navigation, route }: any) => {
+const TasksScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
   const PAGE_SIZE = 10;
-  const [page, setPage] = useState(0);
+  const [page] = useState(0);
 
   const { data, loading, error, refetch } = useQuery(TOPUPS_ASSIGNED, {
     variables: {
@@ -34,7 +34,7 @@ const TasksScreen = ({ navigation, route }: any) => {
   }
   if (data) {
     const { listTopupsAssigned } = data;
-    const { docs, totalDocs } = listTopupsAssigned;
+    const { docs } = listTopupsAssigned;
     console.log(docs.length);
 
     return (
@@ -66,6 +66,8 @@ const TasksScreen = ({ navigation, route }: any) => {
       </View>
     );
   }
+
+  return null;
 };
 
 export default TasksScreen;

@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Loading, TopUp, EmptyList, RefreshButtom } from '../../../components';
-import { COLORS } from '../../../theme';
+import { Loading, TopUp, EmptyList, RefreshButtom } from '../../components';
+import { COLORS } from '../../theme';
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
-import { TOPUPS } from '../../../graphql/topup.grapgql';
+import { TOPUPS } from '../../graphql/topup.grapgql';
 import HeaderFilter from './components/HeaderFilter';
 import ActiveFilters from './components/ActiveFilters';
 
 const InsightsScreen = ({ navigation, route }: any) => {
   const [page] = useState(0);
+  console.log('first');
 
   const [filters, setFilters] = useState({
     startOfDate: moment().subtract(1, 'day').toDate().toLocaleDateString(),
@@ -29,7 +30,12 @@ const InsightsScreen = ({ navigation, route }: any) => {
         ...filters,
       },
     },
+    onError(err) {
+      console.log(err);
+    },
   });
+
+  console.log(error);
 
   useEffect(() => {
     if (route.params) {

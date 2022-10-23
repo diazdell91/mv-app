@@ -3,6 +3,7 @@ import { useContext, useEffect, useReducer } from 'react';
 import reducer from './authReducer';
 import { AuthContext, Session } from './authContext';
 import sessionService from '../sessionService';
+import client from '../../apollo/client';
 
 const initialState = {
   isLoading: true,
@@ -38,6 +39,7 @@ function useAuthActions() {
   }, []);
 
   const login = async (session: Session) => {
+    await client.clearStore();
     try {
       await sessionService.saveSession(session);
       dispatch({
@@ -50,6 +52,7 @@ function useAuthActions() {
   };
   const signOut = async () => {
     console.log('signOut');
+    await client.clearStore();
     try {
       await sessionService.deleteSession();
       dispatch({ type: 'SIGN_OUT' });

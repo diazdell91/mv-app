@@ -9,7 +9,7 @@ const PHONE_REGEX = /^5[1-9]{1}[0-9]{6}$/;
 
 const CreateTopupStepOne = ({ navigation }: any) => {
   const keyboardHeight = useKeyboardHeight();
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState('55555555');
 
   const handleConfirmPhone = () => {
     navigation.navigate('CreateTopupStepTwo', { phone });

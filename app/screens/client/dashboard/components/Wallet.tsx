@@ -16,7 +16,8 @@ const Wallet = () => {
   if (data) {
     const { me } = data;
     const wallet = me?.wallet;
-    const balance = wallet?.balance || '0.00';
+    console.log(wallet);
+    const balance = wallet?.balance / 100 || '0.00';
     const currency = wallet?.currency || 'USD';
 
     return (

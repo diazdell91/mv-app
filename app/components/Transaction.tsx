@@ -18,7 +18,6 @@ type Props = {
 
 const Transaction = (props: Props) => {
   const { amount, description, type, balanceBefore, balanceAfter, createdAt } = props;
-
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, marginStart: 16 }}>
@@ -29,10 +28,13 @@ const Transaction = (props: Props) => {
           {description}
         </Text>
         <Text size={12}>{moment(createdAt).format('lll')}</Text>
+        <Text size={12}>
+          {`${(balanceBefore / 100).toFixed(2)} USD`} {`${(balanceAfter / 100).toFixed(2)} USD`}
+        </Text>
       </View>
       <View style={{ marginStart: 8, alignItems: 'flex-end' }}>
         <Text size={18} fontFamily={'Poppins-Bold'} color={COLORS.black}>
-          {`${Math.floor(amount / 100).toFixed(2)}$`}
+          {`${(amount / 100).toFixed(2)}$`}
         </Text>
         {/* <Text color={COLORS.black} size={12}>
           {`${balanceBefore} USD`}

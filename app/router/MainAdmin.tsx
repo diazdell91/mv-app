@@ -8,7 +8,7 @@ import CreateUserScreen from '../screens/admin/users/CreateUserScreen';
 import SuccessUser from '../screens/admin/staff/views/SuccessUser';
 import CreateTopupStepOne from '../screens/client/dashboard/CreateTopupStepOne';
 import CreateTopupStepTwo from '../screens/client/dashboard/CreateTopupStepTwo';
-import FilterHistoryScreen from '../screens/client/insights/FilterHistoryScreen';
+import FilterHistoryScreen from '../screens/insights/FilterHistoryScreen';
 import UserServicesScreen from '../screens/admin/users/UserServicesScreen';
 import UserDetailsScreen from '../screens/admin/users/UserDetailsScreen';
 import UserUpdateScreen from '../screens/admin/users/UserUpdateScreen';
