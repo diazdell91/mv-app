@@ -68,15 +68,6 @@ const UserDetailsScreen = (props: Props) => {
             <View style={styles.wrapperAvatar}>
               <Icon name="account-outline" size={68} color={COLORS.white} />
             </View>
-            <View
-              style={{
-                ...styles.editButton,
-                top: top - 50,
-                left: left + Layout.window.width / 2 + 20,
-              }}
-            >
-              <Icon name="pencil" size={24} color={COLORS.white} />
-            </View>
             <View style={{ marginTop: SIZES.xs }}>
               <Text align="center" color={COLORS.white}>
                 Hola, {user.name}
@@ -157,9 +148,11 @@ const UserDetailsScreen = (props: Props) => {
                 </Text>
               </View>
             </View>
-            <View style={{ marginTop: 20 }}>
-              <Services services={allowedServices} title="Servicios" />
-            </View>
+            {user.rol !== 'STAFF' && (
+              <View style={{ marginTop: 20 }}>
+                <Services services={allowedServices} title="Servicios" />
+              </View>
+            )}
           </ScrollView>
         </View>
       </>

@@ -49,10 +49,6 @@ const InsightsScreen = ({ navigation, route }: any) => {
     );
   }
 
-  if (error) {
-    console.log('Error', error);
-  }
-
   if (data) {
     const { listTopupsRecords } = data;
     const { docs } = listTopupsRecords;

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Text } from '../../../../components';
@@ -6,18 +7,20 @@ import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 const SuccessUser = ({ navigation, route }: any) => {
   const { bottom: paddingBottom, top: paddingTop } = useSafeAreaInsets();
-  console.log(route.params.title);
-  let s = {
-    title: 'Usuario creado con éxito!',
-    subt: 'Epaa uno mas!!',
-  };
 
-  if (route.params.title) {
-    s = {
-      title: 'Usuario actualizado con éxito!',
-      subt: 'Estamos al dia!!',
-    };
-  }
+  const [message, setMessage] = useState({
+    title: 'Usuario creado con éxito!',
+    subTitle: 'Epaa uno mas!!',
+  });
+
+  useEffect(() => {
+    if (route?.params?.title) {
+      setMessage({
+        title: 'Usuario actualizado con éxito!',
+        subTitle: 'Estamos al dia!!',
+      });
+    }
+  }, [route?.params?.title]);
 
   return (
     <View style={{ ...styles.container, paddingTop, paddingBottom }}>
@@ -27,10 +30,10 @@ const SuccessUser = ({ navigation, route }: any) => {
         </View>
         <View style={{ marginTop: 32 }}>
           <Text fontFamily="Poppins-Light" size={42} color={'#E6D6FF'}>
-            {s.title}
+            {message.title}
           </Text>
           <Text fontFamily="Poppins-Bold" size={52} color={'#FF3482'}>
-            {s.subt}
+            {message.subTitle}
           </Text>
         </View>
       </View>

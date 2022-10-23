@@ -119,6 +119,7 @@ export default function UserUpdateScreen(props: Props) {
     if (password === '') {
       user.password = 'Test2020';
     }
+    
     await updateUser({
       variables: {
         input: user,
@@ -132,13 +133,11 @@ export default function UserUpdateScreen(props: Props) {
         console.log(error);
       },
     });
-
-    console.log(user);
   };
 
   return (
     <View style={{ ...styles.container, paddingBottom }}>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
         <Input
           autoFocus
           placeholder="Nombre Completo"
