@@ -10,7 +10,7 @@ const TopUpAvailableActions = ({ route, navigation }: any) => {
 
   if (route.params) {
     const { topup } = route.params;
-
+    const PAGE_SIZE = 10;
     const { id, code, status, createdAt, product, phone } = topup;
 
     const handleAssign = async () => {
@@ -18,15 +18,20 @@ const TopUpAvailableActions = ({ route, navigation }: any) => {
         variables: {
           id: id,
         },
-        update: (cache, { data }) => {
-          const q = cache.readQuery({
+        refetchQueries: [
+          {
             query: TOPUPS_AVAILABLES,
-          });
-          console.log('query on chache', q);
-          // const { listTopupsAssigned } = cache.readQuery({
-          //   query: TOPUPS_ASSIGNED,
-          // });
-        },
+            variables: {
+              input: { offset: 0, limit: PAGE_SIZE },
+            },
+          },
+          {
+            query: TOPUPS_ASSIGNED,
+            variables: {
+              input: { offset: 0, limit: PAGE_SIZE },
+            },
+          },
+        ],
       });
 
       (await result.data.assignTopup.success) ? navigation.goBack() : alert('Error al asignar');

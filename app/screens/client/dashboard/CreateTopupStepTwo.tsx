@@ -40,9 +40,18 @@ const CreateTopupStepTwo = ({ navigation, route }: any) => {
         },
       },
       onCompleted: (data) => {
-        setTimeout(() => {
-          navigation.navigate('SuccessTopup', { phone });
-        }, 500);
+        console.log(data);
+        const sendTopup = data?.sendTopup;
+        const success = sendTopup?.success;
+        if (!success) {
+          setTimeout(() => {
+            navigation.navigate('FailTopup', { phone });
+          }, 500);
+        } else {
+          setTimeout(() => {
+            navigation.navigate('SuccessTopup', { phone });
+          }, 500);
+        }
       },
       onError: (error) => {
         console.log(error);

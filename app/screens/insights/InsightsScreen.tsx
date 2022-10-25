@@ -13,7 +13,7 @@ import { useAuth } from '../../context/auth/authProvider';
 
 const InsightsScreen = ({ navigation, route }: any) => {
   const [page] = useState(0);
-  const {session} = useAuth();
+  const { session } = useAuth();
 
   const [filters, setFilters] = useState({
     startOfDate: moment().subtract(1, 'day'),
@@ -32,7 +32,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
       },
     },
     onError(err) {
-      console.log('error',err);
+      console.log('error', err);
     },
   });
 
@@ -59,7 +59,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
   if (data) {
     const { listTopupsRecords } = data;
     const { docs } = listTopupsRecords;
-
+    console.log(docs);
     return (
       <View style={styles.container}>
         <HeaderFilter
