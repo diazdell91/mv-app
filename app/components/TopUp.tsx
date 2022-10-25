@@ -75,12 +75,21 @@ export default TopUp;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: COLORS.white,
     flexDirection: 'row',
     marginVertical: 4,
     alignItems: 'center',
-    padding: 8,
-    borderBottomColor: COLORS.backgroundAlt,
-    borderBottomWidth: 0.3,
+    borderRadius: 16,
+    padding: 16,
+    margin: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+    elevation: 1,
   },
   wrapperIcon: {
     backgroundColor: COLORS.placeHolder,

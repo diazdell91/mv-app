@@ -7,8 +7,8 @@ import StaffProfile from './StaffProfile';
 import { Text } from '../../../../components';
 import { COLORS } from '../../../../theme';
 import moment from 'moment';
-import { useMutation, useQuery } from '@apollo/client';
-import { ME, UPDATE_USER, USER } from '../../../../graphql/user.graphql';
+import { useMutation } from '@apollo/client';
+import { UPDATE_USER } from '../../../../graphql/user.graphql';
 import { useState } from 'react';
 
 export type CustomerProps = {
@@ -35,14 +35,12 @@ const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
   const { id, name, wallet, email, phone, lastTask, disabled } = props;
   const [active, setActive] = useState(disabled);
-  const { data } = useQuery(ME);
-  const [updateUser, { loading }] = useMutation(UPDATE_USER);
-  const navigation = useNavigation<any>();
+  const [updateUser] = useMutation(UPDATE_USER);
 
-  const handleUpdateServices = async () => {
+  const handleUpdateServices = () => {
     const lockMessage = active ? 'Desea desbloquear el usuario' : 'Desea bloquear el usuario';
     const lockTextButton = active ? 'Desbloquear' : 'Bloquear';
-    
+
     Alert.alert('Info', lockMessage, [
       {
         text: 'Cancelar',
