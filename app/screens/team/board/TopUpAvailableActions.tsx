@@ -37,6 +37,7 @@ const TopUpAvailableActions = ({ route, navigation }: any) => {
       (await result.data.assignTopup.success) ? navigation.goBack() : alert('Error al asignar');
     };
 
+    console.log(createdAt);
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -59,7 +60,7 @@ const TopUpAvailableActions = ({ route, navigation }: any) => {
               <Text size={32} fontFamily={'Poppins-Bold'} color={COLORS.white}>
                 {product?.receiveValue} CUP
               </Text>
-              <Text size={24}>{moment.unix(createdAt / 1000).format('lll')}</Text>
+              <Text size={24}>{moment(createdAt).format('lll')}</Text>
             </View>
             <View style={styles.wrappperButton}>
               <Button title="Obtener" onPress={handleAssign} style={styles.button} />

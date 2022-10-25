@@ -12,6 +12,7 @@ import ActiveFilters from './components/ActiveFilters';
 import { useAuth } from '../../context/auth/authProvider';
 
 const InsightsScreen = ({ navigation, route }: any) => {
+  const [filtered, setFiltered] = useState<any[]>([]);
   const [page] = useState(0);
   const { session } = useAuth();
 
@@ -22,7 +23,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
   });
 
   const PAGE_SIZE = 25;
-  console.log(filters);
+
   const { data, loading, error, refetch } = useQuery(TOPUPS, {
     variables: {
       input: {
@@ -31,12 +32,13 @@ const InsightsScreen = ({ navigation, route }: any) => {
         ...filters,
       },
     },
+    onCompleted(data) {
+      setFiltered(data.listTopupsRecords.docs);
+    },
     onError(err) {
       console.log('error', err);
     },
   });
-
-  console.log(error);
 
   useEffect(() => {
     if (route.params) {
@@ -45,6 +47,16 @@ const InsightsScreen = ({ navigation, route }: any) => {
     }
   }, [route.params]);
 
+  const onSearch = (query: string) => {
+    const result = data.listTopupsRecords.docs.filter(
+      (item: any) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        item.code.toLowerCase().includes(query.toLocaleLowerCase()) ||
+        item.phone.toLowerCase().includes(query.toLocaleLowerCase()),
+    );
+
+    setFiltered(result);
+  };
   if (loading) {
     return (
       <View style={styles.container}>
@@ -59,16 +71,17 @@ const InsightsScreen = ({ navigation, route }: any) => {
   if (data) {
     const { listTopupsRecords } = data;
     const { docs } = listTopupsRecords;
-    console.log(docs);
+
     return (
       <View style={styles.container}>
         <HeaderFilter
+          onSearch={onSearch}
           onPress={() => {
             navigation.navigate('FilterHistoryScreen');
           }}
         />
         <ActiveFilters filters={filters} />
-        {docs.length < 1 ? (
+        {filtered.length < 1 ? (
           <EmptyList title="Upss! 🙁" text="No tienes registro para este rango" />
         ) : (
           <FlatList

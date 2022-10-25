@@ -39,6 +39,23 @@ const DEFAULT_SERVICES = [
 const Services = (props: any) => {
   const { services = DEFAULT_SERVICES, title = 'Lista de servicios' } = props;
   const navigation = useNavigation<any>();
+
+  let icon = 'dots-horizontal-circle';
+
+  services.forEach((item: any, index: number) => {
+    switch (item.category) {
+      case 'FOODDELIVERY':
+        icon = 'food';
+        return;
+      case 'AIRPLANETICKET':
+        icon = 'airplane';
+        return;
+      case 'HOTELBOOKING':
+        icon = 'bed';
+        return;
+    }
+  });
+
   return (
     <View style={styles.container}>
       <Text size={22} style={{ marginStart: 16 }}>
@@ -53,7 +70,7 @@ const Services = (props: any) => {
           icon="cellphone-charging"
         />
         {services.map((item: any, index: number) => (
-          <IconService key={index} disabled={item.allowed} name={item.name} icon={item.icon} />
+          <IconService key={index} disabled={item.allowed} name={item.category} icon={icon} />
         ))}
       </View>
     </View>

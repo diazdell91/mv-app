@@ -4,9 +4,10 @@ import { COLORS } from '../../../theme';
 
 interface Props {
   onPress?: () => void;
+  onSearch?: (query: string) => void;
 }
 
-const HeaderFilter = ({ onPress }: Props) => {
+const HeaderFilter = ({ onPress, onSearch }: Props) => {
   return (
     <Header iconRightName="filter" iconRightColor={COLORS.placeHolder} iconRightPress={onPress}>
       <Input
@@ -16,6 +17,7 @@ const HeaderFilter = ({ onPress }: Props) => {
         iconLeftColor={COLORS.white}
         inputStyle={styles.input}
         style={styles.inputContainer}
+        onChangeText={onSearch}
       />
     </Header>
   );

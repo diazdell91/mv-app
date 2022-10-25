@@ -14,8 +14,8 @@ const TransactionsScreen = ({ navigation, route }: any) => {
   const [page] = useState(0);
 
   const [filters, setFilters] = useState({
-    startOfDate: moment().subtract(1, 'day'),
-    endOfDate: moment().endOf('day'),
+    startOfDate: moment().subtract(1, 'day').toDate().toLocaleDateString(),
+    endOfDate: moment().endOf('day').toDate().toLocaleDateString(),
   });
 
   const PAGE_SIZE = 25;

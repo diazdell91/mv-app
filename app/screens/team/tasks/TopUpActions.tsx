@@ -6,12 +6,20 @@ import moment from 'moment';
 import { Button, Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
 import { useMutation } from '@apollo/client';
-import { CANCEL_TOPUP, COMPLETE_TOPUP, REASSIGN_TOPUP } from '../../../graphql/topup.grapgql';
+import {
+  CANCEL_TOPUP,
+  COMPLETE_TOPUP,
+  REASSIGN_TOPUP,
+  TOPUPS_ASSIGNED,
+  TOPUPS_AVAILABLES,
+} from '../../../graphql/topup.grapgql';
 
 const TopUpActions = ({ route, navigation }: any) => {
   const [cancel, { loading: cancelLoading }] = useMutation(CANCEL_TOPUP);
   const [completed] = useMutation(COMPLETE_TOPUP);
   const [reassign] = useMutation(REASSIGN_TOPUP);
+
+  const PAGE_SIZE = 10;
 
   if (route.params.topup) {
     const { id, amountCup, phone, code, processingState, createdAt } = route.params.topup;
@@ -34,12 +42,28 @@ const TopUpActions = ({ route, navigation }: any) => {
             text: 'Aceptar',
             onPress: async () => {
               try {
-                await cancel({
+                const result = await cancel({
                   variables: {
                     id,
                   },
+                  refetchQueries: [
+                    {
+                      query: TOPUPS_AVAILABLES,
+                      variables: {
+                        input: { offset: 0, limit: PAGE_SIZE },
+                      },
+                    },
+                    {
+                      query: TOPUPS_ASSIGNED,
+                      variables: {
+                        input: { offset: 0, limit: PAGE_SIZE },
+                      },
+                    },
+                  ],
                 });
-                navigation.goBack();
+                (await result.data.cancelTopup.success)
+                  ? navigation.goBack()
+                  : alert('Error al cancelar');
               } catch (error) {
                 console.log(error);
               }
@@ -52,8 +76,8 @@ const TopUpActions = ({ route, navigation }: any) => {
 
     const handleCompleted = () => {
       Alert.alert(
-        'Reportar error recarga',
-        '¿Estás seguro de que quieres reportar esta recarga?',
+        'Completar recarga',
+        '¿Estás seguro de que quieres completar esta recarga?',
         [
           {
             text: 'Cancelar',
@@ -63,12 +87,28 @@ const TopUpActions = ({ route, navigation }: any) => {
             text: 'Aceptar',
             onPress: async () => {
               try {
-                await completed({
+                const result = await completed({
                   variables: {
                     id,
                   },
+                  refetchQueries: [
+                    {
+                      query: TOPUPS_AVAILABLES,
+                      variables: {
+                        input: { offset: 0, limit: PAGE_SIZE },
+                      },
+                    },
+                    {
+                      query: TOPUPS_ASSIGNED,
+                      variables: {
+                        input: { offset: 0, limit: PAGE_SIZE },
+                      },
+                    },
+                  ],
                 });
-                navigation.goBack();
+                (await result.data.completeTopup.success)
+                  ? navigation.goBack()
+                  : alert('Error al completar');
               } catch (error) {
                 console.log(error);
               }
@@ -92,12 +132,28 @@ const TopUpActions = ({ route, navigation }: any) => {
             text: 'Aceptar',
             onPress: async () => {
               try {
-                await reassign({
+                const result = await reassign({
                   variables: {
                     id,
                   },
+                  refetchQueries: [
+                    {
+                      query: TOPUPS_AVAILABLES,
+                      variables: {
+                        input: { offset: 0, limit: PAGE_SIZE },
+                      },
+                    },
+                    {
+                      query: TOPUPS_ASSIGNED,
+                      variables: {
+                        input: { offset: 0, limit: PAGE_SIZE },
+                      },
+                    },
+                  ],
                 });
-                navigation.goBack();
+                (await result.data.reAssignTopup.success)
+                  ? navigation.goBack()
+                  : alert('Error al rechazar');
               } catch (error) {
                 console.log(error);
               }
