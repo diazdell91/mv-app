@@ -1,5 +1,5 @@
 //import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { MaterialCommunityIcons as Icon, Ionicons } from '@expo/vector-icons';
 import DashedLine from 'react-native-dashed-line';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { COLORS } from '../../../../theme';
 import moment from 'moment';
 import { useMutation, useQuery } from '@apollo/client';
 import { ME, UPDATE_USER, USER } from '../../../../graphql/user.graphql';
+import { useState } from 'react';
 
 export type CustomerProps = {
   id: string;
@@ -32,27 +33,44 @@ export type CustomerProps = {
 
 const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
-  const { id, name, wallet, email, phone, lastTask } = props;
-  let { disabled } = props;
+  const { id, name, wallet, email, phone, lastTask, disabled } = props;
+  const [active, setActive] = useState(disabled);
   const { data } = useQuery(ME);
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
+  const navigation = useNavigation<any>();
 
   const handleUpdateServices = async () => {
-    await updateUser({
-      variables: {
-        input: {
-          id,
-          enabled: !disabled,
+    const lockMessage = active ? 'Desea desbloquear el usuario' : 'Desea bloquear el usuario';
+    const lockTextButton = active ? 'Desbloquear' : 'Bloquear';
+    
+    Alert.alert('Info', lockMessage, [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('asd'),
+        style: 'cancel',
+      },
+
+      {
+        text: lockTextButton,
+        onPress: async () => {
+          await updateUser({
+            variables: {
+              input: {
+                id,
+                disabled: !active,
+              },
+            },
+            onCompleted: (data) => {
+              setActive(data.updateUser.user.disabled);
+              console.log(active);
+            },
+            onError: (error) => {
+              console.log('error', error);
+            },
+          });
         },
       },
-      onCompleted: (data) => {
-        disabled = data.updateUser.user.disabled;
-        console.log(data)
-      },
-      onError: (error) => {
-        console.log('error', error);
-      },
-    });
+    ]);
   };
 
   return (
@@ -67,7 +85,7 @@ const User = (props: CustomerProps) => {
         <View style={{ alignItems: 'flex-end' }}>
           <Text h4>Ultima actividad</Text>
           <Text align="center" h4>
-            {moment(lastTask).format('lll')}
+            {moment(lastTask, 'x').format('YYYY-MM-DD')}
           </Text>
         </View>
         <Ionicons

@@ -30,13 +30,7 @@ export default function UserUpdateScreen(props: Props) {
   const { productsCategorys } = data;
 
   productsCategorys.forEach((category: any) => {
-    if (
-      !servicesAllowed
-        .map(({ category }: any) => {
-          category;
-        })
-        .includes(category)
-    )
+    if (!servicesAllowed.map(({ category }: any) => category as string).includes(category))
       allServices.push({ category, commissionRate: 0 });
   });
 
@@ -47,8 +41,6 @@ export default function UserUpdateScreen(props: Props) {
   const [name, setName] = useState(userName);
   const [email, setEmail] = useState(userEmail);
   const [phone, setPhone] = useState(userPhone);
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<any[]>(categories);
 
   const validate = () => {
@@ -62,9 +54,6 @@ export default function UserUpdateScreen(props: Props) {
       return false;
     }
 
-    if (password !== passwordConfirm) {
-      return false;
-    }
     return true;
   };
 
@@ -97,7 +86,6 @@ export default function UserUpdateScreen(props: Props) {
       name,
       email,
       phone,
-      password,
       servicesAllowed: selectedCategories.map((item: any) => {
         if (item.commissionRate >= 0 && item.commissionRate !== '')
           return {
@@ -106,10 +94,6 @@ export default function UserUpdateScreen(props: Props) {
           };
       }),
     };
-
-    if (password === '') {
-      user.password = 'Test2020';
-    }
 
     await updateUser({
       variables: {
@@ -153,24 +137,6 @@ export default function UserUpdateScreen(props: Props) {
           maxLength={10}
           onChangeText={setPhone}
           keyboardType="phone-pad"
-        />
-        <Input
-          placeholder="Contraseña"
-          iconRight="lock"
-          iconRightColor={COLORS.black}
-          value={password}
-          onChangeText={setPassword}
-          maxLength={32}
-          secureTextEntry
-        />
-        <Input
-          placeholder="Confirmar Contraseña"
-          iconRight="lock-check"
-          iconRightColor={COLORS.black}
-          value={passwordConfirm}
-          onChangeText={setPasswordConfirm}
-          maxLength={32}
-          secureTextEntry
         />
         {allServices.map((item: any, index: number) => (
           <View

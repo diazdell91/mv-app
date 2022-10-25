@@ -20,7 +20,6 @@ const Login = () => {
 
   // methods
   const handleLogin = async () => {
-    console.log('first');
     const { data } = await loginService({
       variables: {
         input: {
@@ -30,7 +29,6 @@ const Login = () => {
       },
     });
     if (!data || data.login?.success === false) {
-      console.log(data);
       Alert.alert(data?.login?.message);
     }
     if (data.login.success) {

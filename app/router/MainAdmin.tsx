@@ -12,6 +12,7 @@ import FilterHistoryScreen from '../screens/insights/FilterHistoryScreen';
 import UserServicesScreen from '../screens/admin/users/UserServicesScreen';
 import UserDetailsScreen from '../screens/admin/users/UserDetailsScreen';
 import UserUpdateScreen from '../screens/admin/users/UserUpdateScreen';
+import LockUserModal from '../screens/admin/staff/LockUserModal';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -26,6 +27,7 @@ type MainStackParamList = {
   UserServices: undefined;
   UserDetails: undefined;
   UserUpdate: undefined;
+  LockUser: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;

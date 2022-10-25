@@ -35,7 +35,6 @@ const TasksScreen = ({ navigation }: any) => {
   if (data) {
     const { listTopupsAssigned } = data;
     const { docs } = listTopupsAssigned;
-    console.log(docs.length);
 
     return (
       <View style={{ ...styles.container, paddingTop: top }}>
@@ -59,7 +58,6 @@ const TasksScreen = ({ navigation }: any) => {
         )}
         <RefreshButtom
           onPress={async () => {
-            console.log('refetch');
             await refetch();
           }}
         />

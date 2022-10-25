@@ -6,34 +6,19 @@ import User from './components/User';
 import { COLORS } from '../../../theme';
 import { ALL_USERS } from '../../../graphql/user.graphql';
 import { useQuery } from '@apollo/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const StaffScreen = ({ navigation }: any) => {
-  const { data, loading, error, refetch } = useQuery(ALL_USERS, {
+  const [filtered, setFiltered] = useState<any[]>([]);
+
+  const { data, refetch } = useQuery(ALL_USERS, {
     onCompleted(data) {
-      console.log(data);
+      setFiltered(data.allUsers);
     },
     onError(error) {
       console.log(error);
     },
   });
-  const [filtered, setFiltered] = useState<any[]>([]);
-
-  useEffect(() => {
-    const onCompleted = (data: any) => {
-      setFiltered(data.allUsers);
-    };
-    const onError = (error: any) => {
-      console.log(error);
-    };
-    if (onCompleted || onError) {
-      if (onCompleted && !loading && !error) {
-        onCompleted(data);
-      } else if (onError && !loading && error) {
-        onError(error);
-      }
-    }
-  }, [loading, data, error]);
 
   if (data) {
     const { allUsers } = data;

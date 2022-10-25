@@ -5,7 +5,6 @@ import { COLORS, SIZES } from '../../../theme';
 import Info from './components/Info';
 
 const TopUpDetails = ({ route, navigation }: any) => {
-  console.log(route.params.props);
   if (route.params.props) {
     const code = route.params.props.code;
     const amount = route.params.props.amount;

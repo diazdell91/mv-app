@@ -47,13 +47,11 @@ const CreateUserScreen = ({ navigation }: any) => {
       role,
     };
 
-    console.log(user);
     await createUser({
       variables: {
         input: user,
       },
       onCompleted: (data) => {
-        console.log(data);
         navigation.navigate('UserServices', { id: data.createUser.user.id });
       },
       onError: (error) => {

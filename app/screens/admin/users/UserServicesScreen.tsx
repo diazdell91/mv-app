@@ -14,8 +14,6 @@ const UserServicesScreen = ({ navigation, route }: any) => {
   const [categorys, setCategorys] = useState([]);
   const [selectedCategorys, setSelectedCategorys] = useState([]);
 
-  console.log(selectedCategorys);
-
   const { data } = useQuery(PRODUCT_CATEGORYS);
   const [updateServices, { loading }] = useMutation(UPDATE_USER);
 
@@ -51,7 +49,6 @@ const UserServicesScreen = ({ navigation, route }: any) => {
         },
       },
       onCompleted: (data) => {
-        console.log('success', data);
         navigation.navigate('SuccessUser');
       },
       onError: (error) => {

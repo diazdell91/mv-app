@@ -10,7 +10,6 @@ import { COLORS, SIZES } from '../../../theme';
 import { CustomerProps } from '../staff/components/User';
 import Wave from '../../../components/Wave';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Services from '../../client/dashboard/components/Services';
 import StaffHeader from '../staff/components/StaffHeader';
 
 type Props = {
@@ -42,7 +41,6 @@ const UserDetailsScreen = (props: Props) => {
     const { productsCategorys } = dataServices;
 
     const allowedServices = servicesAllowed.map((item: any) => {
-      console.log(item.commissionRate);
       const allowed = item ? item.commissionRate >= 0 : false;
 
       let icon = 'dots-horizontal-circle';
@@ -149,7 +147,14 @@ const UserDetailsScreen = (props: Props) => {
             </View>
             {user.rol !== 'STAFF' && (
               <View style={{ marginTop: 20 }}>
-                <Services services={allowedServices} title="Servicios" />
+                <Text color={COLORS.black} style={{ marginHorizontal: 8 }}>
+                  Servicios
+                </Text>
+                {allowedServices.map((item: any, index: number) => (
+                  <Text style={{ margin: 8 }} key={index}>
+                    {item.name}
+                  </Text>
+                ))}
               </View>
             )}
           </ScrollView>

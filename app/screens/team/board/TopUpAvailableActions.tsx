@@ -14,7 +14,6 @@ const TopUpAvailableActions = ({ route, navigation }: any) => {
     const { id, code, status, createdAt, product, phone } = topup;
 
     const handleAssign = async () => {
-      console.log('assign', id);
       const result = await assignTopup({
         variables: {
           id: id,

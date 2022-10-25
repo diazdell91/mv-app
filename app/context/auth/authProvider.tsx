@@ -51,7 +51,6 @@ function useAuthActions() {
     }
   };
   const signOut = async () => {
-    console.log('signOut');
     await client.clearStore();
     try {
       await sessionService.deleteSession();

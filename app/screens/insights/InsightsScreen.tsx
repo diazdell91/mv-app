@@ -9,19 +9,20 @@ import { useQuery } from '@apollo/client';
 import { TOPUPS } from '../../graphql/topup.grapgql';
 import HeaderFilter from './components/HeaderFilter';
 import ActiveFilters from './components/ActiveFilters';
+import { useAuth } from '../../context/auth/authProvider';
 
 const InsightsScreen = ({ navigation, route }: any) => {
   const [page] = useState(0);
-  console.log('first');
+  const {session} = useAuth();
 
   const [filters, setFilters] = useState({
-    startOfDate: moment().subtract(1, 'day').toDate().toLocaleDateString(),
-    endOfDate: moment().endOf('day').toDate().toLocaleDateString(),
+    startOfDate: moment().subtract(1, 'day'),
+    endOfDate: moment().endOf('day'),
     status: null,
   });
 
   const PAGE_SIZE = 25;
-
+  console.log(filters);
   const { data, loading, error, refetch } = useQuery(TOPUPS, {
     variables: {
       input: {
@@ -31,7 +32,7 @@ const InsightsScreen = ({ navigation, route }: any) => {
       },
     },
     onError(err) {
-      console.log(err);
+      console.log('error',err);
     },
   });
 
@@ -58,8 +59,6 @@ const InsightsScreen = ({ navigation, route }: any) => {
   if (data) {
     const { listTopupsRecords } = data;
     const { docs } = listTopupsRecords;
-
-    console.log('data', data);
 
     return (
       <View style={styles.container}>
