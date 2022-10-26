@@ -1,6 +1,5 @@
 /* eslint-disable indent */
-import { StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import moment from 'moment';
 import { COLORS } from '../theme';
@@ -27,7 +26,7 @@ const TopUp = (props: Props) => {
   const price = user?.role === 'STAFF' ? product.receiveValue : (product.price / 100).toFixed(2);
   const priceCurrency = user?.role === 'STAFF' ? 'CUP' : 'USD';
   return (
-    <TouchableOpacity activeOpacity={0.5} {...otherProps}>
+    <Pressable {...otherProps}>
       <View style={styles.container}>
         <View style={styles.wrapperIcon}>
           <Icon name="cellphone-nfc" size={22} color={COLORS.white} />
@@ -67,7 +66,7 @@ const TopUp = (props: Props) => {
           />
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

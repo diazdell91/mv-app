@@ -7,6 +7,7 @@ import { Loading, TopUp, RefreshButtom } from '../../../components';
 import { TOPUPS_AVAILABLES } from '../../../graphql/topup.grapgql';
 import Greetings from '../../client/dashboard/components/Greetings';
 import EmptyList from '../../../components/EmptyList';
+import { COLORS } from '../../../theme';
 
 const BoardScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
@@ -70,5 +71,6 @@ export default BoardScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.gradient,
   },
 });

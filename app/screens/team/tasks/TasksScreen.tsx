@@ -7,6 +7,7 @@ import { Loading, TopUp, RefreshButtom } from '../../../components';
 import { TOPUPS_ASSIGNED } from '../../../graphql/topup.grapgql';
 import { useState } from 'react';
 import EmptyList from '../../../components/EmptyList';
+import { COLORS } from '../../../theme';
 
 const TasksScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
@@ -73,5 +74,6 @@ export default TasksScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.gradient,
   },
 });
