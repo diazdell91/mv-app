@@ -5,7 +5,7 @@ import DashedLine from 'react-native-dashed-line';
 import { useQuery } from '@apollo/client';
 import { USER } from '../../../graphql/user.graphql';
 import { PRODUCT_CATEGORYS } from '../../../graphql/products.graphql';
-import { Loading, Text } from '../../../components';
+import { Input, Loading, Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
 import { CustomerProps } from '../staff/components/User';
 import Wave from '../../../components/Wave';
@@ -106,57 +106,23 @@ const UserDetailsScreen = (props: Props) => {
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={200}
           >
-            <View style={{ ...styles.info, backgroundColor: '#f5f5f5' }}>
-              <View>
-                <Icon name="email-outline" size={38} color={COLORS.gray} />
-              </View>
-              <View>
-                <Text h4 fontFamily={'Poppins-Medium'} style={{ marginStart: 8 }}>
-                  Email
-                </Text>
-                <Text size={16} fontFamily={'Poppins-Medium'} style={{ marginStart: 8 }}>
-                  {user.email}
-                </Text>
-              </View>
-            </View>
-            <View style={{ ...styles.info, backgroundColor: '#f5f5f5' }}>
-              <View>
-                <Icon name="phone-dial-outline" size={38} color={COLORS.gray} />
-              </View>
-              <View>
-                <Text h4 fontFamily={'Poppins-Medium'} style={{ marginStart: 8 }}>
-                  Teléfono
-                </Text>
-                <Text size={16} fontFamily={'Poppins-Medium'} style={{ marginStart: 8 }}>
-                  {user.phone}
-                </Text>
-              </View>
-            </View>
-            <View style={{ ...styles.info, backgroundColor: '#f5f5f5' }}>
-              <View>
-                <Icon name="security" size={38} color={COLORS.gray} />
-              </View>
-              <View>
-                <Text h4 fontFamily={'Poppins-Medium'} style={{ marginStart: 8 }}>
-                  Rol
-                </Text>
-                <Text size={16} fontFamily={'Poppins-Medium'} style={{ marginStart: 8 }}>
-                  {user.role}
-                </Text>
-              </View>
-            </View>
-            {user.rol !== 'STAFF' && (
-              <View style={{ marginTop: 20 }}>
-                <Text color={COLORS.black} style={{ marginHorizontal: 8 }}>
-                  Servicios
-                </Text>
-                {allowedServices.map((item: any, index: number) => (
-                  <Text style={{ margin: 8 }} key={index}>
-                    {item.name}
+            <View style={{ marginHorizontal: SIZES.xs }}>
+              <Input value={user.email} iconLeft="email" editable={false} />
+              <Input value={user.phone} iconLeft="phone-dial-outline" editable={false} />
+              <Input value={user.role} iconLeft="security" editable={false} />
+              {user.rol !== 'STAFF' && (
+                <View style={{ marginTop: 20 }}>
+                  <Text color={COLORS.black} style={{ marginHorizontal: 8 }}>
+                    Servicios
                   </Text>
-                ))}
-              </View>
-            )}
+                  {allowedServices.map((item: any, index: number) => (
+                    <Text style={{ margin: 8 }} key={index}>
+                      {item.name}
+                    </Text>
+                  ))}
+                </View>
+              )}
+            </View>
           </ScrollView>
         </View>
       </>
