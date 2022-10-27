@@ -9,8 +9,10 @@ import { useQuery } from '@apollo/client';
 import HeaderTransferFilter from './components/HeaderTransferFilter';
 import ActiveFilters from './components/ActiveFilters';
 import { TRANSFERS } from '../../../graphql/wallet.grapgql';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TransactionsScreen = ({ navigation, route }: any) => {
+  const { bottom: paddingBottom } = useSafeAreaInsets();
   const [page] = useState(0);
 
   const [filters, setFilters] = useState({
@@ -57,7 +59,7 @@ const TransactionsScreen = ({ navigation, route }: any) => {
     const { docs } = transfersRecords;
 
     return (
-      <View style={styles.container}>
+      <View style={{ ...styles.container, paddingBottom }}>
         <HeaderTransferFilter
           title="Transacciones"
           onPress={() => {
@@ -87,5 +89,6 @@ export default TransactionsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.gradient,
   },
 });
