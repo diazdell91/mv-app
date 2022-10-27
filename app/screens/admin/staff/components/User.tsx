@@ -80,19 +80,31 @@ const User = (props: CustomerProps) => {
     >
       <View style={styles.customer}>
         <StaffProfile name={name} balance={wallet.balance} />
-        <View style={{ alignItems: 'flex-end' }}>
-          <Text h4>Ultima actividad</Text>
-          <Text align="center" h4>
-            {moment(lastTask, 'x').format('YYYY-MM-DD')}
-          </Text>
+        <View style={styles.customerOptions}>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text h4>Ultima actividad</Text>
+            <Text align="center" h4>
+              {moment(lastTask, 'x').format('YYYY-MM-DD')}
+            </Text>
+          </View>
+          <View style={styles.customerOptions}>
+            <Icon
+              onPress={() => {
+                navigate('AdminStats', { user: props });
+              }}
+              name="chart-bar"
+              size={22}
+              color={COLORS.gray}
+              style={{ marginLeft: 8 }}
+            />
+            <Ionicons
+              onPress={handleUpdateServices}
+              name={disabled ? 'md-lock-closed-outline' : 'md-lock-open-outline'}
+              size={22}
+              color={COLORS.gray}
+            />
+          </View>
         </View>
-        <Ionicons
-          onPress={handleUpdateServices}
-          name={disabled ? 'md-lock-closed-outline' : 'md-lock-open-outline'}
-          size={22}
-          color={COLORS.gray}
-          style={{ marginLeft: 8 }}
-        />
       </View>
       <DashedLine
         dashLength={2}
@@ -139,6 +151,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 16,
+  },
+  customerOptions: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   info: {
     flexDirection: 'row',

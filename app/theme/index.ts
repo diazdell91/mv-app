@@ -1,3 +1,8 @@
+type Offset = {
+  width: number;
+  height: number;
+};
+
 export interface ITheme {
   sizes: {
     // global sizes
@@ -63,6 +68,17 @@ export interface ITheme {
     tint: string;
     tabIconDefault: string;
     tabIconSelected: string;
+  };
+
+  utils: {
+    shadowOpacity: number;
+    shadowOffset: Offset;
+    shadowElevation: number;
+    shadowColor: string;
+    shadowBlur: number;
+    shadowRadio: number;
+    borderRadius: number;
+    padding: number;
   };
 }
 
@@ -138,9 +154,25 @@ export const COLORS = {
   backDrop: '#21202510',
 };
 
+export const UTILS = {
+  shadowOpacity: 0.15,
+  shadowOffset: {
+    width: 0,
+    height: 5,
+  },
+  shadowElevation: 5,
+  shadowColor: COLORS.primary,
+  shadowBlur: 10,
+  shadowRadio: 10,
+  borderRadius: 16,
+  padding: 16,
+
+};
+
 export const THEME: ITheme = {
   sizes: SIZES,
   colors: COLORS,
+  utils: UTILS,
 };
 
 export default THEME;

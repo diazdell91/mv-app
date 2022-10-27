@@ -13,6 +13,11 @@ import UserServicesScreen from '../screens/admin/users/UserServicesScreen';
 import UserDetailsScreen from '../screens/admin/users/UserDetailsScreen';
 import UserUpdateScreen from '../screens/admin/users/UserUpdateScreen';
 import LockUserModal from '../screens/admin/staff/LockUserModal';
+import StatsScreen from '../screens/admin/stats/StatsScreen';
+import { Header } from '../components';
+import { COLORS } from '../theme';
+import FilterStatsScreen from '../screens/admin/stats/views/FilterStatsScreen';
+import ModalProductDetails from '../screens/admin/stats/views/ModalProductDetails';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -24,10 +29,13 @@ type MainStackParamList = {
   SuccessUser: undefined;
   FailTopup: undefined;
   FilterHistoryScreen: undefined;
+  FilterStatstScreen: undefined;
   UserServices: undefined;
   UserDetails: undefined;
   UserUpdate: undefined;
   LockUser: undefined;
+  AdminStats: undefined;
+  ProductDetails: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -120,6 +128,23 @@ function MainAdminNavigator() {
             title: 'Crear recarga',
           }}
         />
+        <Main.Screen
+          name="AdminStats"
+          options={{
+            headerShown: true,
+            header: ({ navigation }) => (
+              <Header
+                title="Estadísticas"
+                iconRightName="filter"
+                iconRightColor={COLORS.black}
+                iconRightPress={() => {
+                  navigation.navigate('FilterStatstScreen');
+                }}
+              />
+            ),
+          }}
+          component={StatsScreen}
+        />
       </Main.Group>
       <Main.Group
         key={'modal'}
@@ -127,7 +152,16 @@ function MainAdminNavigator() {
       >
         <Main.Screen name="TopUpDetails" component={TopUpDetails} />
         <Main.Screen name="FilterHistoryScreen" component={FilterHistoryScreen} />
+        <Main.Screen name="FilterStatstScreen" component={FilterStatsScreen} />
       </Main.Group>
+
+      <Main.Screen
+        name="ProductDetails"
+        options={{
+          presentation: 'transparentModal',
+        }}
+        component={ModalProductDetails}
+      />
     </Main.Navigator>
   );
 }
