@@ -27,6 +27,8 @@ function TabBar({ state, descriptors, navigation }: any) {
               ? 'Appoiments'
               : route.name === 'Informes'
               ? 'Docs'
+              : route.name === 'Inventory'
+              ? 'Inventory'
               : 'Profile';
 
           const onPress = () => {

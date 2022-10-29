@@ -40,7 +40,6 @@ const CreateTopupStepTwo = ({ navigation, route }: any) => {
         },
       },
       onCompleted: (data) => {
-        console.log(data);
         const sendTopup = data?.sendTopup;
         const success = sendTopup?.success;
         if (!success) {

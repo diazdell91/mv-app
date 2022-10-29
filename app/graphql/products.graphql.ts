@@ -26,3 +26,23 @@ export const PRODUCT_CATEGORYS = gql`
     productsCategorys
   }
 `;
+
+export const CREATE_PRODUCT = gql`
+  mutation CreateProduct($input: ProductInput!) {
+    createProduct(input: $input) {
+      code
+      success
+      message
+    }
+  }
+`;
+
+export const UPDATE_PRODUCT = gql`
+  mutation UpdateProduct($input: ProductInput!) {
+    updateProduct(input: $input) {
+      code
+      success
+      message
+    }
+  }
+`;

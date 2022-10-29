@@ -37,7 +37,6 @@ const FilterStatsScreen = ({ navigation }: any) => {
     },
     onCompleted: (data) => {
       const { products } = data;
-      console.log(products);
 
       products.docs.forEach((item: any, index: number) => {
         options.push({

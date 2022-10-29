@@ -12,12 +12,13 @@ import FilterHistoryScreen from '../screens/insights/FilterHistoryScreen';
 import UserServicesScreen from '../screens/admin/users/UserServicesScreen';
 import UserDetailsScreen from '../screens/admin/users/UserDetailsScreen';
 import UserUpdateScreen from '../screens/admin/users/UserUpdateScreen';
-import LockUserModal from '../screens/admin/staff/LockUserModal';
 import StatsScreen from '../screens/admin/stats/StatsScreen';
 import { Header } from '../components';
 import { COLORS } from '../theme';
 import FilterStatsScreen from '../screens/admin/stats/views/FilterStatsScreen';
 import ModalProductDetails from '../screens/admin/stats/views/ModalProductDetails';
+import UpdateProductScreen from '../screens/admin/inventory/views/UpdateProductScreen';
+import CreateProductScreen from '../screens/admin/inventory/views/CreateProductScreen';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -36,6 +37,9 @@ type MainStackParamList = {
   LockUser: undefined;
   AdminStats: undefined;
   ProductDetails: undefined;
+  UpdateProduct: undefined;
+  ListProducts: undefined;
+  CreateProduct: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -99,6 +103,20 @@ function MainAdminNavigator() {
           options={{
             title: 'Actualizar Usuario',
           }}
+        />
+        <Main.Screen
+          name="CreateProduct"
+          options={{
+            title: 'Adicionar Producto',
+          }}
+          component={CreateProductScreen}
+        />
+        <Main.Screen
+          name="UpdateProduct"
+          options={{
+            title: 'Actualizar Producto',
+          }}
+          component={UpdateProductScreen}
         />
       </Main.Group>
 
