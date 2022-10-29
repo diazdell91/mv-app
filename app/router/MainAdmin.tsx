@@ -19,6 +19,7 @@ import FilterStatsScreen from '../screens/admin/stats/views/FilterStatsScreen';
 import ModalProductDetails from '../screens/admin/stats/views/ModalProductDetails';
 import UpdateProductScreen from '../screens/admin/inventory/views/UpdateProductScreen';
 import CreateProductScreen from '../screens/admin/inventory/views/CreateProductScreen';
+import ChangeUserPassword from '../screens/admin/users/ChangeUserPassword';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -40,6 +41,7 @@ type MainStackParamList = {
   UpdateProduct: undefined;
   ListProducts: undefined;
   CreateProduct: undefined;
+  ChangePassword: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -102,6 +104,14 @@ function MainAdminNavigator() {
           component={UserUpdateScreen}
           options={{
             title: 'Actualizar Usuario',
+          }}
+        />
+
+        <Main.Screen
+          name="ChangePassword"
+          component={ChangeUserPassword}
+          options={{
+            title: 'Actualizar contraseña',
           }}
         />
         <Main.Screen

@@ -37,7 +37,6 @@ const TopUpAvailableActions = ({ route, navigation }: any) => {
       (await result.data.assignTopup.success) ? navigation.goBack() : alert('Error al asignar');
     };
 
-    console.log(createdAt);
     return (
       <TouchableWithoutFeedback
         onPress={() => {

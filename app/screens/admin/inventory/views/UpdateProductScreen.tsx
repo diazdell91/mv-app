@@ -48,7 +48,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
       commissionRate: parseFloat(commissionRate),
     });
 
-    console.log('product', product)
     await updateProduct({
       variables: {
         input: product,

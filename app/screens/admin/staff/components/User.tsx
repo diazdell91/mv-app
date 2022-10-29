@@ -10,6 +10,7 @@ import moment from 'moment';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER } from '../../../../graphql/user.graphql';
 import { useState } from 'react';
+import { useAuth } from '../../../../context/auth/authProvider';
 
 export type CustomerProps = {
   id: string;
@@ -31,11 +32,14 @@ export type CustomerProps = {
   };
 };
 
+
 const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
-  const { id, name, wallet, email, phone, lastTask, disabled } = props;
+  const { id, name, wallet, email, phone, lastTask, disabled, role } = props;
   const [active, setActive] = useState(disabled);
   const [updateUser] = useMutation(UPDATE_USER);
+
+  const {user} = useAuth();
 
   const handleUpdateServices = () => {
     const lockMessage = active ? 'Desea desbloquear el usuario' : 'Desea bloquear el usuario';
@@ -60,7 +64,6 @@ const User = (props: CustomerProps) => {
             },
             onCompleted: (data) => {
               setActive(data.updateUser.user.disabled);
-              console.log(active);
             },
             onError: (error) => {
               console.log('error', error);
@@ -88,15 +91,17 @@ const User = (props: CustomerProps) => {
             </Text>
           </View>
           <View style={styles.customerOptions}>
-            <Icon
-              onPress={() => {
-                navigate('AdminStats', { user: props });
-              }}
-              name="chart-bar"
-              size={22}
-              color={COLORS.gray}
-              style={{ marginLeft: 8 }}
-            />
+            {user?.role === 'ADMIN' && (
+              <Icon
+                onPress={() => {
+                  navigate('ChangePassword', { user: props });
+                }}
+                name="key-outline"
+                size={22}
+                color={COLORS.gray}
+                style={{ marginLeft: 8 }}
+              />
+            )}
             <Ionicons
               onPress={handleUpdateServices}
               name={disabled ? 'md-lock-closed-outline' : 'md-lock-open-outline'}

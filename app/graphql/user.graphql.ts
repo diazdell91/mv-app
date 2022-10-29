@@ -108,6 +108,16 @@ export const CREATE_USER = gql`
   }
 `;
 
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($input: ResetPasswordInput!) {
+    resetPassword(input: $input) {
+      code
+      success
+      message
+    }
+  }
+`;
+
 export const UPDATE_USER = gql`
   mutation UpdateUser($input: UpdateUserInput!) {
     updateUser(input: $input) {
