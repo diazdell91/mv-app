@@ -38,7 +38,7 @@ export const CREATE_PRODUCT = gql`
 `;
 
 export const UPDATE_PRODUCT = gql`
-  mutation UpdateProduct($input: ProductInput!) {
+  mutation UpdateProduct($input: UpdateProductInput!) {
     updateProduct(input: $input) {
       code
       success

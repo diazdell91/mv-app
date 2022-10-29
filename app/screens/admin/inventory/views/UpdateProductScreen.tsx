@@ -13,7 +13,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
   const { item } = params;
 
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
-
   const [category, setCategory] = useState(item.category);
   const [name, setName] = useState(item.name);
   const [description, setDescription] = useState(item.description);
@@ -42,12 +41,14 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
     };
 
     Object.assign(product, {
+      skuCode: item.skuCode,
       sendValue: parseFloat(sendValue),
       receiveValue: parseFloat(receiveValue),
       price: parseFloat(price),
       commissionRate: parseFloat(commissionRate),
     });
 
+    console.log('product', product)
     await updateProduct({
       variables: {
         input: product,
@@ -103,7 +104,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
         />
         <Input
           keyboardType="numeric"
-          autoFocus
           placeholder="Valor a Enviar"
           onPressRight={() => setSendValue('')}
           iconRight={sendValue === '' ? undefined : 'close'}
@@ -115,7 +115,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
 
         <Input
           keyboardType="numeric"
-          autoFocus
           placeholder="Valor a Recibir"
           onPressRight={() => setReceiveValue('')}
           iconRight={receiveValue === '' ? undefined : 'close'}
@@ -127,7 +126,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
 
         <Input
           keyboardType="numeric"
-          autoFocus
           placeholder="Precio"
           onPressRight={() => setPrice('')}
           iconRight={price === '' ? undefined : 'close'}
@@ -139,7 +137,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
 
         <Input
           keyboardType="numeric"
-          autoFocus
           placeholder="Comisión"
           onPressRight={() => setCommissionRate('')}
           iconRight={commissionRate === '' ? undefined : 'close'}
