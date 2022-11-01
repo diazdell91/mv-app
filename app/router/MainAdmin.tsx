@@ -20,6 +20,7 @@ import ModalProductDetails from '../screens/admin/stats/views/ModalProductDetail
 import UpdateProductScreen from '../screens/admin/inventory/views/UpdateProductScreen';
 import CreateProductScreen from '../screens/admin/inventory/views/CreateProductScreen';
 import ChangeUserPassword from '../screens/admin/users/ChangeUserPassword';
+import SelectServiceModal from '../screens/admin/inventory/views/SelectServiceModal';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -42,6 +43,7 @@ type MainStackParamList = {
   ListProducts: undefined;
   CreateProduct: undefined;
   ChangePassword: undefined;
+  SelectService: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -190,6 +192,12 @@ function MainAdminNavigator() {
         }}
         component={ModalProductDetails}
       />
+      <Main.Group
+        key={'modal'}
+        screenOptions={{ headerShown: false, presentation: 'transparentModal' }}
+      >
+        <Main.Screen name="SelectService" component={SelectServiceModal} />
+      </Main.Group>
     </Main.Navigator>
   );
 }

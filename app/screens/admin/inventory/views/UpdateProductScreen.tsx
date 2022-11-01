@@ -1,47 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMutation } from '@apollo/client';
 import { PRODUCTS, UPDATE_PRODUCT } from '../../../../graphql/products.graphql';
-import { Button, Input, Text } from '../../../../components';
+import { Button, Input } from '../../../../components';
 import { COLORS } from '../../../../theme';
 
 const UpdateProductScreen = ({ navigation, route }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
-  const { params } = route;
-  const { item } = params;
-
   const [updateProduct] = useMutation(UPDATE_PRODUCT);
-  const [category, setCategory] = useState(item.category);
-  const [name, setName] = useState(item.name);
-  const [description, setDescription] = useState(item.description);
-  const [sendValue, setSendValue] = useState(item.sendValue);
-  const [receiveValue, setReceiveValue] = useState(item.receiveValue);
-  const [price, setPrice] = useState(item.price);
-  const [commissionRate, setCommissionRate] = useState(item.commissionRate);
+  const [category, setCategory] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [sendValue, setSendValue] = useState('0');
+  const [receiveValue, setReceiveValue] = useState('0');
+  const [price, setPrice] = useState('0');
+  const [commissionRate, setCommissionRate] = useState('0');
+  const [product, setProduct] = useState<any>();
 
-  const validate = () => {
-    return (
-      category !== '' &&
-      name !== '' &&
-      description !== '' &&
-      sendValue !== '' &&
-      receiveValue !== '' &&
-      price !== '' &&
-      commissionRate !== ''
-    );
-  };
+  useEffect(() => {
+    if (route.params?.item) {
+      const { item } = route.params;
+      setCategory(item.category);
+      setName(item.name);
+      setDescription(item.description);
+      setSendValue(item.sendValue);
+      setReceiveValue(item.receiveValue);
+      setPrice(item.price);
+      setCommissionRate(item.commissionRate);
+      setProduct(item);
+    }
+  }, [route.params?.item]);
 
   const handleUpdateProduct = async () => {
-    const product = {
+    const newProduct = {
       name,
       category,
       description,
     };
 
-    Object.assign(product, {
-      skuCode: item.skuCode,
+    Object.assign(newProduct, {
+      skuCode: product.skuCode,
       sendValue: parseFloat(sendValue),
       receiveValue: parseFloat(receiveValue),
       price: parseFloat(price),
@@ -50,7 +50,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
 
     await updateProduct({
       variables: {
-        input: product,
+        input: newProduct,
       },
       refetchQueries: [
         {
@@ -61,6 +61,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
         },
       ],
       onCompleted: (data: any) => {
+        console.log(data);
         navigation.navigate('Inventory');
       },
       onError: (error) => {
@@ -73,17 +74,21 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
     <View style={{ ...styles.container, paddingBottom }}>
       <ScrollView keyboardShouldPersistTaps="always">
         <Input
-          autoFocus
+          label="Categoria"
+          editable={false}
           placeholder="Categoría"
-          onPressRight={() => setCategory('')}
-          iconRight={category.toString() === '' ? undefined : 'close'}
+          onPressRight={() => {
+            navigation.navigate('SelectService', {
+              item: product,
+            });
+          }}
+          iconRight={'chevron-down'}
           iconRightColor={COLORS.black}
           value={category}
-          onChangeText={setCategory}
-          maxLength={32}
         />
 
         <Input
+          label="Nombre"
           placeholder="Nombre"
           onPressRight={() => setName('')}
           iconRight={name === '' ? undefined : 'close'}
@@ -93,6 +98,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
           maxLength={32}
         />
         <Input
+          label="Descripción"
           placeholder="Descripción"
           onPressRight={() => setDescription('')}
           iconRight={description === '' ? undefined : 'close'}
@@ -102,6 +108,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
           maxLength={32}
         />
         <Input
+          label="Valor de envío"
           keyboardType="numeric"
           placeholder="Valor a Enviar"
           onPressRight={() => setSendValue('')}
@@ -113,6 +120,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
         />
 
         <Input
+          label="Valor de recepción"
           keyboardType="numeric"
           placeholder="Valor a Recibir"
           onPressRight={() => setReceiveValue('')}
@@ -124,6 +132,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
         />
 
         <Input
+          label="Precio"
           keyboardType="numeric"
           placeholder="Precio"
           onPressRight={() => setPrice('')}
@@ -135,6 +144,7 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
         />
 
         <Input
+          label="Comisión"
           keyboardType="numeric"
           placeholder="Comisión"
           onPressRight={() => setCommissionRate('')}
@@ -147,10 +157,10 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
       </ScrollView>
       <Button
         onPress={handleUpdateProduct}
-        disabled={!validate()}
+        //disabled={!validate()}
         title="Actualizar Producto"
         style={{
-          backgroundColor: !validate() ? COLORS.backgroundAlt : COLORS.primary,
+          backgroundColor: COLORS.primary,
         }}
       />
     </View>

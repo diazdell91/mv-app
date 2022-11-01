@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { COLORS, SIZES } from '../theme';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import Text from './Text';
 
 interface InputProps {
   style?: StyleProp<ViewStyle>;
@@ -21,6 +22,7 @@ interface InputProps {
   iconRightColor?: string;
   onPressRight?: PressableProps['onPress'];
   flex?: boolean;
+  label?: string;
 }
 type Props = InputProps & DefaultInput['props'];
 
@@ -35,30 +37,34 @@ const Input = (props: Props) => {
     iconRightColor = COLORS.stroke,
     onPressRight,
     flex,
+    label,
     ...rest
   } = props;
 
   return (
-    <View style={[{ ...styles.container, flex: flex ? 1 : 0 }, style]}>
-      {iconLeftComponent && iconLeftComponent}
-      {iconLeft && (
-        <View style={styles.iconLeft}>
-          <Icon name={iconLeft} color={iconLeftColor} size={22} />
-        </View>
-      )}
-      <DefaultInput
-        style={[styles.inputContainer, { paddingLeft: iconLeft ? 52 : 16 }, inputStyle]}
-        placeholderTextColor={COLORS.textDark}
-        autoCorrect={false}
-        autoCapitalize="none"
-        textContentType="none"
-        {...rest}
-      />
-      {iconRight && (
-        <Pressable onPress={onPressRight} style={styles.iconRigth}>
-          <Icon name={iconRight} color={iconRightColor} size={22} />
-        </Pressable>
-      )}
+    <View style={{ flex: flex ? 1 : 0, paddingTop: label ? 5 : 0 }}>
+      {label && <Text style={{ marginStart: 5 }}>{label}</Text>}
+      <View style={[{ ...styles.container, flex: flex ? 1 : 0 }, style]}>
+        {iconLeftComponent && iconLeftComponent}
+        {iconLeft && (
+          <View style={styles.iconLeft}>
+            <Icon name={iconLeft} color={iconLeftColor} size={22} />
+          </View>
+        )}
+        <DefaultInput
+          style={[styles.inputContainer, { paddingLeft: iconLeft ? 52 : 16 }, inputStyle]}
+          placeholderTextColor={COLORS.textDark}
+          autoCorrect={false}
+          autoCapitalize="none"
+          textContentType="none"
+          {...rest}
+        />
+        {iconRight && (
+          <Pressable onPress={onPressRight} style={styles.iconRigth}>
+            <Icon name={iconRight} color={iconRightColor} size={22} />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 };

@@ -4,7 +4,6 @@ import ProfileScreen from '../screens/profile/ProfileScreen';
 import StaffScreen from '../screens/admin/staff/StaffScreen';
 import TabBar from './components/TabBar';
 import InventoryScreen from '../screens/admin/inventory/InventoryScreen';
-import { COLORS } from '../theme';
 
 const BottomTab = createBottomTabNavigator();
 
