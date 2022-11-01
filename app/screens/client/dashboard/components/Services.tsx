@@ -43,17 +43,18 @@ const Services = (props: any) => {
   let icon = 'dots-horizontal-circle';
 
   services.forEach((item: any, index: number) => {
-    switch (item.category) {
-      case 'FOODDELIVERY':
-        icon = 'food';
-        return;
-      case 'AIRPLANETICKET':
-        icon = 'airplane';
-        return;
-      case 'HOTELBOOKING':
-        icon = 'bed';
-        return;
-    }
+    if (item)
+      switch (item.category) {
+        case 'FOODDELIVERY':
+          icon = 'food';
+          return;
+        case 'AIRPLANETICKET':
+          icon = 'airplane';
+          return;
+        case 'HOTELBOOKING':
+          icon = 'bed';
+          return;
+      }
   });
 
   return (
@@ -69,9 +70,11 @@ const Services = (props: any) => {
           name="Recarga Mobil"
           icon="cellphone-charging"
         />
-        {services.map((item: any, index: number) => (
-          <IconService key={index} disabled={item.allowed} name={item.category} icon={icon} />
-        ))}
+        {services.map((item: any, index: number) => {
+          return item ? (
+            <IconService key={index} disabled={item.allowed} name={item.category} icon={icon} />
+          ) : null;
+        })}
       </View>
     </View>
   );
