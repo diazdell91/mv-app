@@ -68,7 +68,7 @@ const CreateProductScreen = ({ navigation }: any) => {
 
   return (
     <View style={{ ...styles.container, paddingBottom }}>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
         <Input
           autoFocus
           placeholder="Categoría"

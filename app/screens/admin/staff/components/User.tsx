@@ -1,16 +1,16 @@
 //import React from 'react';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons as Icon, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import DashedLine from 'react-native-dashed-line';
 import { useNavigation } from '@react-navigation/native';
 import StaffProfile from './StaffProfile';
 import { Text } from '../../../../components';
 import { COLORS } from '../../../../theme';
 import moment from 'moment';
+import { useAuth } from '../../../../context/auth/authProvider';
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER } from '../../../../graphql/user.graphql';
-import { useState } from 'react';
-import { useAuth } from '../../../../context/auth/authProvider';
 
 export type CustomerProps = {
   id: string;
@@ -89,25 +89,6 @@ const User = (props: CustomerProps) => {
               {moment(lastTask, 'x').format('YYYY-MM-DD')}
             </Text>
           </View>
-          <View style={styles.customerOptions}>
-            {user?.role === 'ADMIN' && (
-              <Icon
-                onPress={() => {
-                  navigate('ChangePassword', { user: props });
-                }}
-                name="key-outline"
-                size={22}
-                color={COLORS.gray}
-                style={{ marginLeft: 8 }}
-              />
-            )}
-            <Ionicons
-              onPress={handleUpdateServices}
-              name={disabled ? 'md-lock-closed-outline' : 'md-lock-open-outline'}
-              size={22}
-              color={COLORS.gray}
-            />
-          </View>
         </View>
       </View>
       <DashedLine
@@ -156,14 +137,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 16,
   },
-  customerOptions: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
   info: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginTop: 12,
+  },
+  customerOptions: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
 });
