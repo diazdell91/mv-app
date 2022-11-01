@@ -12,58 +12,74 @@ import { ME } from '../../graphql/user.graphql';
 const ProfileScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
   const { signOut } = useAuth();
-  let me = null;
+
   const { data, loading, error } = useQuery(ME);
 
-  if (data) {
-    me = data.me;
+  if (loading) {
+    return (
+      <View style={{ ...styles.container, paddingTop: top }}>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
-  return data ? (
-    <View style={{ ...styles.container, paddingTop: top }}>
-      <ScrollView contentInset={{ top }} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Text size={16} fontFamily="Poppins-Medium" color={COLORS.zeus}>
-            PREFERENCIAS
-          </Text>
-        </View>
-        <Input value={me.name} iconLeft="account" editable={false} />
-        <Input value={me.email} iconLeft="email" editable={false} />
-        <Input value={me.phone} iconLeft="phone-dial-outline" editable={false} />
-        <Input value={me.role} iconLeft="security" editable={false} />
-
-        <View style={styles.header}>
-          <Text size={16} fontFamily="Poppins-Medium" color={COLORS.zeus}>
-            Legal
-          </Text>
-        </View>
-        <ActionBox
-          icon="shield-account"
-          title="Políticas de Privacidad"
-          onPress={() => {
-            navigation.navigate('Info', {
-              title: 'Política de Privacidad',
-              content: 'Contenido política de privacidad',
-            });
-          }}
-        />
-        <ActionBox
-          icon="file-certificate"
-          title="Terminos de servicio"
-          onPress={() => {
-            navigation.navigate('Info', {
-              title: 'Términos de Servicios',
-              content: 'Este es el contenido de la política de servicios',
-            });
-          }}
-        />
+  if (error) {
+    return (
+      <View style={{ ...styles.container, paddingTop: top }}>
+        <Text>Error...</Text>
         <ActionBox icon="arrow-right-bold" title="Salir" onPress={signOut} />
         <Version />
-      </ScrollView>
-    </View>
-  ) : (
-    <></>
-  );
+      </View>
+    );
+  }
+
+  if (data) {
+    const { me } = data;
+    return (
+      <View style={{ ...styles.container, paddingTop: top }}>
+        <ScrollView contentInset={{ top }} showsVerticalScrollIndicator={false}>
+          <View style={styles.header}>
+            <Text size={16} fontFamily="Poppins-Medium" color={COLORS.zeus}>
+              PREFERENCIAS
+            </Text>
+          </View>
+          <Input value={me.name} iconLeft="account" editable={false} />
+          <Input value={me.email} iconLeft="email" editable={false} />
+          <Input value={me.phone} iconLeft="phone-dial-outline" editable={false} />
+          <Input value={me.role} iconLeft="security" editable={false} />
+
+          <View style={styles.header}>
+            <Text size={16} fontFamily="Poppins-Medium" color={COLORS.zeus}>
+              Legal
+            </Text>
+          </View>
+          <ActionBox
+            icon="shield-account"
+            title="Políticas de Privacidad"
+            onPress={() => {
+              navigation.navigate('Info', {
+                title: 'Política de Privacidad',
+                content: 'Contenido política de privacidad',
+              });
+            }}
+          />
+          <ActionBox
+            icon="file-certificate"
+            title="Terminos de servicio"
+            onPress={() => {
+              navigation.navigate('Info', {
+                title: 'Términos de Servicios',
+                content: 'Este es el contenido de la política de servicios',
+              });
+            }}
+          />
+          <ActionBox icon="arrow-right-bold" title="Salir" onPress={signOut} />
+          <Version />
+        </ScrollView>
+      </View>
+    );
+  }
+  return <View />;
 };
 
 export default ProfileScreen;

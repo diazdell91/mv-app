@@ -1,23 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
-import DashedLine from 'react-native-dashed-line';
 import { useQuery } from '@apollo/client';
 import { USER } from '../../../graphql/user.graphql';
 import { PRODUCT_CATEGORYS } from '../../../graphql/products.graphql';
 import { Input, Loading, Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
 import { CustomerProps } from '../staff/components/User';
-import Wave from '../../../components/Wave';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import StaffHeader from '../staff/components/StaffHeader';
 
 type Props = {
   navigation: any;
   route: any;
 } & CustomerProps;
-
-const AVATAR_SIZE = 42;
 
 const UserDetailsScreen = (props: Props) => {
   const { route } = props;
@@ -30,7 +24,6 @@ const UserDetailsScreen = (props: Props) => {
   });
 
   const { data: dataServices } = useQuery(PRODUCT_CATEGORYS);
-  const { top, left, bottom } = useSafeAreaInsets();
 
   if (loading) {
     return <Loading />;
@@ -38,7 +31,6 @@ const UserDetailsScreen = (props: Props) => {
   if (data && dataServices) {
     const { user } = data;
     const { servicesAllowed, wallet } = user;
-    const { productsCategorys } = dataServices;
 
     const allowedServices = servicesAllowed.map((item: any) => {
       const allowed = item ? item.commissionRate >= 0 : false;
@@ -58,13 +50,10 @@ const UserDetailsScreen = (props: Props) => {
     });
 
     return (
-      <>
+      <View style={{ flex: 1 }}>
         <View style={styles.headerContainer}>
           <StaffHeader data={user} />
-          <View style={{ ...styles.alignHorizontal, marginTop: top }}>
-            <View style={styles.wrapperAvatar}>
-              <Icon name="account-outline" size={56} color={COLORS.white} />
-            </View>
+          <View style={{ ...styles.alignHorizontal }}>
             <View style={{ marginTop: SIZES.xs }}>
               <Text align="center" color={COLORS.white}>
                 {user.name}
@@ -74,39 +63,16 @@ const UserDetailsScreen = (props: Props) => {
               </Text>
             </View>
           </View>
-          <Wave style={styles.waves} />
         </View>
-        <View style={styles.ballanceContainer}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        <ScrollView>
+          <View style={styles.ballanceContainer}>
             <Text size={28}>{wallet.balance / 100} </Text>
-            <Icon name="currency-usd" size={28} />
+            <Text h4 align="center">
+              Balance total
+            </Text>
           </View>
-          <Text h4 align="center">
-            Balance total
-          </Text>
-        </View>
-        <View>
-          <DashedLine
-            dashLength={2}
-            dashThickness={1}
-            dashColor={COLORS.gray}
-            style={{ opacity: 0.3, marginTop: -25 }}
-          />
-          <ScrollView
-            contentContainerStyle={styles.contentContainer}
-            contentInset={{
-              bottom: bottom + 100,
-            }}
-            showsVerticalScrollIndicator={false}
-            scrollEventThrottle={200}
-          >
-            <View style={{ marginHorizontal: SIZES.xs }}>
+          <View>
+            <View style={{ flex: 1 }}>
               <Input value={user.email} iconLeft="email" editable={false} />
               <Input value={user.phone} iconLeft="phone-dial-outline" editable={false} />
               <Input value={user.role} iconLeft="security" editable={false} />
@@ -123,9 +89,9 @@ const UserDetailsScreen = (props: Props) => {
                 </View>
               )}
             </View>
-          </ScrollView>
-        </View>
-      </>
+          </View>
+        </ScrollView>
+      </View>
     );
   }
   return null;
@@ -135,69 +101,22 @@ export default UserDetailsScreen;
 
 const styles = StyleSheet.create({
   alignHorizontal: { alignItems: 'center', justifyContent: 'center' },
-  headerContainer: { height: 400, backgroundColor: COLORS.black },
+  headerContainer: { backgroundColor: COLORS.black, padding: 16 },
   ballanceContainer: {
-    top: -40,
     margin: 8,
     marginBottom: 16,
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowRadius: 10,
-    shadowOpacity: 0.1,
-    elevation: 1,
-  },
-  container: {
-    margin: 8,
-    marginBottom: 16,
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowRadius: 10,
-    shadowOpacity: 0.1,
-    elevation: 1,
-  },
-  info: {
-    borderRadius: 8,
-    overflow: 'hidden',
-    padding: SIZES.l,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginTop: 12,
-    marginHorizontal: 10,
-  },
-  wrapperAvatar: {
-    borderRadius: AVATAR_SIZE,
-    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1.4,
-    borderColor: COLORS.white,
-    backgroundColor: COLORS.placeHolder,
-    padding: 12,
-  },
-  editButton: {
-    position: 'absolute',
-    borderWidth: 1.5,
-    borderColor: COLORS.white,
-    padding: 2,
-    borderRadius: 42,
-    backgroundColor: COLORS.placeHolder,
-  },
-  waves: { zIndex: -1, position: 'absolute', left: 0, bottom: -1, right: 0 },
-
-  contentContainer: {
-    justifyContent: 'space-between',
+    backgroundColor: COLORS.white,
+    borderRadius: 16,
+    padding: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+    elevation: 1,
   },
 });

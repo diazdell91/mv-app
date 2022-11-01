@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons as Icon, Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '../../../../theme';
 import { Text } from '../../../../components';
@@ -31,7 +30,7 @@ export default function StaffHeader(props: any) {
       <Text color={COLORS.white} size={24}>
         Detalles del usuario
       </Text>
-      {user && <Icon onPress={updateUser} color={COLORS.white} name="dots-vertical" size={32} />}
+      {user && <Icon onPress={updateUser} color={COLORS.white} name="account-edit" size={32} />}
     </View>
   );
 }

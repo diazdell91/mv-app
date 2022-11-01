@@ -21,7 +21,7 @@ const ChangeUserPassword = ({ navigation, route }: any) => {
   const { id } = user;
 
   const u = useAuth();
-  console.log(u.session)
+  console.log(u.session);
 
   const validate = () => {
     if (password.length < 6) {

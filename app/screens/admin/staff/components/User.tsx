@@ -32,14 +32,13 @@ export type CustomerProps = {
   };
 };
 
-
 const User = (props: CustomerProps) => {
   const { navigate } = useNavigation<any>();
   const { id, name, wallet, email, phone, lastTask, disabled, role } = props;
   const [active, setActive] = useState(disabled);
   const [updateUser] = useMutation(UPDATE_USER);
 
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const handleUpdateServices = () => {
     const lockMessage = active ? 'Desea desbloquear el usuario' : 'Desea bloquear el usuario';

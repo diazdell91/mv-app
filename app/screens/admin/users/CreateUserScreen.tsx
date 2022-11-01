@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Input, Text } from '../../../components';
@@ -52,7 +52,15 @@ const CreateUserScreen = ({ navigation }: any) => {
         input: user,
       },
       onCompleted: (data) => {
-        navigation.navigate('UserServices', { id: data.createUser.user.id });
+        console.log(data);
+        if (data.createUser.success === false) {
+          Alert.alert('Error', data.createUser.message);
+        }
+        if (data.createUser.user.role === 'STAFF') {
+          navigation.navigate('SuccessUser');
+        } else {
+          navigation.navigate('UserServices', { id: data.createUser.user.id });
+        }
       },
       onError: (error) => {
         console.log(error);

@@ -1,5 +1,4 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import React from 'react';
 import { Text } from '../../../../components';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { COLORS, SIZES } from '../../../../theme';
@@ -8,7 +7,7 @@ type Props = {
   title: string;
   onPress?: () => void;
   color: string;
-  icon: string;
+  icon: React.ComponentProps<typeof Icon>['name'];
 };
 export default function InventaryItem({ title, color, icon, onPress }: Props) {
   return (
@@ -16,7 +15,9 @@ export default function InventaryItem({ title, color, icon, onPress }: Props) {
       <View style={{ alignItems: 'flex-start' }}>
         <View style={{ ...styles.item, borderColor: color }}>
           <Icon color={color} name={icon} size={64} />
-          <Text h3 align="center">{title}</Text>
+          <Text h3 align="center">
+            {title}
+          </Text>
         </View>
       </View>
     </Pressable>
