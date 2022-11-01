@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import DashedLine from 'react-native-dashed-line';
-import { useQuery } from '@apollo/client';
-import { USER } from '../../../graphql/user.graphql';
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_USER, USER } from '../../../graphql/user.graphql';
 import { PRODUCT_CATEGORYS } from '../../../graphql/products.graphql';
 import { Input, Loading, Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
@@ -11,6 +11,8 @@ import { CustomerProps } from '../staff/components/User';
 import Wave from '../../../components/Wave';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import StaffHeader from '../staff/components/StaffHeader';
+import { useState } from 'react';
+import { useAuth } from '../../../context/auth/authProvider';
 
 type Props = {
   navigation: any;
@@ -20,41 +22,81 @@ type Props = {
 const AVATAR_SIZE = 42;
 
 const UserDetailsScreen = (props: Props) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const { id } = route.params;
 
   const { data, loading } = useQuery(USER, {
     variables: {
       id,
     },
+    onCompleted: (data) => {
+      console.log(data);
+    },
   });
 
   const { data: dataServices } = useQuery(PRODUCT_CATEGORYS);
+  const [updateUser] = useMutation(UPDATE_USER);
+  const [active, setActive] = useState(false);
   const { top, left, bottom } = useSafeAreaInsets();
+
+  const { user: userAuth } = useAuth();
+  const handleUpdateServices = (active: boolean) => {
+    const lockMessage = active ? 'Desea desbloquear el usuario' : 'Desea bloquear el usuario';
+    const lockTextButton = active ? 'Desbloquear' : 'Bloquear';
+
+    Alert.alert('Info', lockMessage, [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('asd'),
+        style: 'cancel',
+      },
+
+      {
+        text: lockTextButton,
+        onPress: async () => {
+          await updateUser({
+            variables: {
+              input: {
+                id,
+                disabled: !active,
+              },
+            },
+            onCompleted: (data) => {
+              setActive(data.updateUser.user.disabled);
+            },
+            onError: (error) => {
+              console.log('error', error);
+            },
+          });
+        },
+      },
+    ]);
+  };
 
   if (loading) {
     return <Loading />;
   }
+
   if (data && dataServices) {
     const { user } = data;
-    const { servicesAllowed, wallet } = user;
-    const { productsCategorys } = dataServices;
-
+    const { servicesAllowed, wallet, disabled } = user;
     const allowedServices = servicesAllowed.map((item: any) => {
-      const allowed = item ? item.commissionRate >= 0 : false;
+      if (item) {
+        const allowed = item ? item.commissionRate >= 0 : false;
 
-      let icon = 'dots-horizontal-circle';
-      if (item.category === 'AIRPLANETICKET') {
-        icon = 'airplane';
-      } else if (item.category === 'HOTELBOOKING') {
-        icon = 'bed';
-      } else if (item.category === 'FOODDELIVERY') icon = 'food';
+        let icon = 'dots-horizontal-circle';
+        if (item.category === 'AIRPLANETICKET') {
+          icon = 'airplane';
+        } else if (item.category === 'HOTELBOOKING') {
+          icon = 'bed';
+        } else if (item.category === 'FOODDELIVERY') icon = 'food';
 
-      return {
-        name: item.category,
-        allowed: !allowed,
-        icon,
-      };
+        return {
+          name: item.category,
+          allowed: !allowed,
+          icon,
+        };
+      }
     });
 
     return (
@@ -91,12 +133,32 @@ const UserDetailsScreen = (props: Props) => {
             Balance total
           </Text>
         </View>
+        <View style={styles.customerOptions}>
+          {userAuth?.role === 'ADMIN' && (
+            <Icon
+              onPress={() => {
+                navigation.navigate('ChangePassword', { user: props });
+              }}
+              name="key-outline"
+              size={28}
+              color={COLORS.gray}
+              style={{ marginLeft: 8 }}
+            />
+          )}
+          <Icon
+            onPress={() => handleUpdateServices(active)}
+            name={disabled ? 'lock' : 'lock-open-outline'}
+            size={28}
+            color={COLORS.gray}
+          />
+        </View>
+
         <View>
           <DashedLine
             dashLength={2}
             dashThickness={1}
             dashColor={COLORS.gray}
-            style={{ opacity: 0.3, marginTop: -25 }}
+            style={{ opacity: 0.3 }}
           />
           <ScrollView
             contentContainerStyle={styles.contentContainer}
@@ -115,11 +177,13 @@ const UserDetailsScreen = (props: Props) => {
                   <Text color={COLORS.black} style={{ marginHorizontal: 8 }}>
                     Servicios
                   </Text>
-                  {allowedServices.map((item: any, index: number) => (
-                    <Text style={{ margin: 8 }} key={index}>
-                      {item.name}
-                    </Text>
-                  ))}
+                  {allowedServices.map((item: any, index: number) =>
+                    item ? (
+                      <Text style={{ margin: 8 }} key={index}>
+                        {item.name}
+                      </Text>
+                    ) : null,
+                  )}
                 </View>
               )}
             </View>
@@ -136,10 +200,15 @@ export default UserDetailsScreen;
 const styles = StyleSheet.create({
   alignHorizontal: { alignItems: 'center', justifyContent: 'center' },
   headerContainer: { height: 400, backgroundColor: COLORS.black },
+  customerOptions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: -25,
+    marginBottom: 10,
+  },
   ballanceContainer: {
     top: -40,
     margin: 8,
-    marginBottom: 16,
     backgroundColor: COLORS.white,
     borderRadius: 16,
     padding: 8,
