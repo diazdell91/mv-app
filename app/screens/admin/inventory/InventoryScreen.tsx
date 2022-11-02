@@ -1,7 +1,7 @@
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { PRODUCTS } from '../../../graphql/products.graphql';
+import { useMutation, useQuery } from '@apollo/client';
+import { PRODUCTS, UPDATE_PRODUCT } from '../../../graphql/products.graphql';
 import { ScrollView } from 'react-native-gesture-handler';
 import { COLORS, SIZES } from '../../../theme';
 import { Header, Input } from '../../../components';
@@ -17,6 +17,8 @@ export default function ProductsScreen({ navigation }: any) {
       setFiltered(data.products.docs);
     },
   });
+
+  const [updateProduct] = useMutation(UPDATE_PRODUCT);
   const onSearch = (query: string) => {
     const result = data.products.docs.filter(
       (item: any) =>
@@ -35,6 +37,47 @@ export default function ProductsScreen({ navigation }: any) {
 
   const createProduct = () => {
     navigation.navigate('CreateProduct');
+  };
+
+  const onBlock = ({ disabled, skuCode }: any) => {
+    const lockMessage = disabled ? 'Desea activar el producto' : 'Desea desactivar el producto';
+    const lockTextButton = disabled ? 'Activar' : 'Desactivar';
+
+    Alert.alert('Info', lockMessage, [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('asd'),
+        style: 'cancel',
+      },
+
+      {
+        text: lockTextButton,
+        onPress: async () => {
+          await updateProduct({
+            variables: {
+              input: {
+                skuCode,
+                disabled: !disabled,
+              },
+            },
+            refetchQueries: [
+              {
+                query: PRODUCTS,
+                variables: {
+                  input: {},
+                },
+              },
+            ],
+            onCompleted: (data) => {
+              console.log(data)
+            },
+            onError: (error) => {
+              console.log('error', error);
+            },
+          });
+        },
+      },
+    ]);
   };
 
   if (loading) {
@@ -66,7 +109,7 @@ export default function ProductsScreen({ navigation }: any) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ marginTop: SIZES.l, marginHorizontal: SIZES.xs, flex: 1 }}>
             {filtered.map((item: any, index: number) => (
-              <Product key={index} onUpdate={onUpdate} item={item} />
+              <Product onBlock={onBlock} key={index} onUpdate={onUpdate} item={item} />
             ))}
           </View>
         </ScrollView>

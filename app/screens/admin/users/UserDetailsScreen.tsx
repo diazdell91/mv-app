@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { useQuery } from '@apollo/client';
-import { USER } from '../../../graphql/user.graphql';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_USER, USER } from '../../../graphql/user.graphql';
 import { PRODUCT_CATEGORYS } from '../../../graphql/products.graphql';
 import { Input, Loading, Text } from '../../../components';
 import { COLORS, SIZES } from '../../../theme';
 import { CustomerProps } from '../staff/components/User';
 import StaffHeader from '../staff/components/StaffHeader';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { useAuth } from '../../../context/auth/authProvider';
+import { useState } from 'react';
 
 type Props = {
   navigation: any;
@@ -14,23 +17,60 @@ type Props = {
 } & CustomerProps;
 
 const UserDetailsScreen = (props: Props) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const { id } = route.params;
+  const { user: userAuth } = useAuth();
 
+  const { data: dataServices } = useQuery(PRODUCT_CATEGORYS);
   const { data, loading } = useQuery(USER, {
     variables: {
       id,
     },
   });
 
-  const { data: dataServices } = useQuery(PRODUCT_CATEGORYS);
+  const [updateUser] = useMutation(UPDATE_USER);
+  const [active, setActive] = useState(false);
+
+  const handleUpdateServices = (active: boolean) => {
+    const lockMessage = active ? 'Desea desbloquear el usuario' : 'Desea bloquear el usuario';
+    const lockTextButton = active ? 'Desbloquear' : 'Bloquear';
+
+    Alert.alert('Info', lockMessage, [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('asd'),
+        style: 'cancel',
+      },
+
+      {
+        text: lockTextButton,
+        onPress: async () => {
+          await updateUser({
+            variables: {
+              input: {
+                id,
+                disabled: !active,
+              },
+            },
+            onCompleted: (data) => {
+              setActive(data.updateUser.user.disabled);
+            },
+            onError: (error) => {
+              console.log('error', error);
+            },
+          });
+        },
+      },
+    ]);
+  };
 
   if (loading) {
     return <Loading />;
   }
+
   if (data && dataServices) {
     const { user } = data;
-    const { servicesAllowed, wallet } = user;
+    const { servicesAllowed, wallet, disabled } = user;
 
     const allowedServices = servicesAllowed.map((item: any) => {
       const allowed = item ? item.commissionRate >= 0 : false;
@@ -71,8 +111,28 @@ const UserDetailsScreen = (props: Props) => {
               Balance total
             </Text>
           </View>
+          <View style={styles.customerOptions}>
+            {userAuth?.role === 'ADMIN' && (
+              <Icon
+                onPress={() => {
+                  navigation.navigate('ChangePassword', { user: props });
+                }}
+                name="key-outline"
+                size={28}
+                color={COLORS.gray}
+                style={{ marginLeft: 8 }}
+              />
+            )}
+            <Icon
+              onPress={() => handleUpdateServices(active)}
+              name={disabled ? 'lock' : 'lock-open-outline'}
+              size={28}
+              color={COLORS.gray}
+            />
+          </View>
+
           <View>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginHorizontal: SIZES.xs }}>
               <Input value={user.email} iconLeft="email" editable={false} />
               <Input value={user.phone} iconLeft="phone-dial-outline" editable={false} />
               <Input value={user.role} iconLeft="security" editable={false} />
@@ -118,5 +178,10 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOpacity: 0.1,
     elevation: 1,
+  },
+  customerOptions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
   },
 });

@@ -9,6 +9,7 @@ export const PRODUCTS = gql`
       docs {
         id
         skuCode
+        disabled
         category
         name
         description
@@ -43,6 +44,11 @@ export const UPDATE_PRODUCT = gql`
       code
       success
       message
+      product {
+        id
+        disabled
+        category
+      }
     }
   }
 `;
