@@ -67,6 +67,7 @@ const Login = () => {
           inputStyle={styles.inputStyle}
         />
       </View>
+
       <Button
         loading={loading}
         disabled={!REGEX_EMAIL.test(email) || pass.length < 5}

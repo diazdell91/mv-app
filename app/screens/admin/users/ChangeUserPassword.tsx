@@ -6,7 +6,6 @@ import { Button, Input } from '../../../components';
 import { COLORS } from '../../../theme';
 import { useMutation } from '@apollo/client';
 import { RESET_PASSWORD } from '../../../graphql/user.graphql';
-import { useAuth } from '../../../context/auth/authProvider';
 
 const ChangeUserPassword = ({ navigation, route }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
@@ -17,10 +16,7 @@ const ChangeUserPassword = ({ navigation, route }: any) => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const { params } = route;
-  const { user } = params;
-  const { id } = user;
-
-  const u = useAuth();
+  const { id } = params;
 
   const validate = () => {
     if (password.length < 6) {
@@ -42,7 +38,7 @@ const ChangeUserPassword = ({ navigation, route }: any) => {
       variables: {
         input: user,
       },
-      onCompleted: (data) => {
+      onCompleted: () => {
         navigation.navigate('Staff');
       },
       onError: (error) => {

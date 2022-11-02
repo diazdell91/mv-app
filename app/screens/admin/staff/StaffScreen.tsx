@@ -59,6 +59,7 @@ const StaffScreen = ({ navigation }: any) => {
 
         <View style={{ flex: 1, marginHorizontal: 8 }}>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={filtered}
             keyExtractor={(item) => item.id}
             renderItem={({ item: user }) => <User key={user.id} {...user} />}

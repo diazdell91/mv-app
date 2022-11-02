@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useMutation, useQuery } from '@apollo/client';
 import { UPDATE_USER, USER } from '../../../graphql/user.graphql';
 import { PRODUCT_CATEGORYS } from '../../../graphql/products.graphql';
@@ -113,22 +113,28 @@ const UserDetailsScreen = (props: Props) => {
           </View>
           <View style={styles.customerOptions}>
             {userAuth?.role === 'ADMIN' && (
-              <Icon
-                onPress={() => {
-                  navigation.navigate('ChangePassword', { user: props });
-                }}
-                name="key-outline"
-                size={28}
-                color={COLORS.gray}
-                style={{ marginLeft: 8 }}
-              />
+              <View style={{ alignItems: 'center' }}>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('ChangePassword', { id });
+                  }}
+                  style={styles.iconAction}
+                >
+                  <Icon name="key-outline" size={28} color={COLORS.gray} />
+                </Pressable>
+                <Text h4> Cambiar contraseña</Text>
+              </View>
             )}
-            <Icon
-              onPress={() => handleUpdateServices(active)}
-              name={disabled ? 'lock' : 'lock-open-outline'}
-              size={28}
-              color={COLORS.gray}
-            />
+            <View style={{ alignItems: 'center' }}>
+              <Pressable onPress={() => handleUpdateServices(active)} style={styles.iconAction}>
+                <Icon
+                  name={disabled ? 'lock' : 'lock-open-outline'}
+                  size={28}
+                  color={COLORS.gray}
+                />
+              </Pressable>
+              <Text h4>{active ? 'Desbloquear' : 'Bloquear'}</Text>
+            </View>
           </View>
 
           <View>
@@ -181,7 +187,17 @@ const styles = StyleSheet.create({
   },
   customerOptions: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-evenly',
     marginBottom: 10,
+  },
+  iconAction: {
+    backgroundColor: COLORS.fog,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 56,
+    width: 56,
+    borderRadius: 50,
+    padding: 8,
+    margin: 8,
   },
 });

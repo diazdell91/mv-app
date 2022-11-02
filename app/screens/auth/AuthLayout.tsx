@@ -1,5 +1,6 @@
 import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Text } from '../../components';
 import { COLORS } from '../../theme';
 import LogoContainer from './components/LogoContainer';
 
@@ -21,7 +22,12 @@ const AuthLayout = ({ children }: Props) => {
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={200}
           >
-            <LogoContainer />
+            <View>
+              <LogoContainer />
+              <Text size={12} color={COLORS.white} style={{ alignSelf: 'center' }}>
+                V(0.0.4)
+              </Text>
+            </View>
             {children}
           </ScrollView>
         </View>
