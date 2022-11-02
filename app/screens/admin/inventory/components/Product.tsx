@@ -6,9 +6,10 @@ import { Text } from '../../../../components';
 
 type Props = {
   onUpdate: (item: any) => void;
+  onBlock: (item: any) => void;
   item: any;
 };
-export default function Product({ onUpdate, item }: Props) {
+export default function Product({ onUpdate, onBlock, item }: Props) {
   const icon =
     item.category === 'TOPUP'
       ? 'phone-dial-outline'
@@ -20,6 +21,8 @@ export default function Product({ onUpdate, item }: Props) {
       ? 'bed'
       : 'dots-horizontal-circle';
 
+  const disabled = item.disabled ? 'toggle-switch-off-outline' : 'toggle-switch';
+
   return (
     <Pressable onPress={() => onUpdate(item)}>
       <View style={styles.item}>
@@ -28,15 +31,16 @@ export default function Product({ onUpdate, item }: Props) {
           <View style={{ marginLeft: 4 }}>
             <Text>{item.name}</Text>
             <Text h4>{item.description}</Text>
+            <Text h4>
+              Precio: <Icon color={COLORS.black} name="currency-usd" size={12} />
+              {item.price}
+            </Text>
           </View>
         </View>
         <View style={styles.flexRow}>
           <View style={styles.border} />
           <View style={styles.itemOptions}>
-            <Icon color={COLORS.black} name="currency-usd" size={18} />
-            <Text color={COLORS.black} fontFamily="Poppins-Bold">
-              {item.price}
-            </Text>
+            <Icon color={COLORS.black} onPress={() => onBlock(item)} name={disabled} size={38} />
           </View>
         </View>
       </View>
@@ -73,7 +77,5 @@ const styles = StyleSheet.create({
   itemOptions: {
     flexDirection: 'row',
     alignItems: 'center',
-    maxWidth: 75,
-    width: 70,
   },
 });

@@ -61,7 +61,6 @@ const UpdateProductScreen = ({ navigation, route }: any) => {
         },
       ],
       onCompleted: (data: any) => {
-        console.log(data);
         navigation.navigate('Inventory');
       },
       onError: (error) => {

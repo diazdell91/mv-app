@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,7 +7,7 @@ import { Button, Input } from '../../../../components';
 import { CREATE_PRODUCT, PRODUCTS } from '../../../../graphql/products.graphql';
 import { COLORS } from '../../../../theme';
 
-const CreateProductScreen = ({ navigation }: any) => {
+const CreateProductScreen = ({ navigation, route }: any) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
 
   const [createProduct] = useMutation(CREATE_PRODUCT);
@@ -18,6 +18,21 @@ const CreateProductScreen = ({ navigation }: any) => {
   const [receiveValue, setReceiveValue] = useState('');
   const [price, setPrice] = useState('');
   const [commissionRate, setCommissionRate] = useState('');
+  const [product, setProduct] = useState<any>();
+
+  useEffect(() => {
+    if (route.params?.item) {
+      const { item } = route.params;
+      setCategory(item.category);
+      setName(item.name);
+      setDescription(item.description);
+      setSendValue(item.sendValue);
+      setReceiveValue(item.receiveValue);
+      setPrice(item.price);
+      setCommissionRate(item.commissionRate);
+      setProduct(item);
+    }
+  }, [route.params?.item]);
 
   const validate = () => {
     return (
@@ -70,14 +85,17 @@ const CreateProductScreen = ({ navigation }: any) => {
     <View style={{ ...styles.container, paddingBottom }}>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
         <Input
-          autoFocus
+          label="Categoria"
+          editable={false}
           placeholder="Categoría"
-          onPressRight={() => setCategory('')}
-          iconRight={category.toString() === '' ? undefined : 'close'}
+          onPressRight={() => {
+            navigation.navigate('SelectService', {
+              item: product,
+            });
+          }}
+          iconRight={'chevron-down'}
           iconRightColor={COLORS.black}
           value={category}
-          onChangeText={setCategory}
-          maxLength={32}
         />
         <Input
           placeholder="Nombre"
