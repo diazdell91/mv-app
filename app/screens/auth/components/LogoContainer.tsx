@@ -16,7 +16,7 @@ const LogoContainer = () => {
         }}
       />
       <Text fontFamily="Poppins-Bold" size={22} color={COLORS.white} style={{ marginTop: 16 }}>
-        Conexen Group
+        Miami Viral Agency
       </Text>
     </View>
   );

@@ -6,9 +6,8 @@ import LoadingScreen from '../screens/loading/LoadingScreen';
 import { COLORS } from '../theme';
 
 //navigation
-import MainNavigator from './MainClient';
-import MainAdminNavigator from './MainAdmin';
-import MainStaffNavigator from './MainStaff';
+
+import MainAdminNavigator from './Main';
 import AuthNavigator from './stacks/AuthStack';
 
 const CustomTheme = {
@@ -32,24 +31,14 @@ const RootStack = createNativeStackNavigator();
 
 function RootNavigator() {
   const { isAuthenticated, session, isLoading } = useAuth();
-
-  const role = session?.user?.role;
-
+  console.log(isAuthenticated, session, isLoading);
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {isLoading && <RootStack.Screen name="Loading" component={LoadingScreen} />}
-      {!isAuthenticated || !session ? (
+      {isAuthenticated ? (
         <RootStack.Screen name="Auth" component={AuthNavigator} />
       ) : (
-        <>
-          {role === 'ADMIN' ? (
-            <RootStack.Screen name="AdminMain" component={MainAdminNavigator} />
-          ) : role === 'CLIENT' ? (
-            <RootStack.Screen name="ClientMain" component={MainNavigator} />
-          ) : (
-            <RootStack.Screen name="StaffMain" component={MainStaffNavigator} />
-          )}
-        </>
+        <RootStack.Screen name="Main" component={MainAdminNavigator} />
       )}
       <RootStack.Screen name="Info" component={PrivacyPolicy} />
     </RootStack.Navigator>

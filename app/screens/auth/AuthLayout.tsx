@@ -25,7 +25,7 @@ const AuthLayout = ({ children }: Props) => {
             <View>
               <LogoContainer />
               <Text size={12} color={COLORS.white} style={{ alignSelf: 'center' }}>
-                V(0.0.4)
+                V(0.0.1)
               </Text>
             </View>
             {children}

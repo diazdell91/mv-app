@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Conexen",
-    "slug": "conexen",
-    "version": "0.0.4",
+    "name": "Miami Viral Agency",
+    "slug": "mv-agency",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "scheme": "myapp",
@@ -13,12 +13,12 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.conexen.con",
-      "buildNumber": "4"
+      "bundleIdentifier": "com.miamiviral.com",
+      "buildNumber": "1"
     },
     "android": {
-      "package": "com.conexen.con",
-      "versionCode": 4,
+      "package": "com.miamiviral.com",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
