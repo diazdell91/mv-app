@@ -35,7 +35,7 @@ const ConctacDetails = ({ route, navigation }: any) => {
       />
       <View style={{ alignItems: 'center' }}></View>
       <Button
-        title="Agregar servicio"
+        title="Administrar servicios"
         onPress={() => {
           navigation.navigate('AddService');
         }}

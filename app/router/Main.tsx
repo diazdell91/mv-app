@@ -7,6 +7,7 @@ import CreateContactScreen from '../screens/contacts/CreateContactScreen';
 import TypeModal from '../screens/contacts/TypeModal';
 import ConctacDetails from '../screens/contacts/ConctacDetails';
 import AddServiceScreen from '../screens/service/AddServiceScreen';
+import ListServicesModal from '../screens/service/ListServicesModal';
 
 type MainStackParamList = {
   Tab: undefined;
@@ -17,7 +18,8 @@ type MainStackParamList = {
   UpdateContact: { id: string };
   ContactDetails: { id: string };
   ContactType: undefined;
-  AddService: undefined;
+  AddService: { id: string };
+  ListServices: undefined;
 };
 
 export type MainProps = NativeStackScreenProps<MainStackParamList>;
@@ -65,6 +67,9 @@ function MainAdminNavigator() {
           options={{ title: 'Selecciona un tipo' }}
           component={AddServiceScreen}
         />
+      </Main.Group>
+      <Main.Group screenOptions={{ presentation: 'modal' }}>
+        <Main.Screen name="ListServices" component={ListServicesModal} />
       </Main.Group>
     </Main.Navigator>
   );
